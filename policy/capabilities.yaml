@@ -1,0 +1,271 @@
+# Capability registry — the current bridge surface.
+#
+# HOW TO USE THIS FILE
+#   `native-capability` is the reasoning: how a capability is shaped, why the three
+#   permission gates never collapse, what additive-only means. This file is the state:
+#   what exists right now, which tier may ask for it, and what we will never expose.
+#   Review and CI read this file. The skill is what you read to argue; this is what you
+#   read to answer "do we have that".
+#
+# HOW TO ADD ONE
+#   A new capability changes the security posture AND sets a public contract, so it
+#   always gates — see `native-capability` and `human-gate`. Every field below is
+#   required at creation, including `owner` and `support_horizon`. A capability with no
+#   named owner cannot be deprecated later, and undeprecatable capabilities are how a
+#   surface becomes unsecurable.
+#
+# WHY `never_expose` IS IN A DATA FILE
+#   It grows. Keeping it here means it can grow without editing a skill, and it means a
+#   reviewer can diff it. Entries carry their reason, because a rule whose reason is
+#   lost gets relitigated by whoever is blocked by it next quarter.
+
+schema_version: 1
+
+# ---------------------------------------------------------------------------
+# Tiers. Which publishers may request which risk classes.
+# `mini-app-governance` owns tier assignment; this is only the mapping.
+# ---------------------------------------------------------------------------
+tiers:
+  first_party:
+    may_request: [low, medium, high, critical]
+    notes: our own teams; still declares and still consents
+  partner_verified:
+    may_request: [low, medium, high]
+    notes: contracted, identity-verified, named incident contact
+  self_serve:
+    may_request: [low, medium]
+    notes: registered developer; critical and high are never granted here
+  sandbox:
+    may_request: [low]
+    notes: dev builds only, fixtures not real data
+
+# ---------------------------------------------------------------------------
+# Consent classes. G2 in the three-gate model.
+# ---------------------------------------------------------------------------
+consent_classes:
+  none:        no user consent needed; the capability exposes nothing personal
+  once:        single operation, gesture-bound, not remembered
+  while_using: until the instance terminates or backgrounds past the idle window
+  session:     until the mini-app is closed
+  persistent:  across launches — REQUIRES AN EXPLICIT REVIEWER GRANT, never an author request
+
+# ---------------------------------------------------------------------------
+# Capabilities.
+#
+# Template — copy this, fill every field, and gate the addition.
+#
+#   - name: namespace.operation
+#     version: 1
+#     risk: low | medium | high | critical
+#     consent: <consent class>
+#     os_permission: none | <which>
+#     broker_ui: <the zero-permission platform picker used, or false>
+#     min_tier: <lowest tier that may request it>
+#     quota: <sustained and burst, per mini-app>
+#     payload_cap: <bytes, or handle-only>
+#     stream_cap: <events per second, if it streams>
+#     audit: none | call | call_with_result
+#     owner: <a named person or team>
+#     support_horizon: <date or "indefinite, reviewed annually">
+#     errors: [<the closed set this operation can return>]
+#     notes: <what a comparable mature platform deliberately does NOT expose here>
+#
+# `os_permission: none` with a `broker_ui` is the preferred shape for anything touching
+# personal data. The picker IS the consent gesture, and it spends none of the host's
+# one-shot OS permission — which is shared, non-renewable, and the hardest constraint in
+# the whole architecture.
+# ---------------------------------------------------------------------------
+capabilities:
+  - name: net.request
+    version: 1
+    risk: medium
+    consent: none
+    os_permission: none
+    broker_ui: false
+    min_tier: sandbox
+    quota: { sustained: 60, burst: 10 }
+    payload_cap: 65536
+    stream_cap: 0
+    audit: call
+    owner: platform
+    support_horizon: indefinite, reviewed annually
+    errors: [CAPABILITY_NOT_DECLARED, INVALID_ARGUMENT, RATE_LIMITED, TIMEOUT, NOT_FOUND]
+    notes: host-mediated fetch to exact manifest hosts; never raw fetch, wildcard, or direct sockets
+
+  - name: storage.kv
+    version: 1
+    risk: low
+    consent: none
+    os_permission: none
+    broker_ui: false
+    min_tier: sandbox
+    quota: { sustained: 120, burst: 20 }
+    payload_cap: 65536
+    stream_cap: 0
+    audit: call
+    owner: platform
+    support_horizon: indefinite, reviewed annually
+    errors: [CAPABILITY_NOT_DECLARED, INVALID_ARGUMENT, RATE_LIMITED, REVOKED]
+    notes: per-(tenant, appId, user) scoped KV; no cookies, no localStorage, no cross-app storage
+
+  - name: scanner.scan
+    version: 1
+    risk: medium
+    consent: once
+    os_permission: none
+    broker_ui: host_scanner
+    min_tier: self_serve
+    quota: { sustained: 10, burst: 2 }
+    payload_cap: 1024
+    stream_cap: 0
+    audit: call_with_result
+    owner: platform
+    support_horizon: indefinite, reviewed annually
+    errors: [CAPABILITY_NOT_DECLARED, CONSENT_REQUIRED, CONSENT_DENIED, CONSENT_DENIED_PERMANENTLY, TIMEOUT]
+    notes: host-owned scanner UI; pixels never cross the bridge, only the decoded string
+
+  - name: location.current
+    version: 1
+    risk: high
+    consent: once
+    os_permission: none
+    broker_ui: false
+    min_tier: partner_verified
+    quota: { sustained: 6, burst: 2 }
+    payload_cap: 256
+    stream_cap: 0
+    audit: call_with_result
+    owner: platform
+    support_horizon: indefinite, reviewed annually
+    errors: [CAPABILITY_NOT_DECLARED, CONSENT_REQUIRED, CONSENT_DENIED, CONSENT_DENIED_PERMANENTLY, RATE_LIMITED, TIMEOUT, REVOKED]
+    notes: one-shot coarse by default; precise is a separate high-risk capability with separate review
+
+  - name: crypto.sign
+    version: 1
+    risk: high
+    consent: once
+    os_permission: none
+    broker_ui: biometric_prompt
+    min_tier: partner_verified
+    quota: { sustained: 10, burst: 3 }
+    payload_cap: 1024
+    stream_cap: 0
+    audit: call
+    owner: platform
+    support_horizon: indefinite, reviewed annually
+    errors: [CAPABILITY_NOT_DECLARED, CONSENT_REQUIRED, CONSENT_DENIED, TIMEOUT, REVOKED]
+    notes: hardware-backed assertion over host-minted challenge; never biometric material nor boolean
+
+  - name: notify.subscribe
+    version: 1
+    risk: low
+    consent: while_using
+    os_permission: none
+    broker_ui: false
+    min_tier: self_serve
+    quota: { sustained: 5, burst: 2 }
+    payload_cap: 256
+    stream_cap: 0
+    audit: call
+    owner: platform
+    support_horizon: indefinite, reviewed annually
+    errors: [CAPABILITY_NOT_DECLARED, CONSENT_REQUIRED, CONSENT_DENIED, RATE_LIMITED]
+    notes: host owns push tokens; mini-app receives subscription state only
+
+# ---------------------------------------------------------------------------
+# Never expose. Not judgment calls — these do not become acceptable at a higher tier,
+# under a deadline, or behind a flag.
+# ---------------------------------------------------------------------------
+never_expose:
+  - what: dynamic code execution or loading, in any form
+    reason: >
+      No evaluation capability, no remote script outside the signed package, no remote
+      config that is really code. This is the one that makes review meaningful at all:
+      if a mini-app can fetch code at runtime, you reviewed a loader and not an app.
+
+  - what: raw filesystem paths, in either direction
+    reason: >
+      File capabilities take host-minted handles, from a user-driven picker or the
+      mini-app's own root, canonicalized BEFORE the containment check. Never return an
+      absolute path — it leaks structure and invites traversal.
+
+  - what: generic or reflective invocation
+    reason: >
+      No native-module invoker, no method dispatcher, nothing that takes a name and calls
+      it. Capabilities are enumerated explicitly in native code, so the surface is
+      countable.
+
+  - what: host credentials
+    reason: >
+      Session tokens, cookies, refresh tokens. Calls to our own API on a mini-app's behalf
+      use a token scoped and audience-restricted to that mini-app.
+
+  - what: persistent cross-app identifiers
+    reason: >
+      Including the platform's per-vendor ID, which is host-wide and therefore links one
+      user across every mini-app. Issue a per-(mini-app, user) pseudonymous ID.
+
+  - what: bulk personal data
+    reason: >
+      Contact list, call log, messages, installed apps, media enumeration, calendar
+      export. Pickers only. A capability that hands over a dump should not exist.
+
+  - what: clipboard read without an explicit paste gesture
+    reason: silent clipboard read is surveillance regardless of intent
+
+  - what: screen capture, screen recording, accessibility services, overlay windows,
+      notification listening, VPN, device administration
+    reason: each grants observation or control over the whole device, not over the mini-app
+
+  - what: arbitrary URL or intent launch
+    reason: >
+      No open-anything, no intent parsing on WebView-supplied data, no starting another
+      app with mini-app-supplied components or extras. An intent naming an exported
+      component is a classic host-compromise path.
+
+  - what: raw biometric material — and "biometry succeeded" as a boolean
+    reason: >
+      A boolean is a value the page can fabricate. Only hardware-backed signed assertions
+      over a host-minted challenge.
+
+  - what: key export
+    reason: >
+      A mini-app may request a signature from a key scoped to it. Never the key, and never
+      another mini-app's key.
+
+  - what: installing, downloading-and-executing, or side-loading anything
+    reason: it is dynamic code execution with extra steps
+
+  - what: raw sockets, and generic background-execution primitives
+    reason: background work is host-scheduled against host-decided budgets
+
+  - what: any host-internal debug or admin capability, even behind a flag
+    reason: >
+      A flag is a runtime value; treating it as a security boundary means the boundary
+      ships in production and waits to be found.
+
+# ---------------------------------------------------------------------------
+# Deprecations in flight. `mini-app-governance` owns the calendar and the outreach.
+# ---------------------------------------------------------------------------
+deprecations: []
+  # - capability: namespace.operation
+  #   version: 1
+  #   announced: <date>
+  #   review_block_from: <date>    # new submissions using it are rejected
+  #   soft_break_from: <date>      # ramped, bucketed by mini-app — never per-call random
+  #   removed: <date>
+  #   owner: <named person>
+
+# ---------------------------------------------------------------------------
+# Per-app compatibility grants. The single escape hatch for a mini-app that depends on
+# old behaviour. Held here — in the store record — never in the author's manifest.
+# THIS LIST IS A METRIC. If it grows, the versioning discipline has already failed, and
+# you want to know that before the surface becomes unsecurable.
+# ---------------------------------------------------------------------------
+compat_grants: []
+  # - mini_app: <appId>
+  #   flag: <what old behaviour is preserved>
+  #   granted: <date>
+  #   expires: <date — required, no indefinite grants>
+  #   owner: <named person accountable for removing it>
+  #   reason: <why this app cannot migrate>
