@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Super-App Architecture Visual</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root{--bg:#0b1220;--card:#111c33;--ink:#e6edf8;--muted:#8aa0c2;--line:#1f2f52;--accent:#60a5fa}
+  *{box-sizing:border-box}
+  body{margin:0;font:14px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto;background:var(--bg);color:var(--ink)}
+  header{position:sticky;top:0;z-index:10;background:rgba(11,18,32,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:14px 20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  header h1{margin:0;font-size:16px;letter-spacing:-.02em}
+  header p{margin:0;color:var(--muted)}
+  nav{display:flex;gap:8px;flex-wrap:wrap}
+  nav a{color:var(--ink);text-decoration:none;border:1px solid var(--line);padding:6px 10px;border-radius:999px;font-size:12px}
+  nav a:hover{border-color:var(--accent)}
+  main{max-width:1200px;margin:0 auto;padding:22px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:16px 0}
+  h2{margin:0 0 8px;font-size:18px;letter-spacing:-.02em}
+  h3{margin:18px 0 8px;font-size:14px;color:#cfe0ff}
+  p{color:var(--muted);margin:6px 0}
+  .grid{display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:960px){.grid.two{grid-template-columns:1fr 1fr}}
+  .mermaid{background:#0e1a33;border:1px solid #1e335f;border-radius:14px;padding:12px;overflow:auto}
+  code{font:12px ui-monospace,Menlo,Consolas,monospace;background:#0e1a33;border:1px solid #1e335f;padding:1px 6px;border-radius:6px;color:#cfe0ff}
+  ul{margin:6px 0 0 18px;color:var(--muted)}
+  .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-size:11px;color:var(--muted);margin-right:6px}
+  footer{max-width:1200px;margin:0 auto;padding:10px 22px 30px;color:var(--muted)}
+</style>
+<script>mermaid.initialize({startOnLoad:true,theme:'dark',securityLevel:'loose',flowchart:{htmlLabels:true},sequence:{mirrorActors:false}})</script>
+</head>
+<body>
+<header>
+  <h1>Mobile — super-app architecture visual</h1>
+  <p>Native shell → RN host → bridge → WebView tenants · invariants + budgets + per-component + 11 feature sequences</p>
+  <nav>
+    <a href="#overall">Overall</a>
+    <a href="#components">Per-component</a>
+    <a href="#bridge">Bridge</a>
+    <a href="#container">Container</a>
+    <a href="#sequences">Sequences</a>
+  </nav>
+</header>
+<main>
+<section id="overall">
+  <h2>1 — Overall (release agility ↓, trust ↓)</h2>
+  <p>From <code>CLAUDE.md:4</code> · native cannot roll back, bridge is the only door, budgets in CI, untrusted until signed. Downward = decreasing trust.</p>
+  <div class="mermaid">
+flowchart TB
+    subgraph Shell [Native Shell — thin, store cannot roll back]
+        Launch[launch splash permission sheets]
+        HostStoreNative[HostStorage NativeModule]
+    end
+    subgraph RNHost [React Native Host — OTA updatable]
+        App[App.tsx orchestration]
+        Nav[NavigationBroker pure state]
+        Screens[HomeScreen / MiniAppScreen]
+        Tracking[TrackingService journal batch]
+        Notif[NotificationService inbox]
+        Tenant[useTenant location-first]
+    end
+    subgraph BridgeLayer [Bridge — ONLY door]
+        Reg[registry 6 caps]
+        Handler[handler 10 steps]
+        Gates[G1 G2 G3 + quota]
+    end
+    subgraph ContainerLayer [Container — one WebView / origin]
+        Factory[MiniAppContainer ONE factory C1]
+        CSP[CSP header not meta B2]
+        Guard[navigationGuard allowlist B3]
+        Pool[WarmPool generic B1/B4]
+    end
+    subgraph Tenants [Untrusted mini-apps]
+        Catalog[6 catalog entries per-tenant filtered]
+    end
+    Shell --> RNHost --> BridgeLayer --> ContainerLayer --> Tenants
+  </div>
+  <div class="grid two">
+    <div><span class="pill">Invariant 1</span> thin shell — thresholds from remote config, not binary <code>nativeShell.ts:19</code></div>
+    <div><span class="pill">Invariant 2</span> only door — no <code>fetch</code>/<code>fs</code> in JS, host-mediated <code>handlers/netRequest.ts</code></div>
+    <div><span class="pill">Invariant 3</span> budgets in CI — <code>policy/budgets.md:14</code> <code>src/config/budgets.ts</code></div>
+    <div><span class="pill">Invariant 4</span> untrusted until signed — <code>signer.ts:81</code> B5 before first script</div>
+  </div>
+</section>
+
+<section id="components">
+  <h2>2 — Per-component</h2>
+  <div class="mermaid">
+flowchart LR
+    Root[src 12 modules] --> B[bridge registry handler gates handlers audit]
+    Root --> M[miniapps catalog tenant container manifest pipeline sample]
+    Root --> N[navigation pure broker]
+    Root --> No[notification service]
+    Root --> T[tracking service]
+    Root --> C[config palette motion tenants budgets]
+    Root --> H[home model]
+    Root --> Ca[cards store dataset model]
+    Root --> Na[native hostStorage shell deviceAccess]
+    Root --> S[screens Home MiniApp]
+    Root --> Co[components GlassTabBar etc]
+    Root --> Ho[hooks useTenant]
+  </div>
+  <h3 id="bridge">Bridge 10-step pipeline <code>src/bridge/handler.ts:47</code></h3>
+  <div class="mermaid">
+flowchart TB
+  Req[Request no identity C3] --> S2[Session derived] --> G1[G1 declaration] --> Args[args validate] --> G2[G2 consent] --> G3[G3 OS never before G2] --> Quota[quota bucket] --> Exec[exec withTimeout P95*4] --> Audit[audit before reply B7] --> Reply[exactly one reply B6]
+  </div>
+  <p>6 caps <code>registry.ts:24</code>: net.request 60/10 · storage.kv 120/20 · scanner.scan 10/2 host_scanner once · location.current 6/2 high once · crypto.sign 10/3 biometric once high · notify.subscribe 5/2 while_using</p>
+  <h3 id="container">Container isolation <code>src/miniapps/container/</code></h3>
+  <div class="mermaid">
+flowchart TB
+  V[B5 verifyPackage before first script] --> F[ONE factory C1] --> Cfg[CONTAINER_CONFIG domStorage false incognito true] --> Sch[origin mini:// iOS https:// Android] --> CSP2[CSP header connect-src 'self'+egressHosts] --> G[navigationGuard scheme+host+declared-route B3] --> Spl[splash 50/100ms +4s timeout] --> D[renderer death on every instance B4] --> P[WarmPool generic low1/0 mid1/1 high2/1]
+  </div>
+</section>
+
+<section id="sequences">
+  <h2>3 — Feature sequences (11)</h2>
+
+  <h3>3.1 App launch + tenant resolution</h3>
+  <div class="mermaid">
+sequenceDiagram
+  participant OS
+  participant App as App.tsx
+  participant Tenant as useTenant
+  participant Store as tenantStorage/hostStorage
+  participant Loc as deviceAccess
+  participant Prof as tenants.ts
+  OS->>App: process_start
+  App->>App: tracking.start load ids+lines
+  par tenant
+    App->>Tenant: loadStoredTenant
+    alt miss
+      Tenant->>Loc: requestDeviceAccess weatherLocation
+      Loc-->>Tenant: lat/lon or unavailable
+      Tenant->>Prof: resolveTenantFromCoords haversine >350→fallback
+      Prof-->>Tenant: TenantId
+      Tenant->>Store: saveStoredTenant
+    end
+  and notif
+    App->>App: notification.start pendingEvents+register
+  end
+  App->>App: palette + catalogForTenant + screen
+  </div>
+
+  <h3>3.2 Open mini-app from dock</h3>
+  <div class="mermaid">
+sequenceDiagram
+  participant U as User
+  participant Bar as GlassTabBar
+  participant App as App.tsx
+  participant Bro as navigationBroker
+  participant Pool as WarmPool
+  participant Ctn as MiniAppContainer
+  U->>Bar: tap
+  Bar->>App: openDockMiniApp
+  App->>Bro: openDockMiniApp existing? slice : push rootRoute+sessionId
+  Bro-->>App: new NavigationState
+  App->>Pool: bind(appId) prefer ready
+  Pool-->>App: instance
+  App->>Ctn: mount verified package CSP navigationGuard splash
+  Ctn-->>U: trusted header + splash → first paint 350/800 warm
+  </div>
+
+  <h3>3.3 Internal route (declared only)</h3>
+  <div class="mermaid">
+sequenceDiagram
+  participant M as MiniAppScreen
+  participant App as App.tsx
+  participant Bro as navigationBroker
+  M->>App: onNavigate path
+  App->>Bro: navigateInsideMiniApp isDeclaredRoute
+  alt undeclared
+    Bro-->>App: ROUTE_NOT_DECLARED → navigation_denied
+  else ok
+    Bro-->>App: history push
+    App->>App: commit + tracking route_viewed
+  end
+  </div>
+
+  <h3>3.4 Cross-app link</h3>
+  <div class="mermaid">
+sequenceDiagram
+  participant S as weather
+  participant App as App.tsx
+  participant Bro as navigationBroker
+  S->>App: openCrossApp linkId
+  App->>Bro: link→targetAppId→entrypoint allowedSources+allowedInputKeys≤4096
+  Bro-->>App: push/replace targetFrame
+  App->>App: commit + tracking cross_app
+  Note over S,Bro: return is stack goBack restores source
+  </div>
+
+  <h3>3.5 Bridge call — scanner.scan (10 steps)</h3>
+  <div class="mermaid">
+sequenceDiagram
+  participant JS as Mini-App JS
+  participant H as handler.ts
+  participant G as gates.ts
+  participant Impl as scanner.ts
+  JS->>H: postMessage scanner.scan
+  H->>G: G1 declaration → CAPABILITY_NOT_DECLARED or pass
+  H->>G: G2 consent → CONSENT_REQUIRED or pass
+  H->>G: G3 OS → OS_DENIED or pass
+  H->>G: quota → RATE_LIMITED or pass
+  H->>Impl: withTimeout(handler, P95*4)
+  Impl-->>H: data or throw TIMEOUT/INVALID
+  H->>H: appendAudit B7 then exactly one reply B6
+  H-->>JS: {ok,data} or {ok:false,error}
+  </div>
+
+  <h3>3.6 Notification push → foreground → open</h3>
+  <div class="mermaid">
+sequenceDiagram
+  participant FCM
+  participant Nat as native
+  participant Svc as NotificationService
+  participant App as App.tsx
+  participant Bro as navigationBroker
+  FCM->>Nat: push
+  Nat->>Svc: NativeNotificationEvent queued
+  Svc->>Svc: parseRemoteNotification insert sorted slice250 persist
+  Svc->>App: snapshot + foreground banner if foreground
+  Svc->>App: notification_received tracking
+  alt opened
+    Svc->>App: activation → notification_clicked
+    App->>Bro: openNotificationMiniApp host_notification source
+    Bro-->>App: targetFrame
+  end
+  </div>
+
+  <h3>3.7 Tracking journal → batch → transport</h3>
+  <div class="mermaid">
+sequenceDiagram
+  participant MA as MiniApp
+  participant App as App.tsx
+  participant S as TrackingService
+  participant St as hostStorage
+  participant Net as network
+  MA->>App: onTrackEvent name/version/data
+  App->>S: trackMiniApp validData+anonymousId envelope
+  S->>St: appendLine + enforceQueueLimit 8MB retention
+  S->>S: schedule min(maxWaitMs)
+  loop flush
+    S->>Net: snapshot + choose gRPC/wifi+≥20 else HTTP
+    S->>S: createBatch priorityOrder 512/256KB 200
+    S->>St: persist accepted vs attempt_count++
+  end
+  </div>
+
+  <h3>3.8 Home pinned preferences</h3>
+  <div class="mermaid">
+sequenceDiagram
+  participant U as User
+  participant Home as HomeScreen
+  participant App as App.tsx
+  participant St as hostStorage
+  U->>Home: long_press constellation
+  Home->>App: onPinCategory / onPinMiniApp
+  App->>St: saveHomePreferences normalized
+  App->>App: tracking home_preference_changed
+  </div>
+
+  <h3>3.9 WarmPool + pressure</h3>
+  <div class="mermaid">
+flowchart TB
+  A[classifyMemory low1/0 mid1/1 high2/1]-->B[warm ready]-->C[bind prefer ready]-->D[suspend]-->E[evictLRU skip inflight money]-->F[onMemoryPressure evict all suspended+ready]
+  </div>
+
+  <h3>3.10 Review pipeline</h3>
+  <div class="mermaid">
+flowchart LR
+  S[sign canonicalize hash hmac]-->R[review: sig archive manifest declared_vs_actual dynamic_code wildcard cap_diff size]
+  R-->F[adversarial fixtures 8 must-reject]
+  </div>
+
+  <h3>3.11 Back / close</h3>
+  <div class="mermaid">
+sequenceDiagram
+  participant U as User
+  participant H as MiniAppScreen header
+  participant App as App.tsx
+  participant Bro as navigationBroker
+  U->>H: Back or Close
+  H->>App: goBack or closeMiniApps
+  App->>Bro: history>1 pop else pop frame / clear
+  Bro-->>App: new state
+  App->>App: tracking closed + opened back_resume
+  </div>
+
+</section>
+</main>
+<footer>Source: <code>app/docs/architecture-visual.md</code> — budgets from <code>policy/budgets.md</code> + <code>src/config/budgets.ts</code>, caps from <code>policy/capabilities.yaml</code>, flows from <code>app/App.tsx</code> <code>src/bridge/*</code> <code>src/miniapps/container/*</code>. Open the markdown for file:line citations per block.</footer>
+</body>
+</html>

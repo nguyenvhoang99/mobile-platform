@@ -92,3 +92,61 @@ CI reads `policy/*` on every change (`scripts/verify.sh:1` → `scripts/conforma
 Low Galaxy A14 `policy/budgets.md:48`, mid A54, high iPhone 14. Budgets `FRAME 16.67 TAP 100 SPLASH 50/100 BRIDGE 5/16 WARM 350/800 COLD 700/1500 MAX 3` `budgets.ts:10`. Markers `buds.ts:58` `process_start … bridge_response` + `tenant_resolved` — app-owned, tools are replaceable.
 
 *Stage 1 is a vertical slice: one binary can discover, verify, contain, broker, observe, and recover a mini-app without trusting it, on the low-tier device, with the kill (conformance + budgets) green.*
+
+## 7. Target topology: thin shell transports + RN runtime (partially decided)
+
+Full decision: `host-core-layer-decision.md:1`. Summary only — that file owns the rationale.
+Human review kept the bridge/container in React Native (no measured overhead case)
+and moved badminton product logic out of the shell; the native runtime core (P2)
+is deferred until a budget row forces it.
+
+```
+┌──────────────────────────────────────┐
+│            Native Host Core          │
+│                                      │
+│ Kotlin                     Swift     │
+│                                      │
+│ MiniApp Runtime                      │
+│ Security                             │
+│ Permissions                          │
+│ WebView / JS Engine                  │
+│ Storage                              │
+│ Networking                           │
+│ Native capabilities                  │
+│ Lifecycle                            │
+└──────────────────┬───────────────────┘
+                   │ JSI (Codegen TurboModules,
+                   │      additive-only, snapshot-gated)
+┌──────────────────▼───────────────────┐
+│          React Native UI             │
+│                                      │
+│ Product Screens                      │
+│ Forms                                │
+│ Feed                                 │
+│ Settings                             │
+│ Common UI                            │
+└──────────────────────────────────────┘
+```
+
+RN is the UI/product framework and, by current decision, also the runtime and
+composition layer: bridge, container, reminder copy/routing, and product screens
+all live in the RN host. The shell owns generic transports only — scheduling,
+delivery, ActivityKit/EventKit/AlarmManager mechanics — and renders content it
+receives, never product content of its own.
+
+**PoC now → decided target:**
+
+| Concern | Before | After (this change) |
+|---|---|---|
+| Bridge 10-step pipeline `bridge/handler.ts:47` | TS orchestrator | Stays in RN (P2 deferred) |
+| Container `MiniAppContainer.tsx:63`, pool, CSP, nav guard | TS model/stub (no WebView dep) | Stays in RN (P2 deferred) |
+| Reminder scheduling (Android) | `BadmintonReminderScheduler` (native, badminton copy) | Generic `ReminderScheduler` (native); copy/routing from RN |
+| Calendar insert (Android) | `BadmintonCalendarEventLauncher` (native copy) | Generic `CalendarEventLauncher` (native); copy from RN |
+| Live Activity + local fallback (iOS) | `BadmintonLiveActivityCoordinator` (native copy/category) | Generic `ReminderLiveActivityCoordinator` + widget; marker-based start |
+| Reminder/calendar deep-link + AppDelegate | Badminton category/host/strings | Generic `reminder` host, `live_activity` marker, RN-supplied fields |
+| `native/hostStorage.ts`, `deviceAccess.ts`, notification | TS adapters + hand-written TurboModules | Unchanged (Codegen pending, decision 4) |
+| Thresholds/quotas/tiers/copy | `config/*`, `capabilities.yaml` | Signed remote config (unchanged principle) |
+
+**Non-goals of this section:** no measured perf claims, no WebView admission,
+no PoC file deprecated beyond the renamed native files. If a line here conflicts
+with `policy/*`, the narrower source wins and this doc is corrected.

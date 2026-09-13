@@ -1,0 +1,1180 @@
+{
+  "generatedAt": "2026-09-02T09:13:19.816Z",
+  "sources": {
+    "capabilitiesYaml": "policy/capabilities.yaml",
+    "registry": "src/bridge/registry.ts",
+    "deviceAccess": "src/native/deviceAccess.ts",
+    "catalog": "src/miniapps/catalog.ts (6 mini-apps)"
+  },
+  "features": [
+    {
+      "id": "app",
+      "label": "App Orchestration",
+      "layer": "host",
+      "description": "App.tsx hub — state, refs, dock, explore sheet, tenant, tracking, notifications, haptics",
+      "globs": [
+        "App.tsx",
+        "src/hooks/useTenant.ts"
+      ],
+      "components": [
+        "App.tsx",
+        "src/hooks/useTenant.ts",
+        "src/config/appConfig.ts"
+      ],
+      "permissions": []
+    },
+    {
+      "id": "home",
+      "label": "Home & Personalization",
+      "layer": "host",
+      "description": "Home screen, pinned categories/apps, suggestions, first-run constellation",
+      "globs": [
+        "src/screens/HomeScreen.tsx",
+        "src/home/*",
+        "src/components/HomeCollection*",
+        "src/components/CardCatalogBody.tsx"
+      ],
+      "components": [
+        "src/screens/HomeScreen.tsx",
+        "src/home/homeModel.ts",
+        "src/components/HomeCollection.tsx",
+        "src/components/HomeCollectionPickerModal.tsx",
+        "src/components/CardCatalogBody.tsx",
+        "src/components/TrackedScrollView.tsx"
+      ],
+      "permissions": []
+    },
+    {
+      "id": "navigation",
+      "label": "Navigation & Dock",
+      "layer": "host",
+      "description": "navigationBroker state machine, GlassTabBar dock L/R + Explore, MiniAppScreen trusted header",
+      "globs": [
+        "src/navigation/*",
+        "src/components/GlassTabBar.tsx",
+        "src/screens/MiniAppScreen.tsx",
+        "src/screens/PlaceholderScreen.tsx"
+      ],
+      "components": [
+        "src/navigation/navigationBroker.ts",
+        "src/components/GlassTabBar.tsx",
+        "src/screens/MiniAppScreen.tsx",
+        "src/screens/PlaceholderScreen.tsx",
+        "src/native/nativeShell.ts"
+      ],
+      "permissions": []
+    },
+    {
+      "id": "explore",
+      "label": "Explore & Catalog",
+      "layer": "host",
+      "description": "Explore sheet, pickers, mini-app directory filtered by tenant",
+      "globs": [
+        "src/components/ExploreSheet.tsx",
+        "src/components/MiniAppPickerModal.tsx",
+        "src/components/TenantPickerSheet.tsx",
+        "src/miniapps/catalog*"
+      ],
+      "components": [
+        "src/components/ExploreSheet.tsx",
+        "src/components/MiniAppPickerModal.tsx",
+        "src/components/TenantPickerSheet.tsx",
+        "src/miniapps/catalog.ts",
+        "src/miniapps/catalogTenant.ts",
+        "src/miniapps/sample/SampleMiniApp.tsx"
+      ],
+      "permissions": []
+    },
+    {
+      "id": "tenant",
+      "label": "Tenant & Localization",
+      "layer": "host",
+      "description": "Location-first tenant resolve, 4 tenants haversine, persisted selection",
+      "globs": [
+        "src/config/tenants.ts",
+        "src/config/tenantStorage.ts",
+        "src/hooks/useTenant.ts"
+      ],
+      "components": [
+        "src/config/tenants.ts",
+        "src/config/tenantStorage.ts",
+        "src/hooks/useTenant.ts",
+        "src/components/TenantPickerSheet.tsx"
+      ],
+      "permissions": [
+        {
+          "kind": "deviceAccess",
+          "name": "weatherLocation",
+          "via": "native/deviceAccess.ts",
+          "hostOnly": true,
+          "notes": "4s timeout, location-first tenant resolve"
+        }
+      ]
+    },
+    {
+      "id": "container",
+      "label": "Mini-App Container",
+      "layer": "container",
+      "description": "Only WebView factory, CSP, nav guard, warm pool, signing",
+      "globs": [
+        "src/miniapps/container/*",
+        "src/miniapps/manifest/*"
+      ],
+      "components": [
+        "src/miniapps/container/MiniAppContainer.tsx",
+        "src/miniapps/container/containerConfig.ts",
+        "src/miniapps/container/csp.ts",
+        "src/miniapps/container/navigationGuard.ts",
+        "src/miniapps/container/warmPool.ts",
+        "src/miniapps/manifest/signer.ts",
+        "src/miniapps/manifest/validator.ts",
+        "src/miniapps/manifest/archiveSafety.ts",
+        "src/miniapps/manifest/schema.json"
+      ],
+      "permissions": []
+    },
+    {
+      "id": "pipeline",
+      "label": "Pipeline & Review",
+      "layer": "governance",
+      "description": "7 review checks, declared-vs-actual, store signing, rollout, revocation (server-expiry)",
+      "globs": [
+        "src/miniapps/pipeline/*"
+      ],
+      "components": [
+        "src/miniapps/pipeline/review.ts",
+        "src/miniapps/manifest/validator.ts",
+        "src/miniapps/manifest/signer.ts",
+        "app/scripts/miniapp-sign.mjs",
+        "app/scripts/verify.sh"
+      ],
+      "permissions": []
+    },
+    {
+      "id": "bridge",
+      "label": "Bridge & Handlers",
+      "layer": "bridge",
+      "description": "Only door — 10-step pipeline G1 declaration G2 consent G3 OS quota audit reply",
+      "globs": [
+        "src/bridge/*",
+        "src/bridge/handlers/*"
+      ],
+      "components": [
+        "src/bridge/registry.ts",
+        "src/bridge/handler.ts",
+        "src/bridge/gates.ts",
+        "src/bridge/register.ts",
+        "src/bridge/audit.ts",
+        "src/bridge/types.ts",
+        "src/bridge/handlers/netRequest.ts",
+        "src/bridge/handlers/storageKv.ts",
+        "src/bridge/handlers/scanner.ts",
+        "src/bridge/handlers/locationCurrent.ts",
+        "src/bridge/handlers/cryptoSign.ts",
+        "src/bridge/handlers/notifySubscribe.ts"
+      ],
+      "permissions": [
+        {
+          "kind": "capability",
+          "name": "net.request",
+          "consent": "none",
+          "osPermission": "none",
+          "brokerUi": "false",
+          "risk": "medium",
+          "minTier": "sandbox"
+        },
+        {
+          "kind": "capability",
+          "name": "storage.kv",
+          "consent": "none",
+          "osPermission": "none",
+          "brokerUi": "false",
+          "risk": "low",
+          "minTier": "sandbox"
+        },
+        {
+          "kind": "capability",
+          "name": "scanner.scan",
+          "consent": "once",
+          "osPermission": "none",
+          "brokerUi": "host_scanner",
+          "risk": "medium",
+          "minTier": "self_serve"
+        },
+        {
+          "kind": "capability",
+          "name": "location.current",
+          "consent": "once",
+          "osPermission": "none",
+          "brokerUi": "false",
+          "risk": "high",
+          "minTier": "partner_verified"
+        },
+        {
+          "kind": "capability",
+          "name": "crypto.sign",
+          "consent": "once",
+          "osPermission": "none",
+          "brokerUi": "biometric_prompt",
+          "risk": "high",
+          "minTier": "partner_verified"
+        },
+        {
+          "kind": "capability",
+          "name": "notify.subscribe",
+          "consent": "while_using",
+          "osPermission": "none",
+          "brokerUi": "false",
+          "risk": "low",
+          "minTier": "self_serve"
+        }
+      ]
+    },
+    {
+      "id": "tracking",
+      "label": "Tracking & Telemetry",
+      "layer": "host",
+      "description": "Journal→batch→transport, durable journal 8 MB, budgets per priority",
+      "globs": [
+        "src/tracking/*",
+        "src/components/TrackedScrollView.tsx"
+      ],
+      "components": [
+        "src/tracking/trackingService.ts",
+        "src/tracking/trace.ts",
+        "src/tracking/types.ts",
+        "src/components/TrackedScrollView.tsx",
+        "src/config/budgets.ts"
+      ],
+      "permissions": []
+    },
+    {
+      "id": "notifications",
+      "label": "Notifications",
+      "layer": "host",
+      "description": "Inbox, permission, foreground banner, APNs/FCM via signed remote config",
+      "globs": [
+        "src/notification/*",
+        "src/components/NotificationSheet.tsx",
+        "src/components/ForegroundNotificationBanner.tsx",
+        "src/native/notification.ts"
+      ],
+      "components": [
+        "src/notification/notificationService.ts",
+        "src/notification/index.ts",
+        "src/notification/types.ts",
+        "src/components/NotificationSheet.tsx",
+        "src/components/ForegroundNotificationBanner.tsx",
+        "src/native/notification.ts",
+        "src/config/remotePush.ts"
+      ],
+      "permissions": [
+        {
+          "kind": "capability",
+          "name": "notify.subscribe",
+          "consent": "while_using",
+          "osPermission": "none",
+          "brokerUi": "false",
+          "risk": "low",
+          "minTier": "self_serve",
+          "via": "bridge handler notify.subscribe"
+        },
+        {
+          "kind": "os",
+          "name": "push",
+          "via": "native/notification.ts",
+          "hostOnly": true,
+          "notes": "OS push permission, per-host-app one-shot, host owns tokens"
+        }
+      ]
+    },
+    {
+      "id": "deviceAccess",
+      "label": "Device Access",
+      "layer": "native",
+      "description": "Host-only native access — network/biometric/weatherLocation/voiceCommand (no WebView path)",
+      "globs": [
+        "src/native/deviceAccess.ts"
+      ],
+      "components": [
+        "src/native/deviceAccess.ts",
+        "src/utils/withTimeout.ts"
+      ],
+      "permissions": [
+        {
+          "kind": "deviceAccess",
+          "name": "network",
+          "via": "native/deviceAccess.ts",
+          "hostOnly": true
+        },
+        {
+          "kind": "deviceAccess",
+          "name": "biometric",
+          "via": "native/deviceAccess.ts",
+          "hostOnly": true
+        },
+        {
+          "kind": "deviceAccess",
+          "name": "weatherLocation",
+          "via": "native/deviceAccess.ts",
+          "hostOnly": true
+        },
+        {
+          "kind": "deviceAccess",
+          "name": "voiceCommand",
+          "via": "native/deviceAccess.ts",
+          "hostOnly": true
+        }
+      ]
+    },
+    {
+      "id": "storage",
+      "label": "Host Storage",
+      "layer": "native",
+      "description": "Host persistence (dock, home prefs, tenant) via NativeModule — WebView storage disabled for pool safety",
+      "globs": [
+        "src/native/hostStorage.ts",
+        "src/config/tenantStorage.ts"
+      ],
+      "components": [
+        "src/native/hostStorage.ts",
+        "src/config/tenantStorage.ts",
+        "src/miniapps/container/containerConfig.ts"
+      ],
+      "permissions": []
+    },
+    {
+      "id": "cards",
+      "label": "Cards Domain",
+      "layer": "domain",
+      "description": "Example domain reusing container+bridge+tracking+tenant",
+      "globs": [
+        "src/cards/*"
+      ],
+      "components": [
+        "src/cards/model.ts",
+        "src/cards/cardStore.ts",
+        "src/cards/dataset.ts",
+        "src/components/CardCatalogBody.tsx"
+      ],
+      "permissions": []
+    },
+    {
+      "id": "splitBill",
+      "label": "Split Bill Domain",
+      "layer": "domain",
+      "description": "Chia tiền — bill items, min-cash-flow settlement, VietQR 38/A000000727 builder/parser, masked payout accounts",
+      "globs": [
+        "src/splitBill/*",
+        "src/components/SplitBillBody.tsx"
+      ],
+      "components": [
+        "src/splitBill/model.ts",
+        "src/splitBill/vietqr.ts",
+        "src/splitBill/banks.ts",
+        "src/splitBill/i18n.ts",
+        "src/splitBill/storage.ts",
+        "src/components/SplitBillBody.tsx"
+      ],
+      "permissions": []
+    },
+    {
+      "id": "designSystem",
+      "label": "Design System",
+      "layer": "host",
+      "description": "UI foundations/tokens, primitives, actions — replaces per-screen inlines",
+      "globs": [
+        "src/ui/*",
+        "src/config/palette.ts",
+        "src/config/layout.ts",
+        "src/config/motion.ts",
+        "src/config/miniAppDesignTokens.ts"
+      ],
+      "components": [
+        "src/ui/foundations/tokens.ts",
+        "src/ui/primitives/Box.tsx",
+        "src/ui/primitives/Text.tsx",
+        "src/ui/primitives/Pressable.tsx",
+        "src/ui/primitives/Divider.tsx",
+        "src/ui/actions/Button.tsx",
+        "src/ui/actions/IconButton.tsx",
+        "src/config/palette.ts",
+        "src/config/layout.ts",
+        "src/config/motion.ts",
+        "src/config/miniAppDesignTokens.ts",
+        "src/config/useReducedMotion.ts"
+      ],
+      "permissions": []
+    },
+    {
+      "id": "haptics",
+      "label": "Haptics & Motion",
+      "layer": "native",
+      "description": "Haptics + motion vocab (feedback/standard/emphasized, reduceMotion)",
+      "globs": [
+        "src/native/nativeShell.ts",
+        "src/native/haptics.ts",
+        "src/config/motion.ts"
+      ],
+      "components": [
+        "src/native/nativeShell.ts",
+        "src/native/haptics.ts",
+        "src/config/motion.ts",
+        "src/config/useReducedMotion.ts",
+        "src/components/GlassTabBar.tsx"
+      ],
+      "permissions": []
+    }
+  ],
+  "edges": [
+    {
+      "from": "app",
+      "to": "home",
+      "reason": "App renders HomeScreen, persists home prefs",
+      "evidence": "App.tsx:HomeScreen"
+    },
+    {
+      "from": "app",
+      "to": "navigation",
+      "reason": "App owns navigation state + GlassTabBar",
+      "evidence": "App.tsx:navigationBroker"
+    },
+    {
+      "from": "app",
+      "to": "explore",
+      "reason": "Explore sheet + picker modals",
+      "evidence": "App.tsx:ExploreSheet MiniAppPickerModal"
+    },
+    {
+      "from": "app",
+      "to": "tenant",
+      "reason": "useTenant() tenant resolution + picker",
+      "evidence": "App.tsx:useTenant tenantPickerOpen"
+    },
+    {
+      "from": "app",
+      "to": "notifications",
+      "reason": "Inbox + foreground banner + activation",
+      "evidence": "App.tsx:notification.subscribe onForegroundReceived"
+    },
+    {
+      "from": "app",
+      "to": "tracking",
+      "reason": "trackHost on every nav/home/close",
+      "evidence": "App.tsx:tracking.trackHost"
+    },
+    {
+      "from": "app",
+      "to": "haptics",
+      "reason": "applyShellChrome + selection signals",
+      "evidence": "App.tsx:applyShellChrome signalNavigationSelection"
+    },
+    {
+      "from": "home",
+      "to": "explore",
+      "reason": "Category/mini-app catalog + tenant-filtered picks",
+      "evidence": "src/screens/HomeScreen.tsx:catalogForTenant findMiniApp"
+    },
+    {
+      "from": "home",
+      "to": "navigation",
+      "reason": "Open/pin triggers dock/nav actions",
+      "evidence": "src/screens/HomeScreen.tsx:onOpenMiniApp onPin"
+    },
+    {
+      "from": "home",
+      "to": "tracking",
+      "reason": "Scroll depth + surface viewed + preference changed",
+      "evidence": "src/screens/HomeScreen.tsx:onScrollDepth onSurfaceViewed"
+    },
+    {
+      "from": "home",
+      "to": "tenant",
+      "reason": "orders suggestions by viewerProfile + tenant",
+      "evidence": "src/home/homeModel.ts:orderHomeCategorySuggestions"
+    },
+    {
+      "from": "home",
+      "to": "designSystem",
+      "reason": "HomeCollection palette/motion, GlassTabBar excluded",
+      "evidence": "src/components/HomeCollection.tsx:palette"
+    },
+    {
+      "from": "home",
+      "to": "storage",
+      "reason": "home prefs persisted via hostStorage",
+      "evidence": "src/native/hostStorage.ts:saveHomePreferences"
+    },
+    {
+      "from": "navigation",
+      "to": "explore",
+      "reason": "Dock selection validated against catalog",
+      "evidence": "src/navigation/navigationBroker.ts:openDockMiniApp findMiniApp"
+    },
+    {
+      "from": "navigation",
+      "to": "container",
+      "reason": "Cross-app link source validation",
+      "evidence": "src/navigation/navigationBroker.ts:openCrossMiniApp"
+    },
+    {
+      "from": "navigation",
+      "to": "tracking",
+      "reason": "Route viewed + nav denied",
+      "evidence": "src/screens/MiniAppScreen.tsx:onTrackEvent"
+    },
+    {
+      "from": "navigation",
+      "to": "haptics",
+      "reason": "Tab selection haptics",
+      "evidence": "src/components/GlassTabBar.tsx:signalNavigationSelection"
+    },
+    {
+      "from": "navigation",
+      "to": "storage",
+      "reason": "Dock selection persisted",
+      "evidence": "src/native/hostStorage.ts:saveDockSelection"
+    },
+    {
+      "from": "explore",
+      "to": "tenant",
+      "reason": "Tenant-filtered featured set",
+      "evidence": "src/miniapps/catalogTenant.ts:catalogForTenant"
+    },
+    {
+      "from": "explore",
+      "to": "navigation",
+      "reason": "Explore open triggers navigation",
+      "evidence": "src/components/ExploreSheet.tsx:onOpenMiniApp"
+    },
+    {
+      "from": "tenant",
+      "to": "storage",
+      "reason": "Tenant persisted",
+      "evidence": "src/config/tenantStorage.ts:saveStoredTenant"
+    },
+    {
+      "from": "tenant",
+      "to": "deviceAccess",
+      "reason": "Location-first resolve (host-only weatherLocation)",
+      "evidence": "src/hooks/useTenant.ts:requestDeviceAccess weatherLocation"
+    },
+    {
+      "from": "tenant",
+      "to": "designSystem",
+      "reason": "Palette overrides per tenant profile",
+      "evidence": "src/config/tenants.ts:paletteOverrides"
+    },
+    {
+      "from": "container",
+      "to": "pipeline",
+      "reason": "Only renders after verifyPackage before first paint",
+      "evidence": "src/miniapps/container/MiniAppContainer.tsx:verifyPackage"
+    },
+    {
+      "from": "container",
+      "to": "storage",
+      "reason": "domStorageEnabled=false incognito pool safety",
+      "evidence": "src/miniapps/container/containerConfig.ts:domStorageEnabled false"
+    },
+    {
+      "from": "container",
+      "to": "tracking",
+      "reason": "Trace markers for container timing",
+      "evidence": "src/miniapps/container/MiniAppContainer.tsx:budgets TRACE_MARKERS"
+    },
+    {
+      "from": "container",
+      "to": "haptics",
+      "reason": "Reduced motion inside container",
+      "evidence": "src/miniapps/container/MiniAppContainer.tsx:useReducedMotion"
+    },
+    {
+      "from": "container",
+      "to": "bridge",
+      "reason": "Bridge injected via native reply channel, not RN JS",
+      "evidence": "src/bridge/handler.ts:handleBridgeRequest"
+    },
+    {
+      "from": "pipeline",
+      "to": "container",
+      "reason": "Validator/signer shared with container B5",
+      "evidence": "src/miniapps/pipeline/review.ts:validateManifest verifyPackage"
+    },
+    {
+      "from": "bridge",
+      "to": "container",
+      "reason": "Session identity derived from WebView binding",
+      "evidence": "src/bridge/handler.ts:BridgeSession"
+    },
+    {
+      "from": "bridge",
+      "to": "storage",
+      "reason": "storage.kv is per-(tenant,appId,user) scoped",
+      "evidence": "src/bridge/handlers/storageKv.ts"
+    },
+    {
+      "from": "bridge",
+      "to": "tracking",
+      "reason": "Every handler emits audit before reply",
+      "evidence": "src/bridge/audit.ts"
+    },
+    {
+      "from": "bridge",
+      "to": "notifications",
+      "reason": "notify.subscribe handler",
+      "evidence": "src/bridge/handlers/notifySubscribe.ts"
+    },
+    {
+      "from": "bridge",
+      "to": "deviceAccess",
+      "reason": "location.current derived, scanner host UI",
+      "evidence": "src/bridge/handlers/locationCurrent.ts scanner.ts"
+    },
+    {
+      "from": "tracking",
+      "to": "storage",
+      "reason": "Durable journal 8 MB on disk",
+      "evidence": "src/tracking/trackingService.ts:retentionMs durableJournal"
+    },
+    {
+      "from": "tracking",
+      "to": "container",
+      "reason": "mini_app_opened / route_viewed emitted by container nav",
+      "evidence": "src/tracking/types.ts"
+    },
+    {
+      "from": "notifications",
+      "to": "navigation",
+      "reason": "Tap notification activates target mini-app entrypoint",
+      "evidence": "src/notification/notificationService.ts:onActivated target.mini_app_id"
+    },
+    {
+      "from": "notifications",
+      "to": "tracking",
+      "reason": "notification_opened / permission status",
+      "evidence": "src/notification/notificationService.ts:tracking"
+    },
+    {
+      "from": "notifications",
+      "to": "storage",
+      "reason": "Inbox persisted, seen ids",
+      "evidence": "src/notification/notificationService.ts"
+    },
+    {
+      "from": "notifications",
+      "to": "tenant",
+      "reason": "Per-tenant featured may affect notification targets",
+      "evidence": "App.tsx:tenantCatalog"
+    },
+    {
+      "from": "cards",
+      "to": "container",
+      "reason": "Card mini-app uses container CSP + signing",
+      "evidence": "src/cards/model.ts"
+    },
+    {
+      "from": "cards",
+      "to": "tracking",
+      "reason": "Card tracking events (budget view)",
+      "evidence": "src/cards/model.test.ts"
+    },
+    {
+      "from": "cards",
+      "to": "explore",
+      "reason": "Card appears in catalogTenant featured",
+      "evidence": "src/miniapps/catalog.ts:card"
+    },
+    {
+      "from": "splitBill",
+      "to": "container",
+      "reason": "Split Bill mini-app uses container CSP + signing",
+      "evidence": "src/splitBill/model.ts"
+    },
+    {
+      "from": "splitBill",
+      "to": "tracking",
+      "reason": "Split Bill tracking events (bill_created/settled)",
+      "evidence": "src/splitBill/model.test.ts"
+    },
+    {
+      "from": "splitBill",
+      "to": "explore",
+      "reason": "Split Bill appears in catalogTenant featured",
+      "evidence": "src/miniapps/catalog.ts:split-bill"
+    },
+    {
+      "from": "splitBill",
+      "to": "storage",
+      "reason": "Bill draft persisted via storage.kv",
+      "evidence": "src/splitBill/storage.ts"
+    },
+    {
+      "from": "splitBill",
+      "to": "designSystem",
+      "reason": "SplitBillBody uses palette tokens",
+      "evidence": "src/components/SplitBillBody.tsx:palette"
+    },
+    {
+      "from": "splitBill",
+      "to": "bridge",
+      "reason": "VietQR paste/scan via net.request + scanner.scan",
+      "evidence": "src/splitBill/vietqr.ts"
+    },
+    {
+      "from": "designSystem",
+      "to": "haptics",
+      "reason": "Tokens include motion → reduceMotion controls surfaces",
+      "evidence": "src/config/motion.ts:reduceMotion"
+    },
+    {
+      "from": "haptics",
+      "to": "deviceAccess",
+      "reason": "Haptics via nativeShell, not WebView",
+      "evidence": "src/native/nativeShell.ts:signalNavigationSelection"
+    },
+    {
+      "from": "cards",
+      "to": "storage",
+      "reason": "import scan",
+      "evidence": "auto: cards imports storage"
+    },
+    {
+      "from": "cards",
+      "to": "designSystem",
+      "reason": "import scan",
+      "evidence": "auto: cards imports designSystem"
+    },
+    {
+      "from": "explore",
+      "to": "designSystem",
+      "reason": "import scan",
+      "evidence": "auto: explore imports designSystem"
+    },
+    {
+      "from": "explore",
+      "to": "tracking",
+      "reason": "import scan",
+      "evidence": "auto: explore imports tracking"
+    },
+    {
+      "from": "notifications",
+      "to": "designSystem",
+      "reason": "import scan",
+      "evidence": "auto: notifications imports designSystem"
+    },
+    {
+      "from": "haptics",
+      "to": "designSystem",
+      "reason": "import scan",
+      "evidence": "auto: haptics imports designSystem"
+    },
+    {
+      "from": "haptics",
+      "to": "explore",
+      "reason": "import scan",
+      "evidence": "auto: haptics imports explore"
+    },
+    {
+      "from": "haptics",
+      "to": "navigation",
+      "reason": "import scan",
+      "evidence": "auto: haptics imports navigation"
+    },
+    {
+      "from": "home",
+      "to": "haptics",
+      "reason": "import scan",
+      "evidence": "auto: home imports haptics"
+    },
+    {
+      "from": "home",
+      "to": "notifications",
+      "reason": "import scan",
+      "evidence": "auto: home imports notifications"
+    },
+    {
+      "from": "app",
+      "to": "designSystem",
+      "reason": "import scan",
+      "evidence": "auto: app imports designSystem"
+    },
+    {
+      "from": "storage",
+      "to": "tenant",
+      "reason": "import scan",
+      "evidence": "auto: storage imports tenant"
+    },
+    {
+      "from": "storage",
+      "to": "home",
+      "reason": "import scan",
+      "evidence": "auto: storage imports home"
+    },
+    {
+      "from": "storage",
+      "to": "navigation",
+      "reason": "import scan",
+      "evidence": "auto: storage imports navigation"
+    },
+    {
+      "from": "container",
+      "to": "designSystem",
+      "reason": "import scan",
+      "evidence": "auto: container imports designSystem"
+    },
+    {
+      "from": "navigation",
+      "to": "designSystem",
+      "reason": "import scan",
+      "evidence": "auto: navigation imports designSystem"
+    },
+    {
+      "from": "navigation",
+      "to": "cards",
+      "reason": "import scan",
+      "evidence": "auto: navigation imports cards"
+    },
+    {
+      "from": "navigation",
+      "to": "splitBill",
+      "reason": "import scan",
+      "evidence": "auto: navigation imports splitBill"
+    },
+    {
+      "from": "navigation",
+      "to": "deviceAccess",
+      "reason": "import scan",
+      "evidence": "auto: navigation imports deviceAccess"
+    },
+    {
+      "from": "tracking",
+      "to": "explore",
+      "reason": "import scan",
+      "evidence": "auto: tracking imports explore"
+    },
+    {
+      "from": "tracking",
+      "to": "deviceAccess",
+      "reason": "import scan",
+      "evidence": "auto: tracking imports deviceAccess"
+    }
+  ],
+  "featureComponents": {
+    "app": [
+      "App.tsx",
+      "src/hooks/useTenant.ts",
+      "src/config/appConfig.ts"
+    ],
+    "home": [
+      "src/screens/HomeScreen.tsx",
+      "src/home/homeModel.ts",
+      "src/components/HomeCollection.tsx",
+      "src/components/HomeCollectionPickerModal.tsx",
+      "src/components/CardCatalogBody.tsx",
+      "src/components/TrackedScrollView.tsx"
+    ],
+    "navigation": [
+      "src/navigation/navigationBroker.ts",
+      "src/components/GlassTabBar.tsx",
+      "src/screens/MiniAppScreen.tsx",
+      "src/screens/PlaceholderScreen.tsx",
+      "src/native/nativeShell.ts"
+    ],
+    "explore": [
+      "src/components/ExploreSheet.tsx",
+      "src/components/MiniAppPickerModal.tsx",
+      "src/components/TenantPickerSheet.tsx",
+      "src/miniapps/catalog.ts",
+      "src/miniapps/catalogTenant.ts",
+      "src/miniapps/sample/SampleMiniApp.tsx"
+    ],
+    "tenant": [
+      "src/config/tenants.ts",
+      "src/config/tenantStorage.ts",
+      "src/hooks/useTenant.ts",
+      "src/components/TenantPickerSheet.tsx"
+    ],
+    "container": [
+      "src/miniapps/container/MiniAppContainer.tsx",
+      "src/miniapps/container/containerConfig.ts",
+      "src/miniapps/container/csp.ts",
+      "src/miniapps/container/navigationGuard.ts",
+      "src/miniapps/container/warmPool.ts",
+      "src/miniapps/manifest/signer.ts",
+      "src/miniapps/manifest/validator.ts",
+      "src/miniapps/manifest/archiveSafety.ts",
+      "src/miniapps/manifest/schema.json"
+    ],
+    "pipeline": [
+      "src/miniapps/pipeline/review.ts",
+      "src/miniapps/manifest/validator.ts",
+      "src/miniapps/manifest/signer.ts",
+      "app/scripts/miniapp-sign.mjs",
+      "app/scripts/verify.sh"
+    ],
+    "bridge": [
+      "src/bridge/registry.ts",
+      "src/bridge/handler.ts",
+      "src/bridge/gates.ts",
+      "src/bridge/register.ts",
+      "src/bridge/audit.ts",
+      "src/bridge/types.ts",
+      "src/bridge/handlers/netRequest.ts",
+      "src/bridge/handlers/storageKv.ts",
+      "src/bridge/handlers/scanner.ts",
+      "src/bridge/handlers/locationCurrent.ts",
+      "src/bridge/handlers/cryptoSign.ts",
+      "src/bridge/handlers/notifySubscribe.ts"
+    ],
+    "tracking": [
+      "src/tracking/trackingService.ts",
+      "src/tracking/trace.ts",
+      "src/tracking/types.ts",
+      "src/components/TrackedScrollView.tsx",
+      "src/config/budgets.ts"
+    ],
+    "notifications": [
+      "src/notification/notificationService.ts",
+      "src/notification/index.ts",
+      "src/notification/types.ts",
+      "src/components/NotificationSheet.tsx",
+      "src/components/ForegroundNotificationBanner.tsx",
+      "src/native/notification.ts",
+      "src/config/remotePush.ts"
+    ],
+    "deviceAccess": [
+      "src/native/deviceAccess.ts",
+      "src/utils/withTimeout.ts"
+    ],
+    "storage": [
+      "src/native/hostStorage.ts",
+      "src/config/tenantStorage.ts",
+      "src/miniapps/container/containerConfig.ts"
+    ],
+    "cards": [
+      "src/cards/model.ts",
+      "src/cards/cardStore.ts",
+      "src/cards/dataset.ts",
+      "src/components/CardCatalogBody.tsx"
+    ],
+    "splitBill": [
+      "src/splitBill/model.ts",
+      "src/splitBill/vietqr.ts",
+      "src/splitBill/banks.ts",
+      "src/splitBill/i18n.ts",
+      "src/splitBill/storage.ts",
+      "src/components/SplitBillBody.tsx"
+    ],
+    "designSystem": [
+      "src/ui/foundations/tokens.ts",
+      "src/ui/primitives/Box.tsx",
+      "src/ui/primitives/Text.tsx",
+      "src/ui/primitives/Pressable.tsx",
+      "src/ui/primitives/Divider.tsx",
+      "src/ui/actions/Button.tsx",
+      "src/ui/actions/IconButton.tsx",
+      "src/config/palette.ts",
+      "src/config/layout.ts",
+      "src/config/motion.ts",
+      "src/config/miniAppDesignTokens.ts",
+      "src/config/useReducedMotion.ts"
+    ],
+    "haptics": [
+      "src/native/nativeShell.ts",
+      "src/native/haptics.ts",
+      "src/config/motion.ts",
+      "src/config/useReducedMotion.ts",
+      "src/components/GlassTabBar.tsx"
+    ]
+  },
+  "featurePermissions": {
+    "app": [],
+    "home": [],
+    "navigation": [],
+    "explore": [],
+    "tenant": [
+      {
+        "kind": "deviceAccess",
+        "name": "weatherLocation",
+        "via": "native/deviceAccess.ts",
+        "hostOnly": true,
+        "notes": "4s timeout, location-first tenant resolve"
+      }
+    ],
+    "container": [],
+    "pipeline": [],
+    "bridge": [
+      {
+        "kind": "capability",
+        "name": "net.request",
+        "consent": "none",
+        "osPermission": "none",
+        "brokerUi": "false",
+        "risk": "medium",
+        "minTier": "sandbox"
+      },
+      {
+        "kind": "capability",
+        "name": "storage.kv",
+        "consent": "none",
+        "osPermission": "none",
+        "brokerUi": "false",
+        "risk": "low",
+        "minTier": "sandbox"
+      },
+      {
+        "kind": "capability",
+        "name": "scanner.scan",
+        "consent": "once",
+        "osPermission": "none",
+        "brokerUi": "host_scanner",
+        "risk": "medium",
+        "minTier": "self_serve"
+      },
+      {
+        "kind": "capability",
+        "name": "location.current",
+        "consent": "once",
+        "osPermission": "none",
+        "brokerUi": "false",
+        "risk": "high",
+        "minTier": "partner_verified"
+      },
+      {
+        "kind": "capability",
+        "name": "crypto.sign",
+        "consent": "once",
+        "osPermission": "none",
+        "brokerUi": "biometric_prompt",
+        "risk": "high",
+        "minTier": "partner_verified"
+      },
+      {
+        "kind": "capability",
+        "name": "notify.subscribe",
+        "consent": "while_using",
+        "osPermission": "none",
+        "brokerUi": "false",
+        "risk": "low",
+        "minTier": "self_serve"
+      }
+    ],
+    "tracking": [],
+    "notifications": [
+      {
+        "kind": "capability",
+        "name": "notify.subscribe",
+        "consent": "while_using",
+        "osPermission": "none",
+        "brokerUi": "false",
+        "risk": "low",
+        "minTier": "self_serve",
+        "via": "bridge handler notify.subscribe"
+      },
+      {
+        "kind": "os",
+        "name": "push",
+        "via": "native/notification.ts",
+        "hostOnly": true,
+        "notes": "OS push permission, per-host-app one-shot, host owns tokens"
+      }
+    ],
+    "deviceAccess": [
+      {
+        "kind": "deviceAccess",
+        "name": "network",
+        "via": "native/deviceAccess.ts",
+        "hostOnly": true
+      },
+      {
+        "kind": "deviceAccess",
+        "name": "biometric",
+        "via": "native/deviceAccess.ts",
+        "hostOnly": true
+      },
+      {
+        "kind": "deviceAccess",
+        "name": "weatherLocation",
+        "via": "native/deviceAccess.ts",
+        "hostOnly": true
+      },
+      {
+        "kind": "deviceAccess",
+        "name": "voiceCommand",
+        "via": "native/deviceAccess.ts",
+        "hostOnly": true
+      }
+    ],
+    "storage": [],
+    "cards": [],
+    "splitBill": [],
+    "designSystem": [],
+    "haptics": []
+  },
+  "capabilityRegistry": [
+    "net.request",
+    "storage.kv",
+    "scanner.scan",
+    "location.current",
+    "crypto.sign",
+    "notify.subscribe"
+  ],
+  "capabilities": [
+    {
+      "name": "net.request",
+      "risk": "medium",
+      "consent": "none",
+      "brokerUi": "false"
+    },
+    {
+      "name": "storage.kv",
+      "risk": "low",
+      "consent": "none",
+      "brokerUi": "false"
+    },
+    {
+      "name": "scanner.scan",
+      "risk": "medium",
+      "consent": "once",
+      "brokerUi": "host_scanner"
+    },
+    {
+      "name": "location.current",
+      "risk": "high",
+      "consent": "once",
+      "brokerUi": "false"
+    },
+    {
+      "name": "crypto.sign",
+      "risk": "high",
+      "consent": "once",
+      "brokerUi": "biometric_prompt"
+    },
+    {
+      "name": "notify.subscribe",
+      "risk": "low",
+      "consent": "while_using",
+      "brokerUi": "false"
+    }
+  ],
+  "neverExpose": [
+    "dynamic code execution or loading, in any form",
+    "raw filesystem paths, in either direction",
+    "generic or reflective invocation",
+    "host credentials",
+    "persistent cross-app identifiers",
+    "bulk personal data",
+    "clipboard read without an explicit paste gesture",
+    "screen capture, screen recording, accessibility services, overlay windows,",
+    "arbitrary URL or intent launch",
+    "raw biometric material — and \"biometry succeeded\" as a boolean",
+    "key export",
+    "installing, downloading-and-executing, or side-loading anything",
+    "raw sockets, and generic background-execution primitives",
+    "any host-internal debug or admin capability, even behind a flag"
+  ],
+  "warnings": [
+    "scope: this graph covers only feature→feature, feature→components, feature→permissions"
+  ]
+}

@@ -1,0 +1,77 @@
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+*.log
+
+# React Native / Node
+app/node_modules/
+app/npm-debug.*
+app/yarn-debug.*
+app/yarn-error.*
+
+# Ruby / Bundler
+app/vendor/bundle/
+app/vendor/cache/
+
+# iOS
+app/ios/Pods/
+app/ios/build/
+app/ios/.xcode.env.local
+app/ios/*.xcworkspace/xcuserdata/
+app/ios/*.xcodeproj/xcuserdata/
+app/ios/*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcuserdata
+*.xccheckout
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+DerivedData/
+
+# Android
+app/android/app/build/
+app/android/build/
+app/android/.gradle/
+app/android/app/.cxx/
+app/android/app/build/
+app/android/*.log
+app/android/local.properties
+*.apk
+*.aab
+*.ap_
+*.a
+
+# Build outputs
+*.so
+*.o
+*.dex
+*.class
+
+# Metro / Watchman
+.metro-health-check*
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Editor
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

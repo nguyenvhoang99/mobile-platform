@@ -58,13 +58,20 @@ Scheme: `originFor: MiniAppContainer` `mini://appId` iOS / `https://appId.miniap
 - `screens/MiniAppScreen.tsx:38` trusted header (`VERIFIED MINI-APP` + `appId`), `TrackedScrollView` depth → `mini_app_scroll_depth`, `GlassTabBar.tsx:20` dock L/R + Explore, `HomeCollectionPickerModal.tsx` + `ExploreSheet.tsx` slide from bottom `emphasized` 300ms `enter` (`mobile-motion:1`).
 - `screens/PlaceholderScreen.tsx` host-only device access demo (not via bridge).
 
-## Native
+## Native (generic transports only — copy/routing composed in RN)
 
 - `native/hostStorage.ts:10` `HostStorage` TurboModule (or JS memory fallback): dock/prefs/tracking/notifications/cardDataset/anonymousId (`getOrCreateAnonymousId` per scope), serial queue `storageQueue` iOS, `Executors` Android, file `tracking-events.jsonl` append.
 - `native/nativeShell.ts:19` `applyShellChrome` + `signalNavigationSelection` (`NativeShellControls.selectionChanged` or `Vibration.vibrate(8)` Android fallback).
 - `native/haptics.ts:1` facade — `signalSelection 8ms` / `signalSuccessLight 10ms` / `signalRemoval 20ms` — no raw `Vibration` elsewhere (`mobile-haptics` kill).
 - `native/deviceAccess.ts:52` host-only `requestDeviceAccess` (`network`/`biometric`/`weatherLocation`/`voiceCommand`) with 1500-4000ms `withTimeout` + `deviceTimeoutResult` (fixes iOS hang) — never exposed to WebView.
-- `native/notification.ts:1` `NativeNotificationModule` event emitter + permission/push/pendingEvents.
+- `native/notification.ts:1` `NativeNotificationModule` event emitter + permission/push/pendingEvents + generic `scheduleReminder`/`cancelReminder`/`presentCalendarEvent` (no Badminton aliases).
+- Boundary types are Codegen-generated (S3): `native/specs/Native*.ts` owns every
+  method signature and module name; Android extends `Native*Spec`, ObjC adopts it
+  in `.mm` (`HostStorageModule.mm`, `DeviceAccessModule.mm`), Swift binds via
+  `NotificationModule+Spec.mm`; TS adapters consume the spec types.
+  `scripts/conformance.sh` S3 fails the change if a spec method is missing natively.
+- Android `notifications/ReminderScheduler.kt` generic AlarmManager scheduler (title/body/channel/category/target from RN; legacy badminton keys readable for restore) + `ReminderReceiver`/`ReminderBootReceiver` (manifest); `notifications/CalendarEventLauncher.kt` generic calendar insert (title/location/description/alarmMinutes from RN).
+- iOS `ReminderLiveActivityCoordinator.swift` generic ActivityKit schedule/cancel/marker-based start + `ReminderActivityAttributes.swift` (id/title/body) + generic widget (`ReminderLiveActivityWidget.swift`); `NotificationModule.swift` generic calendar payload; `AppDelegate.swift` generic `reminder` deep-link host gated by live-activity match.
 - `hooks/useTenant.ts:12` `loadStoredTenant` else `resolveFromLocation` (`requestDeviceAccess weatherLocation` → `resolveTenantFromCoords` haversine) with 4.5s hard deadline → `vn-fallback`, `switchTenant` clears loading, `localTenantProfile` local MVP (prod signed fetch).
 
 ## Tracking & Notification (features, see `docs/features/*`)

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- TEMP: aps-environment removed while remote push is disabled on iOS.
+	     Without a paid Apple Developer account the `aps-environment` entitlement
+	     causes code-signing to fail ("no valid aps-environment"). Local
+	     notifications (UNUserNotificationCenter) do NOT require this entitlement.
+	     To re-enable remote push:
+	       1. Set remotePushEnabled = true in:
+	          - src/config/remotePush.ts (ios: true)
+	          - ios/MiniAppPlatform/NotificationModule.swift
+	          - ios/MiniAppPlatform/AppDelegate.swift
+	       2. Restore the entitlement below:
+	         <key>aps-environment</key><string>development</string>
+	         (use "production" for TestFlight/App Store)
+	       3. Enable Push Notifications in Xcode Signing & Capabilities
+	          and configure an APNs key (developer.apple.com).
+	-->
+</dict>
+</plist>
