@@ -1,6 +1,6 @@
 # Feature Graph — dependency trees (3 scopes)
 
-> Generated 2026-09-02T09:13:19.816Z · sources: policy/capabilities.yaml · src/bridge/registry.ts · import scan
+> Generated 2026-10-04T00:44:20.043Z · sources: policy/capabilities.yaml · src/bridge/registry.ts · import scan
 > Scope: ONLY feature→feature, feature→components, feature→permissions. Nothing else belongs here.
 > Refresh: `npm run feature:graph` after every feature/component/permission change.
 
@@ -26,9 +26,9 @@ flowchart LR
   tracking["Tracking & Telemetry"]
   notifications["Notifications"]
   deviceAccess["Device Access"]
+  onDeviceLlm["On-device LLM (pilot)"]
   storage["Host Storage"]
   cards["Cards Domain"]
-  splitBill["Split Bill Domain"]
   designSystem["Design System"]
   haptics["Haptics & Motion"]
 
@@ -75,18 +75,14 @@ flowchart LR
   cards --> container
   cards --> tracking
   cards --> explore
-  splitBill --> container
-  splitBill --> tracking
-  splitBill --> explore
-  splitBill --> storage
-  splitBill --> designSystem
-  splitBill --> bridge
   designSystem --> haptics
   haptics --> deviceAccess
+  onDeviceLlm --> bridge
   cards --> storage
   cards --> designSystem
   explore --> designSystem
   explore --> tracking
+  explore --> bridge
   notifications --> designSystem
   haptics --> designSystem
   haptics --> explore
@@ -100,7 +96,8 @@ flowchart LR
   container --> designSystem
   navigation --> designSystem
   navigation --> cards
-  navigation --> splitBill
+  navigation --> app
+  navigation --> bridge
   navigation --> deviceAccess
   tracking --> explore
   tracking --> deviceAccess
@@ -122,9 +119,9 @@ flowchart LR
   class tracking host
   class notifications host
   class deviceAccess native
+  class onDeviceLlm native
   class storage native
   class cards domain
-  class splitBill domain
   class designSystem host
   class haptics native
 
@@ -175,18 +172,14 @@ flowchart LR
 | `cards` | `container` | Card mini-app uses container CSP + signing | `src/cards/model.ts` |
 | `cards` | `tracking` | Card tracking events (budget view) | `src/cards/model.test.ts` |
 | `cards` | `explore` | Card appears in catalogTenant featured | `src/miniapps/catalog.ts:card` |
-| `splitBill` | `container` | Split Bill mini-app uses container CSP + signing | `src/splitBill/model.ts` |
-| `splitBill` | `tracking` | Split Bill tracking events (bill_created/settled) | `src/splitBill/model.test.ts` |
-| `splitBill` | `explore` | Split Bill appears in catalogTenant featured | `src/miniapps/catalog.ts:split-bill` |
-| `splitBill` | `storage` | Bill draft persisted via storage.kv | `src/splitBill/storage.ts` |
-| `splitBill` | `designSystem` | SplitBillBody uses palette tokens | `src/components/SplitBillBody.tsx:palette` |
-| `splitBill` | `bridge` | VietQR paste/scan via net.request + scanner.scan | `src/splitBill/vietqr.ts` |
 | `designSystem` | `haptics` | Tokens include motion → reduceMotion controls surfaces | `src/config/motion.ts:reduceMotion` |
 | `haptics` | `deviceAccess` | Haptics via nativeShell, not WebView | `src/native/nativeShell.ts:signalNavigationSelection` |
+| `onDeviceLlm` | `bridge` | import scan | `auto: onDeviceLlm imports bridge` |
 | `cards` | `storage` | import scan | `auto: cards imports storage` |
 | `cards` | `designSystem` | import scan | `auto: cards imports designSystem` |
 | `explore` | `designSystem` | import scan | `auto: explore imports designSystem` |
 | `explore` | `tracking` | import scan | `auto: explore imports tracking` |
+| `explore` | `bridge` | import scan | `auto: explore imports bridge` |
 | `notifications` | `designSystem` | import scan | `auto: notifications imports designSystem` |
 | `haptics` | `designSystem` | import scan | `auto: haptics imports designSystem` |
 | `haptics` | `explore` | import scan | `auto: haptics imports explore` |
@@ -200,12 +193,13 @@ flowchart LR
 | `container` | `designSystem` | import scan | `auto: container imports designSystem` |
 | `navigation` | `designSystem` | import scan | `auto: navigation imports designSystem` |
 | `navigation` | `cards` | import scan | `auto: navigation imports cards` |
-| `navigation` | `splitBill` | import scan | `auto: navigation imports splitBill` |
+| `navigation` | `app` | import scan | `auto: navigation imports app` |
+| `navigation` | `bridge` | import scan | `auto: navigation imports bridge` |
 | `navigation` | `deviceAccess` | import scan | `auto: navigation imports deviceAccess` |
 | `tracking` | `explore` | import scan | `auto: tracking imports explore` |
 | `tracking` | `deviceAccess` | import scan | `auto: tracking imports deviceAccess` |
 
-All 72 edges include 51 hand-maintained + 21 auto-detected via import scan.
+All 69 edges include 45 hand-maintained + 24 auto-detected via import scan.
 
 ---
 
@@ -276,10 +270,11 @@ flowchart TB
     bridge_src_bridge_types_ts["src/bridge/types.ts"]
     bridge_src_bridge_handlers_netR["src/bridge/handlers/netRequest.ts"]
     bridge_src_bridge_handlers_stor["src/bridge/handlers/storageKv.ts"]
-    bridge_more["… +4 more"]
+    bridge_more["… +5 more"]
   end
   subgraph tracking["Tracking & Telemetry — host"]
     tracking_src_tracking_trackingSer["src/tracking/trackingService.ts"]
+    tracking_src_tracking_miniAppLoad["src/tracking/miniAppLoadTracker.ts"]
     tracking_src_tracking_trace_ts["src/tracking/trace.ts"]
     tracking_src_tracking_types_ts["src/tracking/types.ts"]
     tracking_src_components_TrackedSc["src/components/TrackedScrollView.tsx"]
@@ -298,6 +293,12 @@ flowchart TB
     deviceAccess_src_native_deviceAccess_["src/native/deviceAccess.ts"]
     deviceAccess_src_utils_withTimeout_ts["src/utils/withTimeout.ts"]
   end
+  subgraph onDeviceLlm["On-device LLM (pilot) — native"]
+    onDeviceLlm_src_native_onDeviceLlm_t["src/native/onDeviceLlm.ts"]
+    onDeviceLlm_src_native_specs_NativeO["src/native/specs/NativeOnDeviceLlm.ts"]
+    onDeviceLlm_src_bridge_handlers_aiEx["src/bridge/handlers/aiExtractBill.ts"]
+    onDeviceLlm_src_utils_withTimeout_ts["src/utils/withTimeout.ts"]
+  end
   subgraph storage["Host Storage — native"]
     storage_src_native_hostStorage_t["src/native/hostStorage.ts"]
     storage_src_config_tenantStorage["src/config/tenantStorage.ts"]
@@ -308,14 +309,6 @@ flowchart TB
     cards_src_cards_cardStore_ts["src/cards/cardStore.ts"]
     cards_src_cards_dataset_ts["src/cards/dataset.ts"]
     cards_src_components_CardCatal["src/components/CardCatalogBody.tsx"]
-  end
-  subgraph splitBill["Split Bill Domain — domain"]
-    splitBill_src_splitBill_model_ts["src/splitBill/model.ts"]
-    splitBill_src_splitBill_vietqr_ts["src/splitBill/vietqr.ts"]
-    splitBill_src_splitBill_banks_ts["src/splitBill/banks.ts"]
-    splitBill_src_splitBill_i18n_ts["src/splitBill/i18n.ts"]
-    splitBill_src_splitBill_storage_ts["src/splitBill/storage.ts"]
-    splitBill_src_components_SplitBill["src/components/SplitBillBody.tsx"]
   end
   subgraph designSystem["Design System — host"]
     designSystem_src_ui_foundations_token["src/ui/foundations/tokens.ts"]
@@ -347,13 +340,13 @@ flowchart TB
 | `tenant` | Tenant & Localization | `src/config/tenants.ts`<br/>`src/config/tenantStorage.ts`<br/>`src/hooks/useTenant.ts`<br/>`src/components/TenantPickerSheet.tsx` |
 | `container` | Mini-App Container | `src/miniapps/container/MiniAppContainer.tsx`<br/>`src/miniapps/container/containerConfig.ts`<br/>`src/miniapps/container/csp.ts`<br/>`src/miniapps/container/navigationGuard.ts`<br/>`src/miniapps/container/warmPool.ts`<br/>`src/miniapps/manifest/signer.ts`<br/>`src/miniapps/manifest/validator.ts`<br/>`src/miniapps/manifest/archiveSafety.ts`<br/>`src/miniapps/manifest/schema.json` |
 | `pipeline` | Pipeline & Review | `src/miniapps/pipeline/review.ts`<br/>`src/miniapps/manifest/validator.ts`<br/>`src/miniapps/manifest/signer.ts`<br/>`app/scripts/miniapp-sign.mjs`<br/>`app/scripts/verify.sh` |
-| `bridge` | Bridge & Handlers | `src/bridge/registry.ts`<br/>`src/bridge/handler.ts`<br/>`src/bridge/gates.ts`<br/>`src/bridge/register.ts`<br/>`src/bridge/audit.ts`<br/>`src/bridge/types.ts`<br/>`src/bridge/handlers/netRequest.ts`<br/>`src/bridge/handlers/storageKv.ts`<br/>`src/bridge/handlers/scanner.ts`<br/>`src/bridge/handlers/locationCurrent.ts`<br/>`src/bridge/handlers/cryptoSign.ts`<br/>`src/bridge/handlers/notifySubscribe.ts` |
-| `tracking` | Tracking & Telemetry | `src/tracking/trackingService.ts`<br/>`src/tracking/trace.ts`<br/>`src/tracking/types.ts`<br/>`src/components/TrackedScrollView.tsx`<br/>`src/config/budgets.ts` |
+| `bridge` | Bridge & Handlers | `src/bridge/registry.ts`<br/>`src/bridge/handler.ts`<br/>`src/bridge/gates.ts`<br/>`src/bridge/register.ts`<br/>`src/bridge/audit.ts`<br/>`src/bridge/types.ts`<br/>`src/bridge/handlers/netRequest.ts`<br/>`src/bridge/handlers/storageKv.ts`<br/>`src/bridge/handlers/scanner.ts`<br/>`src/bridge/handlers/locationCurrent.ts`<br/>`src/bridge/handlers/cryptoSign.ts`<br/>`src/bridge/handlers/notifySubscribe.ts`<br/>`src/bridge/handlers/aiExtractBill.ts` |
+| `tracking` | Tracking & Telemetry | `src/tracking/trackingService.ts`<br/>`src/tracking/miniAppLoadTracker.ts`<br/>`src/tracking/trace.ts`<br/>`src/tracking/types.ts`<br/>`src/components/TrackedScrollView.tsx`<br/>`src/config/budgets.ts` |
 | `notifications` | Notifications | `src/notification/notificationService.ts`<br/>`src/notification/index.ts`<br/>`src/notification/types.ts`<br/>`src/components/NotificationSheet.tsx`<br/>`src/components/ForegroundNotificationBanner.tsx`<br/>`src/native/notification.ts`<br/>`src/config/remotePush.ts` |
 | `deviceAccess` | Device Access | `src/native/deviceAccess.ts`<br/>`src/utils/withTimeout.ts` |
+| `onDeviceLlm` | On-device LLM (pilot) | `src/native/onDeviceLlm.ts`<br/>`src/native/specs/NativeOnDeviceLlm.ts`<br/>`src/bridge/handlers/aiExtractBill.ts`<br/>`src/utils/withTimeout.ts` |
 | `storage` | Host Storage | `src/native/hostStorage.ts`<br/>`src/config/tenantStorage.ts`<br/>`src/miniapps/container/containerConfig.ts` |
 | `cards` | Cards Domain | `src/cards/model.ts`<br/>`src/cards/cardStore.ts`<br/>`src/cards/dataset.ts`<br/>`src/components/CardCatalogBody.tsx` |
-| `splitBill` | Split Bill Domain | `src/splitBill/model.ts`<br/>`src/splitBill/vietqr.ts`<br/>`src/splitBill/banks.ts`<br/>`src/splitBill/i18n.ts`<br/>`src/splitBill/storage.ts`<br/>`src/components/SplitBillBody.tsx` |
 | `designSystem` | Design System | `src/ui/foundations/tokens.ts`<br/>`src/ui/primitives/Box.tsx`<br/>`src/ui/primitives/Text.tsx`<br/>`src/ui/primitives/Pressable.tsx`<br/>`src/ui/primitives/Divider.tsx`<br/>`src/ui/actions/Button.tsx`<br/>`src/ui/actions/IconButton.tsx`<br/>`src/config/palette.ts`<br/>`src/config/layout.ts`<br/>`src/config/motion.ts`<br/>`src/config/miniAppDesignTokens.ts`<br/>`src/config/useReducedMotion.ts` |
 | `haptics` | Haptics & Motion | `src/native/nativeShell.ts`<br/>`src/native/haptics.ts`<br/>`src/config/motion.ts`<br/>`src/config/useReducedMotion.ts`<br/>`src/components/GlassTabBar.tsx` |
 
@@ -365,7 +358,7 @@ Total features: 16. Narrow to the files above when reviewing.
 
 What authority a feature needs — bridge capabilities, OS permission, or host-only deviceAccess. A feature with no row needs no permission.
 
-Capabilities registry (`policy/capabilities.yaml:6`  `src/bridge/registry.ts:6` — R1): `net.request`, `storage.kv`, `scanner.scan`, `location.current`, `crypto.sign`, `notify.subscribe`
+Capabilities registry (`policy/capabilities.yaml:7`  `src/bridge/registry.ts:7` — R1): `net.request`, `storage.kv`, `scanner.scan`, `location.current`, `crypto.sign`, `notify.subscribe`, `ai.extract_bill`
 
 ```mermaid
 flowchart LR
@@ -389,6 +382,8 @@ flowchart LR
   bridge_crypto.sign -.-> caps
   bridge["Bridge & Handlers"] --> bridge_notify.subscribe["notify.subscribe"]
   bridge_notify.subscribe -.-> caps
+  bridge["Bridge & Handlers"] --> bridge_ai.extract_bill["ai.extract_bill"]
+  bridge_ai.extract_bill -.-> caps
   notifications["Notifications"] --> notifications_notify.subscribe["notify.subscribe"]
   notifications_notify.subscribe -.-> caps
   notifications["Notifications"] --> notifications_push["push"]
@@ -401,6 +396,8 @@ flowchart LR
   deviceAccess_weatherLocation -.-> dev
   deviceAccess["Device Access"] --> deviceAccess_voiceCommand["voiceCommand"]
   deviceAccess_voiceCommand -.-> dev
+  onDeviceLlm["On-device LLM (pilot)"] --> onDeviceLlm_ai.extract_bill["ai.extract_bill"]
+  onDeviceLlm_ai.extract_bill -.-> caps
 
 ```
 
@@ -419,6 +416,7 @@ flowchart LR
 | `bridge` | Bridge & Handlers | `location.current` (capability) | `once` | `false` | `partner_verified` `capability` |
 | `bridge` | Bridge & Handlers | `crypto.sign` (capability) | `once` | `biometric_prompt` | `partner_verified` `capability` |
 | `bridge` | Bridge & Handlers | `notify.subscribe` (capability) | `while_using` | `false` | `self_serve` `capability` |
+| `bridge` | Bridge & Handlers | `ai.extract_bill` (capability) | `once` | `host_image_picker` | `first_party` `capability` |
 | `tracking` | Tracking & Telemetry | — | — | — | — |
 | `notifications` | Notifications | `notify.subscribe` (capability) | `while_using` | `false` | `self_serve` `bridge handler notify.subscribe` |
 | `notifications` | Notifications | `push` (os) | `—` | `—` | `—` `native/notification.ts` |
@@ -426,9 +424,9 @@ flowchart LR
 | `deviceAccess` | Device Access | `biometric` (deviceAccess) | `—` | `—` | `—` `native/deviceAccess.ts` |
 | `deviceAccess` | Device Access | `weatherLocation` (deviceAccess) | `—` | `—` | `—` `native/deviceAccess.ts` |
 | `deviceAccess` | Device Access | `voiceCommand` (deviceAccess) | `—` | `—` | `—` `native/deviceAccess.ts` |
+| `onDeviceLlm` | On-device LLM (pilot) | `ai.extract_bill` (capability) | `once` | `host_image_picker` | `first_party` `bridge handler ai.extract_bill` |
 | `storage` | Host Storage | — | — | — | — |
 | `cards` | Cards Domain | — | — | — | — |
-| `splitBill` | Split Bill Domain | — | — | — | — |
 | `designSystem` | Design System | — | — | — | — |
 | `haptics` | Haptics & Motion | — | — | — | — |
 

@@ -1,0 +1,1674 @@
+{
+  "schemaVersion": 1,
+  "config": {
+    "tracking": {
+      "hostAppVersion": "0.0.1",
+      "consentVersion": 1,
+      "grpcEnabled": false,
+      "maxEventBytes": 16384,
+      "maxQueueBytes": 8388608,
+      "maxBatchBytes": 524288,
+      "cellularBatchBytes": 262144,
+      "maxBatchEvents": 200,
+      "maxWaitMs": {
+        "critical": 1000,
+        "operational": 5000,
+        "product": 30000,
+        "diagnostic": 300000
+      },
+      "retentionMs": {
+        "critical": 604800000,
+        "operational": 259200000,
+        "product": 86400000,
+        "diagnostic": 3600000
+      },
+      "sessionRenewMs": 1800000
+    },
+    "notification": {
+      "hostAppVersion": "0.0.1",
+      "maxInboxItems": 250,
+      "maxSeenIdsPerEvent": 50,
+      "reminderLeadMs": 3600000
+    },
+    "cards": {
+      "refreshIntervalMs": 86400000
+    }
+  },
+  "hostEvents": {
+    "app_started": {
+      "version": 1,
+      "priority": "operational",
+      "privacyClass": "essential",
+      "allowedDataKeys": []
+    },
+    "screen_viewed": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "screen",
+        "source"
+      ]
+    },
+    "screen_scroll_depth": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "screen",
+        "depth_percent"
+      ]
+    },
+    "navigation_opened": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "destination",
+        "source"
+      ]
+    },
+    "navigation_bar_clicked": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "destination",
+        "mini_app_id",
+        "slot"
+      ]
+    },
+    "navigation_customization_requested": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "slot",
+        "gesture",
+        "current_mini_app_id"
+      ]
+    },
+    "navigation_denied": {
+      "version": 1,
+      "priority": "operational",
+      "privacyClass": "essential",
+      "allowedDataKeys": [
+        "operation",
+        "reason"
+      ]
+    },
+    "dock_slot_changed": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "slot",
+        "mini_app_id"
+      ]
+    },
+    "entrypoint_clicked": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "entrypoint_id",
+        "surface",
+        "destination",
+        "mini_app_id"
+      ]
+    },
+    "home_preference_changed": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "item_type",
+        "item_id",
+        "action",
+        "source"
+      ]
+    },
+    "mini_app_opened": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "mini_app_id",
+        "entrypoint_id",
+        "source"
+      ]
+    },
+    "mini_app_load_started": {
+      "version": 1,
+      "priority": "operational",
+      "privacyClass": "essential",
+      "allowedDataKeys": [
+        "mini_app_id",
+        "mini_app_version",
+        "mini_app_session_id",
+        "load_id",
+        "source",
+        "runtime",
+        "launch_kind"
+      ]
+    },
+    "mini_app_load_finished": {
+      "version": 1,
+      "priority": "operational",
+      "privacyClass": "essential",
+      "allowedDataKeys": [
+        "mini_app_id",
+        "mini_app_version",
+        "mini_app_session_id",
+        "load_id",
+        "source",
+        "runtime",
+        "launch_kind",
+        "outcome",
+        "reason",
+        "elapsed_ms",
+        "navigation_commit_ms",
+        "content_layout_ms",
+        "commit_to_layout_ms"
+      ]
+    },
+    "mini_app_closed": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "mini_app_id",
+        "reason"
+      ]
+    },
+    "mini_app_route_viewed": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "mini_app_id",
+        "route",
+        "source"
+      ]
+    },
+    "mini_app_scroll_depth": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "mini_app_id",
+        "route",
+        "depth_percent"
+      ]
+    },
+    "device_access_requested": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "access_kind"
+      ]
+    },
+    "device_access_completed": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "access_kind",
+        "status"
+      ]
+    },
+    "notification_received": {
+      "version": 1,
+      "priority": "operational",
+      "privacyClass": "essential",
+      "allowedDataKeys": [
+        "notification_id",
+        "category",
+        "app_state",
+        "target_app_id",
+        "provider_message_id"
+      ]
+    },
+    "notification_clicked": {
+      "version": 1,
+      "priority": "operational",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "notification_id",
+        "category",
+        "app_state",
+        "target_app_id",
+        "entrypoint_id",
+        "interaction_source"
+      ]
+    },
+    "notification_inbox_seen": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "notification_ids",
+        "visible_count"
+      ]
+    },
+    "notification_inbox_opened": {
+      "version": 1,
+      "priority": "product",
+      "privacyClass": "analytics",
+      "allowedDataKeys": [
+        "unread_count"
+      ]
+    }
+  },
+  "apps": [
+    {
+      "id": "badminton",
+      "name": "Cầu lông",
+      "shortName": "Cầu lông",
+      "glyph": "🏸",
+      "icon": "badminton",
+      "version": 1,
+      "resourceEndpoint": "https://miniapps.platform.local/badminton",
+      "rootRoute": "/",
+      "routes": [
+        "/",
+        "/bookings"
+      ],
+      "publicEntrypoints": [
+        {
+          "name": "book",
+          "path": "/",
+          "allowedSources": [
+            "host_notification"
+          ],
+          "allowedInputKeys": [
+            "date_id"
+          ]
+        },
+        {
+          "name": "my_bookings",
+          "path": "/bookings",
+          "allowedSources": [
+            "host_notification"
+          ],
+          "allowedInputKeys": [
+            "booking_id"
+          ]
+        }
+      ],
+      "crossAppLinks": [],
+      "trackingEvents": [
+        {
+          "name": "slot_list_viewed",
+          "version": 1,
+          "priority": "product",
+          "allowedDataKeys": [
+            "date_id",
+            "source"
+          ]
+        },
+        {
+          "name": "slot_booked",
+          "version": 1,
+          "priority": "operational",
+          "allowedDataKeys": [
+            "slot_id",
+            "court_id",
+            "start_time",
+            "visibility"
+          ]
+        },
+        {
+          "name": "open_match_joined",
+          "version": 1,
+          "priority": "product",
+          "allowedDataKeys": [
+            "slot_id",
+            "participant_count"
+          ]
+        },
+        {
+          "name": "booking_visibility_changed",
+          "version": 1,
+          "priority": "product",
+          "allowedDataKeys": [
+            "slot_id",
+            "visibility"
+          ]
+        },
+        {
+          "name": "booking_participant_removed",
+          "version": 1,
+          "priority": "operational",
+          "allowedDataKeys": [
+            "slot_id",
+            "participant_count"
+          ]
+        },
+        {
+          "name": "booking_cancelled",
+          "version": 1,
+          "priority": "operational",
+          "allowedDataKeys": [
+            "slot_id"
+          ]
+        },
+        {
+          "name": "booking_reminder_scheduled",
+          "version": 1,
+          "priority": "operational",
+          "allowedDataKeys": [
+            "slot_id",
+            "status",
+            "surface",
+            "reminder_offset_minutes"
+          ]
+        },
+        {
+          "name": "booking_reminder_cancelled",
+          "version": 1,
+          "priority": "operational",
+          "allowedDataKeys": [
+            "slot_id",
+            "reason"
+          ]
+        },
+        {
+          "name": "calendar_add_requested",
+          "version": 1,
+          "priority": "product",
+          "allowedDataKeys": [
+            "slot_id",
+            "source"
+          ]
+        },
+        {
+          "name": "calendar_add_completed",
+          "version": 1,
+          "priority": "operational",
+          "allowedDataKeys": [
+            "slot_id",
+            "source",
+            "status"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "weather",
+      "name": "Thời tiết",
+      "shortName": "Thời tiết",
+      "glyph": "☀",
+      "icon": "cloud-sun",
+      "version": 1,
+      "resourceEndpoint": "https://miniapps.platform.local/weather",
+      "rootRoute": "/",
+      "routes": [
+        "/",
+        "/forecast/:day",
+        "/saved"
+      ],
+      "publicEntrypoints": [
+        {
+          "name": "forecast",
+          "path": "/",
+          "allowedSources": [
+            "transit",
+            "host_notification"
+          ],
+          "allowedInputKeys": [
+            "area"
+          ]
+        }
+      ],
+      "crossAppLinks": [
+        {
+          "id": "open_transit",
+          "label": "Xem xe gần đây",
+          "targetAppId": "transit",
+          "targetEntrypoint": "nearby",
+          "allowedInputKeys": [
+            "area"
+          ]
+        }
+      ],
+      "trackingEvents": [
+        {
+          "name": "forecast_viewed",
+          "version": 1,
+          "priority": "product",
+          "allowedDataKeys": [
+            "day",
+            "source"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "transit",
+      "name": "Giao thông",
+      "shortName": "Giao thông",
+      "glyph": "↝",
+      "icon": "bus",
+      "version": 1,
+      "resourceEndpoint": "https://miniapps.platform.local/transit",
+      "rootRoute": "/",
+      "routes": [
+        "/",
+        "/route/:routeId",
+        "/favorites"
+      ],
+      "publicEntrypoints": [
+        {
+          "name": "nearby",
+          "path": "/",
+          "allowedSources": [
+            "weather",
+            "host_notification"
+          ],
+          "allowedInputKeys": [
+            "area"
+          ]
+        }
+      ],
+      "crossAppLinks": [
+        {
+          "id": "open_weather",
+          "label": "Xem thời tiết điểm đến",
+          "targetAppId": "weather",
+          "targetEntrypoint": "forecast",
+          "allowedInputKeys": [
+            "area"
+          ]
+        }
+      ],
+      "trackingEvents": [
+        {
+          "name": "route_viewed",
+          "version": 1,
+          "priority": "product",
+          "allowedDataKeys": [
+            "route_id",
+            "source"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "notes",
+      "name": "Ghi chú nhanh",
+      "shortName": "Ghi chú",
+      "glyph": "✎",
+      "icon": "file-text",
+      "version": 1,
+      "resourceEndpoint": "https://miniapps.platform.local/notes",
+      "rootRoute": "/",
+      "routes": [
+        "/",
+        "/note/:noteId"
+      ],
+      "publicEntrypoints": [],
+      "crossAppLinks": [],
+      "trackingEvents": [
+        {
+          "name": "note_opened",
+          "version": 1,
+          "priority": "product",
+          "allowedDataKeys": [
+            "source"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "market",
+      "name": "Chợ hôm nay",
+      "shortName": "Chợ",
+      "glyph": "◇",
+      "icon": "shopping-bag",
+      "version": 1,
+      "resourceEndpoint": "https://miniapps.platform.local/market",
+      "rootRoute": "/",
+      "routes": [
+        "/",
+        "/item/:itemId",
+        "/watchlist"
+      ],
+      "publicEntrypoints": [],
+      "crossAppLinks": [],
+      "trackingEvents": [
+        {
+          "name": "item_viewed",
+          "version": 1,
+          "priority": "product",
+          "allowedDataKeys": [
+            "item_id",
+            "source"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "card",
+      "name": "Thẻ",
+      "shortName": "Thẻ",
+      "glyph": "💳",
+      "icon": "credit-card",
+      "version": 1,
+      "resourceEndpoint": "https://miniapps.platform.local/card",
+      "rootRoute": "/",
+      "routes": [
+        "/",
+        "/card/:cardId"
+      ],
+      "publicEntrypoints": [],
+      "crossAppLinks": [],
+      "trackingEvents": [
+        {
+          "name": "benefit_search_performed",
+          "version": 1,
+          "priority": "product",
+          "allowedDataKeys": [
+            "query_length",
+            "result_count"
+          ]
+        },
+        {
+          "name": "card_detail_viewed",
+          "version": 1,
+          "priority": "product",
+          "allowedDataKeys": [
+            "card_id",
+            "source"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sample",
+      "name": "SDK Demo",
+      "shortName": "Demo",
+      "glyph": "◉",
+      "icon": "more-horizontal",
+      "version": 1,
+      "resourceEndpoint": "bundle://sample-rn-poc",
+      "rootRoute": "/",
+      "routes": [
+        "/"
+      ],
+      "publicEntrypoints": [],
+      "crossAppLinks": [],
+      "capabilities": [
+        {
+          "name": "storage.kv",
+          "version": 1,
+          "purposeKey": "demo memory-only storage"
+        },
+        {
+          "name": "ai.extract_bill",
+          "version": 1,
+          "purposeKey": "demo on-device bill extraction"
+        }
+      ],
+      "trackingEvents": []
+    },
+    {
+      "id": "test",
+      "name": "Test",
+      "shortName": "Test",
+      "icon": "more-horizontal",
+      "glyph": "⚙",
+      "version": 1,
+      "resourceEndpoint": "bundle://native-integration-test",
+      "rootRoute": "/",
+      "routes": [
+        "/"
+      ],
+      "publicEntrypoints": [],
+      "crossAppLinks": [],
+      "capabilities": [],
+      "trackingEvents": []
+    },
+    {
+      "$schema": "../../app/src/miniapps/manifest/schema.json",
+      "id": "split-bill",
+      "name": "Chia tiền",
+      "englishName": "Split Bill",
+      "shortName": "Chia tiền",
+      "glyph": "🧾",
+      "version": 1,
+      "versionName": "1.0.0",
+      "publisher": {
+        "id": "platform-first-party",
+        "displayName": "Platform"
+      },
+      "routes": [
+        "/",
+        "/bill/:billId",
+        "/settle/:billId"
+      ],
+      "rootRoute": "/",
+      "resourceEndpoint": "bundle://split-bill",
+      "origins": [
+        "mini://split-bill",
+        "https://split-bill.miniapp.platform.local"
+      ],
+      "capabilities": [
+        {
+          "name": "storage.kv",
+          "version": 1,
+          "purposeKey": "split_bill.persist_draft",
+          "purpose": "Lưu nháp bill khi đang dùng, để thoát WebView không mất việc đã chia",
+          "scope": "while_using"
+        },
+        {
+          "name": "scanner.scan",
+          "version": 1,
+          "purposeKey": "split_bill.scan_vietqr",
+          "purpose": "Quét mã VietQR một lần để lấy số tài khoản, thay vì gõ tay",
+          "scope": "once"
+        },
+        {
+          "name": "net.request",
+          "version": 1,
+          "purposeKey": "split_bill.fetch_bank_list",
+          "purpose": "Tải danh sách ngân hàng VietQR một lần để nhận diện BIN",
+          "scope": "once"
+        }
+      ],
+      "egressHosts": [
+        "vietqr.net"
+      ],
+      "publicEntrypoints": [],
+      "crossAppLinks": [],
+      "trackingEvents": [
+        {
+          "name": "bill_created",
+          "version": 2,
+          "priority": "product",
+          "allowedDataKeys": [
+            "participant_count"
+          ]
+        },
+        {
+          "name": "bill_item_added",
+          "version": 1,
+          "priority": "product",
+          "allowedDataKeys": [
+            "input_mode",
+            "has_ask_back"
+          ]
+        },
+        {
+          "name": "bill_settled",
+          "version": 1,
+          "priority": "product",
+          "allowedDataKeys": [
+            "participant_count",
+            "item_count",
+            "transfer_count"
+          ]
+        },
+        {
+          "name": "vietqr_parsed",
+          "version": 1,
+          "priority": "product",
+          "allowedDataKeys": [
+            "has_amount",
+            "bank_bin"
+          ]
+        }
+      ],
+      "minWebViewVersion": 1,
+      "defaultLocale": "vi",
+      "supportedLocales": [
+        "vi",
+        "en"
+      ],
+      "icon": "receipt"
+    },
+    {
+      "$schema": "../../app/src/miniapps/manifest/schema.json",
+      "id": "manage-expense",
+      "name": "Quản lý chi tiêu",
+      "englishName": "Manage Expense",
+      "shortName": "Chi tiêu",
+      "glyph": "🧾",
+      "version": 1,
+      "versionName": "1.0.0",
+      "publisher": {
+        "id": "platform-first-party",
+        "displayName": "Platform"
+      },
+      "routes": [
+        "/"
+      ],
+      "rootRoute": "/",
+      "resourceEndpoint": "bundle://manage-expense",
+      "origins": [
+        "mini://manage-expense",
+        "https://manage-expense.miniapp.platform.local"
+      ],
+      "capabilities": [
+        {
+          "name": "storage.kv",
+          "version": 1,
+          "purposeKey": "manage_expense.persist_ledger",
+          "scope": "while_using"
+        },
+        {
+          "name": "ai.extract_expenses",
+          "version": 1,
+          "purposeKey": "manage_expense.extract_selected_image",
+          "scope": "once"
+        },
+        {
+          "name": "notifications.schedule_digest",
+          "version": 1,
+          "purposeKey": "manage_expense.schedule_digest",
+          "scope": "while_using"
+        }
+      ],
+      "egressHosts": [],
+      "publicEntrypoints": [],
+      "crossAppLinks": [],
+      "trackingEvents": [],
+      "minWebViewVersion": 1,
+      "defaultLocale": "vi",
+      "supportedLocales": [
+        "vi"
+      ],
+      "icon": "receipt"
+    }
+  ],
+  "tenants": [
+    {
+      "id": "vn-hn",
+      "label": "Hà Nội",
+      "shortLabel": "HN",
+      "provinceName": "Hà Nội",
+      "centre": {
+        "lat": 21.0285,
+        "lon": 105.8542
+      },
+      "featuredAppIds": [
+        "weather",
+        "transit",
+        "badminton",
+        "notes",
+        "market",
+        "card",
+        "sample",
+        "test",
+        "split-bill",
+        "manage-expense"
+      ],
+      "description": "Thủ đô — thời tiết, giao thông và tiện ích đô thị.",
+      "accent": "#3B5BDB"
+    },
+    {
+      "id": "vn-hcm",
+      "label": "TP. Hồ Chí Minh",
+      "shortLabel": "HCM",
+      "provinceName": "TP. Hồ Chí Minh",
+      "centre": {
+        "lat": 10.8231,
+        "lon": 106.6297
+      },
+      "featuredAppIds": [
+        "badminton",
+        "market",
+        "weather",
+        "transit",
+        "notes",
+        "card",
+        "sample",
+        "test",
+        "split-bill",
+        "manage-expense"
+      ],
+      "description": "Thành phố năng động — đặt sân cầu lông, chợ và di chuyển.",
+      "accent": "#E8590C"
+    },
+    {
+      "id": "vn-dn",
+      "label": "Đà Nẵng",
+      "shortLabel": "ĐN",
+      "provinceName": "Đà Nẵng",
+      "centre": {
+        "lat": 16.0544,
+        "lon": 108.2022
+      },
+      "featuredAppIds": [
+        "weather",
+        "transit",
+        "market",
+        "notes",
+        "card",
+        "sample",
+        "test",
+        "split-bill",
+        "manage-expense"
+      ],
+      "description": "Thành phố biển — thời tiết, di chuyển và mua sắm.",
+      "accent": "#0B7285"
+    },
+    {
+      "id": "vn-fallback",
+      "label": "Toàn quốc",
+      "shortLabel": "VN",
+      "provinceName": "Toàn quốc",
+      "centre": {
+        "lat": 16,
+        "lon": 108
+      },
+      "featuredAppIds": [
+        "weather",
+        "transit",
+        "notes",
+        "market",
+        "badminton",
+        "card",
+        "sample",
+        "test",
+        "split-bill",
+        "manage-expense"
+      ],
+      "description": "Danh mục chung — hiển thị khi chưa xác định được tỉnh/thành.",
+      "accent": "#3B5BDB"
+    }
+  ],
+  "categories": [
+    {
+      "id": "other",
+      "name": "Khác",
+      "shortName": "Khác",
+      "description": "Kiểm thử integration native",
+      "icon": "more-horizontal",
+      "glyph": "⚙",
+      "miniAppIds": [
+        "test",
+        "split-bill",
+        "manage-expense"
+      ],
+      "audience": "all"
+    },
+    {
+      "id": "sport",
+      "name": "Thể thao",
+      "shortName": "Thể thao",
+      "description": "Đặt sân và tìm người chơi cùng",
+      "glyph": "🏸",
+      "icon": "trophy",
+      "miniAppIds": [
+        "badminton"
+      ],
+      "audience": "all"
+    },
+    {
+      "id": "daily",
+      "name": "Hằng ngày",
+      "shortName": "Hằng ngày",
+      "description": "Thời tiết, đi lại và ghi chú nhanh",
+      "glyph": "✦",
+      "icon": "sun",
+      "miniAppIds": [
+        "weather",
+        "transit",
+        "notes"
+      ],
+      "audience": "all"
+    },
+    {
+      "id": "around_you",
+      "name": "Quanh bạn",
+      "shortName": "Gần bạn",
+      "description": "Có gì đang diễn ra quanh bạn",
+      "glyph": "⌖",
+      "icon": "map-pin",
+      "miniAppIds": [
+        "weather",
+        "transit"
+      ],
+      "audience": "older_adult"
+    },
+    {
+      "id": "plan_focus",
+      "name": "Kế hoạch & tập trung",
+      "shortName": "Tập trung",
+      "description": "Giữ nhịp ngày của bạn",
+      "glyph": "◷",
+      "icon": "target",
+      "miniAppIds": [
+        "notes",
+        "transit"
+      ],
+      "audience": "young_adult"
+    },
+    {
+      "id": "money",
+      "name": "Tiền & chợ giá",
+      "shortName": "Tiền",
+      "description": "Theo dõi giá cả và ghi chú",
+      "glyph": "◇",
+      "icon": "trending-up",
+      "miniAppIds": [
+        "market",
+        "notes"
+      ],
+      "audience": "adult"
+    },
+    {
+      "id": "finance",
+      "name": "Tài chính",
+      "shortName": "Tài chính",
+      "description": "So sánh thẻ",
+      "glyph": "💳",
+      "icon": "credit-card",
+      "miniAppIds": [
+        "card"
+      ],
+      "audience": "adult"
+    }
+  ],
+  "cards": [
+    {
+      "id": "vcb-epartner-visa",
+      "bankId": "vietcombank",
+      "bankName": "Vietcombank",
+      "bankCode": "VCB",
+      "cardBrand": "visa",
+      "cardName": " Vietcombank Visa Platinum",
+      "annualFeeVnd": 500000,
+      "firstYearFree": true,
+      "imageColor": "#006B3F",
+      "benefits": [
+        {
+          "title": "Hoàn tiền 7% ăn uống",
+          "detail": "Hoàn tiền đến 7% giao dịch nhà hàng, tối đa 300.000đ/tháng, áp dụng thứ Sáu–Chủ nhật.",
+          "type": "cashback"
+        },
+        {
+          "title": "Miễn lãi 45 ngày",
+          "detail": "Miễn lãi suất tối đa 45 ngày cho giao dịch thanh toán hàng hóa, dịch vụ.",
+          "type": "interest_free"
+        },
+        {
+          "title": "Phòng chờ sân bay",
+          "detail": "4 lần/tháng vào phòng chờ thương gia tại các sân bay quốc tế trong nước.",
+          "type": "lounge"
+        }
+      ]
+    },
+    {
+      "id": "tcb-visa-platinum",
+      "bankId": "techcombank",
+      "bankName": "Techcombank",
+      "bankCode": "TCB",
+      "cardBrand": "visa",
+      "cardName": "Techcombank Visa Platinum Cashback",
+      "annualFeeVnd": 499000,
+      "firstYearFree": true,
+      "imageColor": "#E4002B",
+      "benefits": [
+        {
+          "title": "Hoàn 15% siêu thị online",
+          "detail": "Hoàn tiền 15% khi mua sắm trên các sàn thương mại điện tử, tối đa 600.000đ/tháng.",
+          "type": "cashback"
+        },
+        {
+          "title": "Giảm 50% xem phim",
+          "detail": "Mua vé xem phim giảm đến 50% mỗi thứ Tư trên ứng dụng đặt vé.",
+          "type": "discount"
+        }
+      ]
+    },
+    {
+      "id": "vpbank-stepup",
+      "bankId": "vpbank",
+      "bankName": "VPBank",
+      "bankCode": "VPB",
+      "cardBrand": "mastercard",
+      "cardName": "VPBank StepUp World Mastercard",
+      "annualFeeVnd": 0,
+      "firstYearFree": true,
+      "imageColor": "#0B4EA2",
+      "benefits": [
+        {
+          "title": "Miễn phí thường niên",
+          "detail": "Miễn phí thường niên khi chi tiêu từ 30 triệu đồng/năm.",
+          "type": "other"
+        },
+        {
+          "title": "Hoàn 10% xăng xe",
+          "detail": "Hoàn tiền 10% chi tiêu xăng dầu và đi lại, tối đa 200.000đ/tháng.",
+          "type": "cashback"
+        },
+        {
+          "title": "Trả góp 0%",
+          "detail": "Trả góp lãi suất 0% đến 12 tháng tại đối tác liên kết.",
+          "type": "interest_free"
+        }
+      ]
+    },
+    {
+      "id": "mb-visa-hi",
+      "bankId": "mbbank",
+      "bankName": "MB Bank",
+      "bankCode": "MB",
+      "cardBrand": "visa",
+      "cardName": "MB Visa Hi Cashback",
+      "annualFeeVnd": 299000,
+      "firstYearFree": true,
+      "imageColor": "#1D4ED8",
+      "benefits": [
+        {
+          "title": "Hoàn 5% mọi giao dịch",
+          "detail": "Hoàn tiền 5% không giới hạn nhóm hàng, tối đa 500.000đ/tháng.",
+          "type": "cashback"
+        },
+        {
+          "title": "Giảm 30% Grab",
+          "detail": "Giảm 30% giá vé đi xe công nghệ, áp dụng cuối tuần, tối đa 60.000đ/lượt.",
+          "type": "discount"
+        }
+      ]
+    },
+    {
+      "id": "tpbank-talented",
+      "bankId": "tpbank",
+      "bankName": "TPBank",
+      "bankCode": "TPB",
+      "cardBrand": "visa",
+      "cardName": "TPBank Talented Visa",
+      "annualFeeVnd": 399000,
+      "firstYearFree": true,
+      "imageColor": "#F97316",
+      "benefits": [
+        {
+          "title": "Hoàn 20% online đầu tiên",
+          "detail": "Hoàn 20% giao dịch mua sắm trực tuyến trong 2 tháng đầu mở thẻ, tối đa 1 triệu đồng.",
+          "type": "cashback"
+        },
+        {
+          "title": "Quà tặng sinh nhật",
+          "detail": "Tặng điểm thưởng nhân đôi chi tiêu trong tháng sinh nhật.",
+          "type": "other"
+        }
+      ]
+    },
+    {
+      "id": "acb-visa-cashback",
+      "bankId": "acb",
+      "bankName": "ACB",
+      "bankCode": "ACB",
+      "cardBrand": "visa",
+      "cardName": "ACB Visa Cashback",
+      "annualFeeVnd": 299000,
+      "firstYearFree": true,
+      "imageColor": "#0E7490",
+      "benefits": [
+        {
+          "title": "Hoàn 6% điện máy",
+          "detail": "Hoàn 6% khi mua điện máy, gia dụng tại chuỗi đối tác, tối đa 800.000đ/tháng.",
+          "type": "cashback"
+        },
+        {
+          "title": "Miễn lãi 55 ngày",
+          "detail": "Miễn lãi tối đa 55 ngày từ ngày giao dịch đầu tiên của kỳ sao kê.",
+          "type": "interest_free"
+        }
+      ]
+    },
+    {
+      "id": "vietin-jcb-cashbon",
+      "bankId": "vietinbank",
+      "bankName": "VietinBank",
+      "bankCode": "CTG",
+      "cardBrand": "jcb",
+      "cardName": "VietinBank JCB CashBon",
+      "annualFeeVnd": 250000,
+      "firstYearFree": true,
+      "imageColor": "#0A57A6",
+      "benefits": [
+        {
+          "title": "Hoàn 8% du lịch",
+          "detail": "Hoàn 8% chi tiêu khách sạn và vé máy bay trong nước, tối đa 400.000đ/tháng.",
+          "type": "cashback"
+        },
+        {
+          "title": "Giảm 40% buffet",
+          "detail": "Giảm đến 40% giá buffet tại nhà hàng đối tác ở Hà Nội và TP.HCM.",
+          "type": "discount"
+        }
+      ]
+    },
+    {
+      "id": "bidv-visa-privilege",
+      "bankId": "bidv",
+      "bankName": "BIDV",
+      "bankCode": "BIDV",
+      "cardBrand": "visa",
+      "cardName": "BIDV Visa Privilege",
+      "annualFeeVnd": 700000,
+      "firstYearFree": false,
+      "imageColor": "#166534",
+      "benefits": [
+        {
+          "title": "Phòng chờ vô hạn",
+          "detail": "Không giới hạn số lần vào phòng chờ bậc thang tại Việt Nam và khu vực.",
+          "type": "lounge"
+        },
+        {
+          "title": "Hoàn 5% quốc tế",
+          "detail": "Hoàn 5% giao dịch ngoại tệ trực tuyến, tối đa 1.000.000đ/tháng.",
+          "type": "cashback"
+        }
+      ]
+    },
+    {
+      "id": "sacombank-visa-360",
+      "bankId": "sacombank",
+      "bankName": "Sacombank",
+      "bankCode": "STB",
+      "cardBrand": "visa",
+      "cardName": "Sacombank Visa 360°",
+      "annualFeeVnd": 350000,
+      "firstYearFree": true,
+      "imageColor": "#B91C1C",
+      "benefits": [
+        {
+          "title": "Hoàn 10% giáo dục",
+          "detail": "Hoàn 10% học phí và chi tiêu giáo dục, tối đa 500.000đ/tháng.",
+          "type": "cashback"
+        },
+        {
+          "title": "Trả góp 0% 6 tháng",
+          "detail": "Trả góp 0% kỳ hạn 6 tháng tại bệnh viện và phòng khám liên kết.",
+          "type": "interest_free"
+        }
+      ]
+    },
+    {
+      "id": "vib-online-plus",
+      "bankId": "vib",
+      "bankName": "VIB",
+      "bankCode": "VIB",
+      "cardBrand": "mastercard",
+      "cardName": "VIB Online Plus",
+      "annualFeeVnd": 0,
+      "firstYearFree": true,
+      "imageColor": "#C2410C",
+      "benefits": [
+        {
+          "title": "Miễn phí thường niên",
+          "detail": "Không mất phí thường niên trong suốt thời gian dùng thẻ.",
+          "type": "other"
+        },
+        {
+          "title": "Hoàn 25% online đầu tiên",
+          "detail": "Hoàn đến 25% giao dịch mua sắm online trong tháng đầu, tối đa 500.000đ.",
+          "type": "cashback"
+        },
+        {
+          "title": "Giảm 50% giao đồ ăn",
+          "detail": "Giảm 50% đơn giao đồ ăn thứ Sáu hằng tuần, tối đa 70.000đ/đơn.",
+          "type": "discount"
+        }
+      ]
+    },
+    {
+      "id": "msb-travel-platinum",
+      "bankId": "msb",
+      "bankName": "MSB",
+      "bankCode": "MSB",
+      "cardBrand": "visa",
+      "cardName": "MSB Travel Platinum Visa",
+      "annualFeeVnd": 600000,
+      "firstYearFree": true,
+      "imageColor": "#1E3A8A",
+      "benefits": [
+        {
+          "title": "Hoàn 12% vé máy bay",
+          "detail": "Hoàn 12% khi đặt vé máy bay qua ứng dụng liên kết, tối đa 600.000đ/tháng.",
+          "type": "cashback"
+        },
+        {
+          "title": "Bảo hiểm du lịch",
+          "detail": "Miễn phí bảo hiểm du lịch toàn cầu trị giá đến 5 tỷ đồng/chuyến.",
+          "type": "other"
+        },
+        {
+          "title": "Phòng chờ sân bay",
+          "detail": "8 lượt/phòng chờ quốc tế mỗi năm.",
+          "type": "lounge"
+        }
+      ]
+    },
+    {
+      "id": "shinhan-solo",
+      "bankId": "shinhan",
+      "bankName": "Shinhan Bank",
+      "bankCode": "SHB",
+      "cardBrand": "visa",
+      "cardName": "Shinhan Solo Card",
+      "annualFeeVnd": 400000,
+      "firstYearFree": true,
+      "imageColor": "#0369A1",
+      "benefits": [
+        {
+          "title": "Hoàn 10% thời trang",
+          "detail": "Hoàn 10% chi tiêu thời trang và làm đẹp, tối đa 300.000đ/tháng.",
+          "type": "cashback"
+        },
+        {
+          "title": "2-for-1 cà phê",
+          "detail": "Mua 1 tặng 1 thức uống tại chuỗi cà phê liên kết mỗi thứ Hai.",
+          "type": "discount"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "id": "today-court-1-1800",
+      "dateId": "today",
+      "courtId": "court-1",
+      "courtName": "Sân 1",
+      "venue": "CLB Cầu lông Bình Thạnh",
+      "startTime": "18:00",
+      "endTime": "19:00",
+      "priceVnd": 120000,
+      "capacity": 4,
+      "owner": null,
+      "visibility": "private",
+      "participants": []
+    },
+    {
+      "id": "today-court-2-1900",
+      "dateId": "today",
+      "courtId": "court-2",
+      "courtName": "Sân 2",
+      "venue": "CLB Cầu lông Bình Thạnh",
+      "startTime": "19:00",
+      "endTime": "20:30",
+      "priceVnd": 170000,
+      "capacity": 4,
+      "owner": "other",
+      "visibility": "open",
+      "participants": [
+        {
+          "id": "demo-minh",
+          "displayName": "Minh"
+        },
+        {
+          "id": "demo-an",
+          "displayName": "An"
+        }
+      ]
+    },
+    {
+      "id": "today-court-3-2000",
+      "dateId": "today",
+      "courtId": "court-3",
+      "courtName": "Sân 3",
+      "venue": "Nhà thi đấu Phú Thọ",
+      "startTime": "20:00",
+      "endTime": "21:00",
+      "priceVnd": 140000,
+      "capacity": 4,
+      "owner": "me",
+      "visibility": "open",
+      "participants": [
+        {
+          "id": "me",
+          "displayName": "Bạn"
+        },
+        {
+          "id": "demo-lan",
+          "displayName": "Lan"
+        }
+      ]
+    },
+    {
+      "id": "tomorrow-court-1-1800",
+      "dateId": "tomorrow",
+      "courtId": "court-1",
+      "courtName": "Sân 1",
+      "venue": "CLB Cầu lông Bình Thạnh",
+      "startTime": "18:00",
+      "endTime": "19:00",
+      "priceVnd": 120000,
+      "capacity": 4,
+      "owner": null,
+      "visibility": "private",
+      "participants": []
+    },
+    {
+      "id": "tomorrow-court-4-1930",
+      "dateId": "tomorrow",
+      "courtId": "court-4",
+      "courtName": "Sân 4",
+      "venue": "Nhà thi đấu Phú Thọ",
+      "startTime": "19:30",
+      "endTime": "21:00",
+      "priceVnd": 190000,
+      "capacity": 4,
+      "owner": "other",
+      "visibility": "open",
+      "participants": [
+        {
+          "id": "demo-huy",
+          "displayName": "Huy"
+        },
+        {
+          "id": "demo-thao",
+          "displayName": "Thảo"
+        },
+        {
+          "id": "demo-vy",
+          "displayName": "Vy"
+        },
+        {
+          "id": "demo-tuan",
+          "displayName": "Tuấn"
+        }
+      ]
+    },
+    {
+      "id": "weekend-court-2-0800",
+      "dateId": "weekend",
+      "courtId": "court-2",
+      "courtName": "Sân 2",
+      "venue": "CLB Cầu lông Bình Thạnh",
+      "startTime": "08:00",
+      "endTime": "09:30",
+      "priceVnd": 150000,
+      "capacity": 4,
+      "owner": null,
+      "visibility": "private",
+      "participants": []
+    },
+    {
+      "id": "weekend-court-5-1800",
+      "dateId": "weekend",
+      "courtId": "court-5",
+      "courtName": "Sân 5",
+      "venue": "Sân Cầu lông Sala",
+      "startTime": "18:00",
+      "endTime": "20:00",
+      "priceVnd": 240000,
+      "capacity": 4,
+      "owner": "other",
+      "visibility": "open",
+      "participants": [
+        {
+          "id": "demo-linh",
+          "displayName": "Linh"
+        }
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "name": "net.request",
+      "version": 1,
+      "risk": "medium",
+      "consent": "none",
+      "os_permission": "none",
+      "broker_ui": false,
+      "min_tier": "sandbox",
+      "quota": {
+        "sustained": 60,
+        "burst": 10
+      },
+      "payload_cap": 65536,
+      "stream_cap": 0,
+      "audit": "call",
+      "owner": "platform",
+      "support_horizon": "indefinite, reviewed annually",
+      "errors": [
+        "CAPABILITY_NOT_DECLARED",
+        "INVALID_ARGUMENT",
+        "RATE_LIMITED",
+        "TIMEOUT",
+        "NOT_FOUND",
+        "CAPABILITY_NOT_GRANTED",
+        "UNAVAILABLE"
+      ],
+      "notes": "host-mediated fetch to exact manifest hosts; never raw fetch, wildcard, or direct sockets"
+    },
+    {
+      "name": "storage.kv",
+      "version": 1,
+      "risk": "low",
+      "consent": "none",
+      "os_permission": "none",
+      "broker_ui": false,
+      "min_tier": "sandbox",
+      "quota": {
+        "sustained": 600,
+        "burst": 120
+      },
+      "payload_cap": 65536,
+      "stream_cap": 0,
+      "audit": "call",
+      "owner": "platform",
+      "support_horizon": "indefinite, reviewed annually",
+      "errors": [
+        "CAPABILITY_NOT_DECLARED",
+        "INVALID_ARGUMENT",
+        "RATE_LIMITED",
+        "REVOKED",
+        "CAPABILITY_NOT_GRANTED",
+        "UNAVAILABLE"
+      ],
+      "notes": "per-(tenant, appId, user) scoped KV; no cookies, no localStorage, no cross-app storage"
+    },
+    {
+      "name": "scanner.scan",
+      "version": 1,
+      "risk": "medium",
+      "consent": "once",
+      "os_permission": "none",
+      "broker_ui": "host_scanner",
+      "min_tier": "self_serve",
+      "quota": {
+        "sustained": 10,
+        "burst": 2
+      },
+      "payload_cap": 1024,
+      "stream_cap": 0,
+      "audit": "call_with_result",
+      "owner": "platform",
+      "support_horizon": "indefinite, reviewed annually",
+      "errors": [
+        "CAPABILITY_NOT_DECLARED",
+        "CONSENT_REQUIRED",
+        "CONSENT_DENIED",
+        "CONSENT_DENIED_PERMANENTLY",
+        "TIMEOUT",
+        "CAPABILITY_NOT_GRANTED",
+        "INVALID_ARGUMENT",
+        "UNAVAILABLE"
+      ],
+      "notes": "host-owned scanner UI; pixels never cross the bridge, only the decoded string"
+    },
+    {
+      "name": "location.current",
+      "version": 1,
+      "risk": "high",
+      "consent": "once",
+      "os_permission": "none",
+      "broker_ui": false,
+      "min_tier": "partner_verified",
+      "quota": {
+        "sustained": 6,
+        "burst": 2
+      },
+      "payload_cap": 256,
+      "stream_cap": 0,
+      "audit": "call_with_result",
+      "owner": "platform",
+      "support_horizon": "indefinite, reviewed annually",
+      "errors": [
+        "CAPABILITY_NOT_DECLARED",
+        "CONSENT_REQUIRED",
+        "CONSENT_DENIED",
+        "CONSENT_DENIED_PERMANENTLY",
+        "RATE_LIMITED",
+        "TIMEOUT",
+        "REVOKED",
+        "CAPABILITY_NOT_GRANTED",
+        "INVALID_ARGUMENT",
+        "UNAVAILABLE"
+      ],
+      "notes": "one-shot coarse by default; precise is a separate high-risk capability with separate review"
+    },
+    {
+      "name": "crypto.sign",
+      "version": 1,
+      "risk": "high",
+      "consent": "once",
+      "os_permission": "none",
+      "broker_ui": "biometric_prompt",
+      "min_tier": "partner_verified",
+      "quota": {
+        "sustained": 10,
+        "burst": 3
+      },
+      "payload_cap": 1024,
+      "stream_cap": 0,
+      "audit": "call",
+      "owner": "platform",
+      "support_horizon": "indefinite, reviewed annually",
+      "errors": [
+        "CAPABILITY_NOT_DECLARED",
+        "CONSENT_REQUIRED",
+        "CONSENT_DENIED",
+        "TIMEOUT",
+        "REVOKED",
+        "CAPABILITY_NOT_GRANTED",
+        "INVALID_ARGUMENT",
+        "UNAVAILABLE"
+      ],
+      "notes": "hardware-backed assertion over host-minted challenge; never biometric material nor boolean"
+    },
+    {
+      "name": "notify.subscribe",
+      "version": 1,
+      "risk": "low",
+      "consent": "while_using",
+      "os_permission": "none",
+      "broker_ui": false,
+      "min_tier": "self_serve",
+      "quota": {
+        "sustained": 5,
+        "burst": 2
+      },
+      "payload_cap": 256,
+      "stream_cap": 0,
+      "audit": "call",
+      "owner": "platform",
+      "support_horizon": "indefinite, reviewed annually",
+      "errors": [
+        "CAPABILITY_NOT_DECLARED",
+        "CONSENT_REQUIRED",
+        "CONSENT_DENIED",
+        "RATE_LIMITED",
+        "CAPABILITY_NOT_GRANTED",
+        "INVALID_ARGUMENT",
+        "UNAVAILABLE"
+      ],
+      "notes": "host owns push tokens; mini-app receives subscription state only"
+    },
+    {
+      "name": "ai.extract_bill",
+      "version": 1,
+      "risk": "high",
+      "consent": "once",
+      "os_permission": "none",
+      "broker_ui": "host_image_picker",
+      "min_tier": "first_party",
+      "quota": {
+        "sustained": 4,
+        "burst": 2
+      },
+      "payload_cap": 8192,
+      "stream_cap": 0,
+      "audit": "call_with_result",
+      "owner": "platform",
+      "support_horizon": "pilot through 2026-12, re-review before wider rollout",
+      "errors": [
+        "CAPABILITY_NOT_DECLARED",
+        "INVALID_ARGUMENT",
+        "CONSENT_REQUIRED",
+        "CONSENT_DENIED",
+        "CONSENT_DENIED_PERMANENTLY",
+        "RATE_LIMITED",
+        "TIMEOUT",
+        "REVOKED",
+        "UNAVAILABLE",
+        "CAPABILITY_NOT_GRANTED"
+      ],
+      "notes": "pilot for split-bill — host-owned image picker (pixels never cross the bridge), on-device LLM returns derived bill fields only; extracted amounts are untrusted drafts requiring user review, never money authority"
+    },
+    {
+      "name": "ai.extract_expenses",
+      "version": 1,
+      "risk": "high",
+      "consent": "once",
+      "os_permission": "none",
+      "broker_ui": "host_image_picker",
+      "min_tier": "first_party",
+      "quota": {
+        "sustained": 4,
+        "burst": 2
+      },
+      "payload_cap": 32768,
+      "stream_cap": 0,
+      "audit": "call",
+      "owner": "mobile-platform",
+      "support_horizon": "pilot through 2026-12",
+      "errors": [
+        "INVALID_ARGUMENT",
+        "CONSENT_DENIED",
+        "RATE_LIMITED",
+        "TIMEOUT",
+        "REVOKED",
+        "UNAVAILABLE",
+        "CAPABILITY_NOT_GRANTED"
+      ],
+      "notes": "Manage Expense host-owned selected/pasted image, local model only, derived untrusted candidate rows, no paths/pixels returned, MCC always null"
+    },
+    {
+      "name": "notifications.schedule_digest",
+      "version": 1,
+      "risk": "medium",
+      "consent": "while_using",
+      "os_permission": "notifications",
+      "broker_ui": "os_notification_permission",
+      "min_tier": "first_party",
+      "quota": {
+        "sustained": 20,
+        "burst": 5
+      },
+      "payload_cap": 8192,
+      "stream_cap": 0,
+      "audit": "call",
+      "owner": "mobile-platform",
+      "support_horizon": "pilot through 2026-12",
+      "errors": [
+        "INVALID_ARGUMENT",
+        "CONSENT_DENIED",
+        "RATE_LIMITED",
+        "TIMEOUT",
+        "REVOKED",
+        "UNAVAILABLE",
+        "CAPABILITY_NOT_GRANTED"
+      ],
+      "notes": "Scoped periodic reminders opening local reports; no promised APNs/FCM delivery or stale numeric summaries on lock screen"
+    }
+  ]
+}

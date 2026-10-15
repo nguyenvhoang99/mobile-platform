@@ -1,19 +1,10 @@
 import type { HandlerFn } from '../handler';
 
-// One-shot current location, coarse by default. Precise is a separate capability.
-// Returns coarse coords or host-derived region — never bulk, never background.
+// No native adapter with the required scope/consent contract exists yet.
 export function handleLocationCurrent(): HandlerFn {
   return async (_session, args) => {
-    const precision = (args.precision as string) ?? 'coarse';
-    if (!['coarse', 'precise'].includes(precision)) throw new Error('INVALID_ARGUMENT: precision');
-    // MVP mock: Hanoi coarse. Real impl uses platform location with coarse flag.
-    // Precise requires separate review grant — here we still return coarse if requested without grant.
-    return {
-      lat: 21.0285,
-      lon: 105.8542,
-      accuracyM: precision === 'coarse' ? 1500 : 20,
-      precision,
-      at: new Date().toISOString(),
-    };
+    if (Object.keys(args).some(key => !['precision'].includes(key))) throw new Error('INVALID_ARGUMENT: unknown field');
+    if (args.precision !== undefined && args.precision !== 'coarse') throw new Error('INVALID_ARGUMENT: coarse only');
+    throw new Error('UNAVAILABLE: native capability adapter missing');
   };
 }

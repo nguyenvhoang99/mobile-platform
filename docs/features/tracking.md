@@ -30,6 +30,12 @@ Config from `appConfig.tracking:21` (`hostAppVersion 0.0.1`, `consentVersion 1`,
 
 ## Testing
 
+Host load metrics: see [mini-app load performance](../../app/docs/features/mini-app-load-performance.md).
+`MiniAppLoadTracker` measures host request → RN commit → first nonzero content-region
+layout, with correlated `mini_app_load_started` / `mini_app_load_finished` events.
+Interrupted launches remain separate from completed layouts; RN layout does not
+claim native first paint, FCP, LCP or business readiness.
+
 - `trackingService.test.ts` + `hostStorage.test.ts` cover enqueue, `validData`, retention, 8MB drop, batch limits, transport choice, offline.
 - Adversarial: oversized `>16KB`, unknown `allowedDataKeys`, burst flood, offline → queue, storage full → drop.
 

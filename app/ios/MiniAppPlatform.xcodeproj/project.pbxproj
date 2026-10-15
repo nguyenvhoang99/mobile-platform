@@ -17,12 +17,13 @@
 		AA1100000000000000000004 /* ReminderActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1100000000000000000011 /* ReminderActivityAttributes.swift */; };
 		AA1100000000000000000005 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA1100000000000000000014 /* WidgetKit.framework */; };
 		AA1100000000000000000006 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA1100000000000000000015 /* SwiftUI.framework */; };
-		AA1100000000000000000007 /* BadmintonLiveActivityExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = AA1100000000000000000016 /* BadmintonLiveActivityExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AA1100000000000000000007 /* LiveActivityExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = AA1100000000000000000016 /* LiveActivityExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D3ACCE001A2B3C4D5E6F7001 /* DeviceAccessModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = D3ACCE001A2B3C4D5E6F7002 /* DeviceAccessModule.mm */; };
 		D3ACCE001A2B3C4D5E6F7003 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3ACCE001A2B3C4D5E6F7004 /* AVFoundation.framework */; };
 		D3ACCE001A2B3C4D5E6F7005 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3ACCE001A2B3C4D5E6F7006 /* CoreLocation.framework */; };
 		D3ACCE001A2B3C4D5E6F7007 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3ACCE001A2B3C4D5E6F7008 /* LocalAuthentication.framework */; };
 		D3ACCE001A2B3C4D5E6F7009 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3ACCE001A2B3C4D5E6F7010 /* Speech.framework */; };
+		AA2200000000000000000001 /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2200000000000000000002 /* Network.framework */; };
 		D3ACCE001A2B3C4D5E6F7021 /* HostStorageModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = D3ACCE001A2B3C4D5E6F7022 /* HostStorageModule.mm */; };
 		D3ACCE001A2B3C4D5E6F7031 /* NotificationModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ACCE001A2B3C4D5E6F7032 /* NotificationModule.swift */; };
 		D3ACCE001A2B3C4D5E6F7033 /* NotificationModule+Spec.mm in Sources */ = {isa = PBXBuildFile; fileRef = D3ACCE001A2B3C4D5E6F7034 /* NotificationModule+Spec.mm */; };
@@ -35,7 +36,7 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = AA1100000000000000000030;
-			remoteInfo = BadmintonLiveActivityExtension;
+			remoteInfo = LiveActivityExtension;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -46,7 +47,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				AA1100000000000000000007 /* BadmintonLiveActivityExtension.appex in Embed App Extensions */,
+				AA1100000000000000000007 /* LiveActivityExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -68,13 +69,14 @@
 		AA1100000000000000000013 /* ReminderLiveActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderLiveActivityWidget.swift; sourceTree = "<group>"; };
 		AA1100000000000000000014 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		AA1100000000000000000015 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		AA1100000000000000000016 /* BadmintonLiveActivityExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BadmintonLiveActivityExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA1100000000000000000016 /* LiveActivityExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LiveActivityExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA1100000000000000000017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3ACCE001A2B3C4D5E6F7002 /* DeviceAccessModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DeviceAccessModule.mm; path = MiniAppPlatform/DeviceAccessModule.mm; sourceTree = "<group>"; };
 		D3ACCE001A2B3C4D5E6F7004 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D3ACCE001A2B3C4D5E6F7006 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		D3ACCE001A2B3C4D5E6F7008 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		D3ACCE001A2B3C4D5E6F7010 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
+		AA2200000000000000000002 /* Network.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Network.framework; path = System/Library/Frameworks/Network.framework; sourceTree = SDKROOT; };
 		D3ACCE001A2B3C4D5E6F7022 /* HostStorageModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HostStorageModule.mm; path = MiniAppPlatform/HostStorageModule.mm; sourceTree = "<group>"; };
 		D3ACCE001A2B3C4D5E6F7032 /* NotificationModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationModule.swift; path = MiniAppPlatform/NotificationModule.swift; sourceTree = "<group>"; };
 		D3ACCE001A2B3C4D5E6F7034 /* NotificationModule+Spec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NotificationModule+Spec.mm"; path = "MiniAppPlatform/NotificationModule+Spec.mm"; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				D3ACCE001A2B3C4D5E6F7005 /* CoreLocation.framework in Frameworks */,
 				D3ACCE001A2B3C4D5E6F7007 /* LocalAuthentication.framework in Frameworks */,
 				D3ACCE001A2B3C4D5E6F7009 /* Speech.framework in Frameworks */,
+				AA2200000000000000000001 /* Network.framework in Frameworks */,
 				0C80B921A6F3F58F76C31292 /* libPods-MiniAppPlatform.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,6 +139,7 @@
 				D3ACCE001A2B3C4D5E6F7006 /* CoreLocation.framework */,
 				D3ACCE001A2B3C4D5E6F7008 /* LocalAuthentication.framework */,
 				D3ACCE001A2B3C4D5E6F7010 /* Speech.framework */,
+				AA2200000000000000000002 /* Network.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-MiniAppPlatform.a */,
 			);
 			name = Frameworks;
@@ -152,7 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				13B07FAE1A68108700A75B9A /* MiniAppPlatform */,
-				AA1100000000000000000031 /* BadmintonLiveActivityExtension */,
+				AA1100000000000000000031 /* LiveActivityExtension */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
@@ -167,18 +171,18 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* MiniAppPlatform.app */,
-				AA1100000000000000000016 /* BadmintonLiveActivityExtension.appex */,
+				AA1100000000000000000016 /* LiveActivityExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		AA1100000000000000000031 /* BadmintonLiveActivityExtension */ = {
+		AA1100000000000000000031 /* LiveActivityExtension */ = {
 			isa = PBXGroup;
 			children = (
 				AA1100000000000000000013 /* ReminderLiveActivityWidget.swift */,
 				AA1100000000000000000017 /* Info.plist */,
 			);
-			path = BadmintonLiveActivityExtension;
+			path = LiveActivityExtension;
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -216,9 +220,9 @@
 			productReference = 13B07F961A680F5B00A75B9A /* MiniAppPlatform.app */;
 			productType = "com.apple.product-type.application";
 		};
-		AA1100000000000000000030 /* BadmintonLiveActivityExtension */ = {
+		AA1100000000000000000030 /* LiveActivityExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AA1100000000000000000040 /* Build configuration list for PBXNativeTarget "BadmintonLiveActivityExtension" */;
+			buildConfigurationList = AA1100000000000000000040 /* Build configuration list for PBXNativeTarget "LiveActivityExtension" */;
 			buildPhases = (
 				AA1100000000000000000024 /* Sources */,
 				AA1100000000000000000023 /* Frameworks */,
@@ -228,9 +232,9 @@
 			);
 			dependencies = (
 			);
-			name = BadmintonLiveActivityExtension;
-			productName = BadmintonLiveActivityExtension;
-			productReference = AA1100000000000000000016 /* BadmintonLiveActivityExtension.appex */;
+			name = LiveActivityExtension;
+			productName = LiveActivityExtension;
+			productReference = AA1100000000000000000016 /* LiveActivityExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -264,7 +268,7 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* MiniAppPlatform */,
-				AA1100000000000000000030 /* BadmintonLiveActivityExtension */,
+				AA1100000000000000000030 /* LiveActivityExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -393,7 +397,7 @@
 /* Begin PBXTargetDependency section */
 		AA1100000000000000000021 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = AA1100000000000000000030 /* BadmintonLiveActivityExtension */;
+			target = AA1100000000000000000030 /* LiveActivityExtension */;
 			targetProxy = AA1100000000000000000020 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -626,7 +630,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P7LN64WQ8C;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = BadmintonLiveActivityExtension/Info.plist;
+				INFOPLIST_FILE = LiveActivityExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -653,7 +657,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P7LN64WQ8C;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = BadmintonLiveActivityExtension/Info.plist;
+				INFOPLIST_FILE = LiveActivityExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -691,7 +695,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AA1100000000000000000040 /* Build configuration list for PBXNativeTarget "BadmintonLiveActivityExtension" */ = {
+		AA1100000000000000000040 /* Build configuration list for PBXNativeTarget "LiveActivityExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AA1100000000000000000041 /* Debug */,

@@ -1,0 +1,14 @@
+✔ native content exactly matches current RN source and policy (424.4325ms)
+✔ catalog, route targets and tenant references are complete (0.118167ms)
+✔ journal limits come from canonical budget rows (3.16875ms)
+✔ new host sources have no RN, embedded JS runtime or unsafe web transport (9.190917ms)
+✔ built iOS host resolves its bundled framework without test-runner paths (65.571584ms)
+✔ Test is a private bundled screen in Khác for every tenant (1.654125ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 848.781208

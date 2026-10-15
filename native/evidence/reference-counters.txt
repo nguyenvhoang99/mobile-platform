@@ -1,0 +1,19 @@
+deps: 4 direct runtime dependencies
+native modules: 1 (react-native-safe-area-context)
+unsupported packages: 0 candidates
+pods: 132 transitive entries in ios/Podfile.lock (ratchet: no growth without gate)
+gradle: 4 classpaths + 6 apply/id entries (ratchet: no growth without gate)
+        classpath("com.android.tools.build:gradle")
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("com.google.gms:google-services:4.4.4")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+build scripts: 6 files in scripts/ (ratchet: each new script needs owner + removal condition)
+/Users/lap16954/Documents/mine/platform/mobile/app/scripts/budgets.sh
+/Users/lap16954/Documents/mine/platform/mobile/app/scripts/conformance.sh
+/Users/lap16954/Documents/mine/platform/mobile/app/scripts/feature-graph.mjs
+/Users/lap16954/Documents/mine/platform/mobile/app/scripts/miniapp-sign.mjs
+/Users/lap16954/Documents/mine/platform/mobile/app/scripts/provenance.sh
+/Users/lap16954/Documents/mine/platform/mobile/app/scripts/verify.sh
+native patches: 0 files in patches/ (preferred 0; any addition needs gate + upstream link + removal plan)
+flags with removal dates:
+budgets: counters ok (ratchets are enforced per-release, not per-commit)

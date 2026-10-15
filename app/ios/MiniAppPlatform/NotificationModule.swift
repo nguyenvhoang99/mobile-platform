@@ -18,11 +18,8 @@ private struct CalendarEventPayload: Decodable {
 
   enum CodingKeys: String, CodingKey {
     case id
-    case bookingId
     case title
-    case courtName
     case location
-    case venue
     case description
     case startAtMs
     case endAtMs
@@ -31,14 +28,9 @@ private struct CalendarEventPayload: Decodable {
 
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    // Legacy keys (bookingId/courtName/venue) stay readable so payloads
-    // composed by older RN builds keep working.
-    id = (try container.decodeIfPresent(String.self, forKey: .id)
-      ?? container.decodeIfPresent(String.self, forKey: .bookingId)) ?? ""
-    title = (try container.decodeIfPresent(String.self, forKey: .title)
-      ?? container.decodeIfPresent(String.self, forKey: .courtName)) ?? ""
-    location = (try container.decodeIfPresent(String.self, forKey: .location)
-      ?? container.decodeIfPresent(String.self, forKey: .venue)) ?? ""
+    id = try container.decodeIfPresent(String.self, forKey: .id) ?? ""
+    title = try container.decodeIfPresent(String.self, forKey: .title) ?? ""
+    location = try container.decodeIfPresent(String.self, forKey: .location) ?? ""
     eventDescription = try container.decodeIfPresent(String.self, forKey: .description) ?? ""
     startAtMs = try container.decodeIfPresent(Double.self, forKey: .startAtMs) ?? 0
     endAtMs = try container.decodeIfPresent(Double.self, forKey: .endAtMs) ?? 0
@@ -49,6 +41,9 @@ private struct CalendarEventPayload: Decodable {
   var endAt: Date { Date(timeIntervalSince1970: endAtMs / 1000) }
 
   var isValid: Bool {
+    let titleLength = (title as NSString).length
+    let locationLength = (location as NSString).length
+    let descriptionLength = (eventDescription as NSString).length
     let identifier = id.range(
       of: #"^[A-Za-z0-9._:-]{1,160}$"#,
       options: .regularExpression
@@ -57,9 +52,9 @@ private struct CalendarEventPayload: Decodable {
       startAt > Date() &&
       endAt > startAt &&
       endAt.timeIntervalSinceNow <= 366 * 24 * 60 * 60 &&
-      !title.isEmpty && title.count <= 100 &&
-      !location.isEmpty && location.count <= 180 &&
-      eventDescription.count <= 1000 &&
+      !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && titleLength <= 100 &&
+      locationLength <= 180 &&
+      descriptionLength <= 1000 &&
       (0...1440).contains(alarmMinutes)
   }
 }
@@ -76,8 +71,6 @@ class NotificationModule: RCTEventEmitter, EKEventEditViewDelegate {
   private static var registrationResolvers: [RCTPromiseResolveBlock] = []
   private static var currentToken: String?
   private var observing = false
-  private var calendarEventResolver: RCTPromiseResolveBlock?
-  private var calendarEventEditor: EKEventEditViewController?
 
   override init() {
     super.init()
@@ -219,10 +212,6 @@ class NotificationModule: RCTEventEmitter, EKEventEditViewDelegate {
     }
 
     DispatchQueue.main.async {
-      guard self.calendarEventResolver == nil else {
-        resolve(["status": "failed"])
-        return
-      }
       guard let presenter = RCTPresentedViewController() else {
         resolve(["status": "unavailable"])
         return
@@ -242,12 +231,10 @@ class NotificationModule: RCTEventEmitter, EKEventEditViewDelegate {
       editor.eventStore = store
       editor.event = event
       editor.editViewDelegate = self
-      // Keep the promise terminal: Save and Cancel both reach the delegate,
-      // while an interactive swipe dismissal would not be portable across OS versions.
       editor.isModalInPresentation = true
-      self.calendarEventResolver = resolve
-      self.calendarEventEditor = editor
-      presenter.present(editor, animated: true)
+      presenter.present(editor, animated: true) {
+        resolve(["status": "presented"])
+      }
     }
   }
 
@@ -255,21 +242,7 @@ class NotificationModule: RCTEventEmitter, EKEventEditViewDelegate {
     _ controller: EKEventEditViewController,
     didCompleteWith action: EKEventEditViewAction
   ) {
-    let status: String
-    switch action {
-    case .saved:
-      status = "saved"
-    case .canceled, .deleted:
-      status = "cancelled"
-    @unknown default:
-      status = "failed"
-    }
-    let resolve = calendarEventResolver
-    calendarEventResolver = nil
-    calendarEventEditor = nil
-    controller.dismiss(animated: true) {
-      resolve?(["status": status])
-    }
+    controller.dismiss(animated: true)
   }
 
   static func handleDeviceToken(_ data: Data) {

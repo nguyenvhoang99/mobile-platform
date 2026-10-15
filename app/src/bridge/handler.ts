@@ -6,6 +6,7 @@
  * Every handler returns exactly one terminal reply (B6) and emits audit before reply (B7).
  */
 
+import { validateExtractBillArgs } from './handlers/aiExtractBill';
 import { BRIDGE_ROUND_TRIP_P95_MS } from '../config/budgets';
 import { appendAudit } from './audit';
 import { gate1Declaration, gate2Consent, gate3OsPermission, checkQuota } from './gates';
@@ -95,9 +96,12 @@ export async function handleBridgeRequest(
   }
 
   // Step 4: arg validate — reject unknown fields (strict). Each handler has a schema.
-  // MVP: shallow check — handler will do deeper validation.
-  if (typeof req.args !== 'object' || req.args === null) {
-    const res: BridgeResult<unknown> = { ok: false, data: null, error: 'INVALID_ARGUMENT', message: 'args must be object' };
+  // Bounded envelope and operation fields are checked before any consent grant.
+  if (typeof req.args !== 'object' || req.args === null || Array.isArray(req.args) ||
+      req.version !== capDef!.version || req.operation !== 'call' ||
+      !validArgs(req, capDef!.payloadCap) ||
+      !Object.keys(req).every(key => ['id', 'capability', 'operation', 'version', 'args'].includes(key))) {
+    const res: BridgeResult<unknown> = { ok: false, data: null, error: 'INVALID_ARGUMENT', message: 'Invalid request'  };
     appendAudit({
       capability: req.capability,
       operation: req.operation,
@@ -137,6 +141,9 @@ export async function handleBridgeRequest(
     }
   }
 
+  // A once grant authorizes one attempted operation, including an unavailable result.
+  if (cap.consent === 'once' && ctx.consentRecord) ctx.consentRecord.expiresAt = ctx.nowMs;
+
   // Step 6: G3 — OS permission, only now (never before G2 — would spend host prompt)
   const g3 = gate3OsPermission(req.capability, ctx.osState);
   if (!g3.pass) {
@@ -159,6 +166,7 @@ export async function handleBridgeRequest(
 
   // Step 7: quota
   const quota = checkQuota(ctx.quotaBucket, ctx.nowMs, 1, cap.quota.sustainedPerMinute, cap.quota.burst);
+  Object.assign(ctx.quotaBucket, quota.nextBucket);
   if (!quota.allowed) {
     const res: BridgeResult<unknown> = {
       ok: false,
@@ -206,7 +214,10 @@ export async function handleBridgeRequest(
   let data: unknown;
   let execError: BridgeResult<unknown> | null = null;
   try {
-    data = await withTimeout(handler(session, req.args), BRIDGE_ROUND_TRIP_P95_MS * 4); // generous for MVP; real p95 is 16ms
+    // Most capabilities must answer within a frame budget; LLM-backed ones get a
+    // provisional long deadline (unverified — baseline on device-lab before ratchet).
+    const timeoutMs = CAPABILITY_TIMEOUT_MS[req.capability] ?? BRIDGE_ROUND_TRIP_P95_MS * 4;
+    data = await withTimeout(handler(session, req.args), timeoutMs); // generous for MVP; real p95 is 16ms
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : String(e);
     // Never pass platform error through (template only) — map to closed enum (R3)
@@ -256,5 +267,29 @@ function classifyError(raw: string): { code: BridgeErrorCode; sanitized: string 
   if (raw === 'TIMEOUT' || raw.includes('TIMEOUT')) return { code: 'TIMEOUT', sanitized: 'Operation timed out' };
   if (raw.startsWith('INVALID_ARGUMENT')) return { code: 'INVALID_ARGUMENT', sanitized: 'Invalid argument' };
   if (raw.includes('CAPABILITY_NOT_DECLARED')) return { code: 'CAPABILITY_NOT_DECLARED', sanitized: 'Capability not declared' };
+  if (raw.startsWith('UNAVAILABLE')) return { code: 'UNAVAILABLE', sanitized: 'Not available on this device' };
   return { code: 'INTERNAL', sanitized: 'Internal error' };
+}
+
+// Per-capability execution deadlines (not budgets — no row in policy/budgets.md).
+// LLM-backed ops cannot meet the frame-derived round trip; the value is provisional
+// until device-lab baselines TTFT + total latency on reference hardware.
+export const CAPABILITY_TIMEOUT_MS: Record<string, number> = {
+  'ai.extract_bill': 30_000,
+};
+
+// Strict host-side PoC validation before consent; native transport must repeat it.
+function validArgs(req: BridgeRequest, payloadCap: number): boolean {
+  const fields: Record<string, readonly string[]> = {
+    'storage.kv': ['op', 'key', 'value'], 'net.request': ['url', 'method'],
+    'scanner.scan': ['mode'], 'location.current': ['precision'],
+    'crypto.sign': ['challenge'], 'notify.subscribe': ['action'],
+    'ai.extract_bill': ['locale', 'idempotencyKey', 'hint'],
+  };
+  try {
+    if (Object.keys(req.args).some(key => !(fields[req.capability] ?? []).includes(key))) return false;
+    if (unescape(encodeURIComponent(JSON.stringify(req.args))).length > payloadCap) return false;
+    if (req.capability === 'ai.extract_bill') validateExtractBillArgs(req.args);
+    return true;
+  } catch { return false; }
 }

@@ -68,7 +68,7 @@ export function ForegroundNotificationBanner({
           </Text>
         </View>
         <Pressable
-          accessibilityLabel="Dismiss notification"
+          accessibilityLabel="Bỏ qua thông báo"
           accessibilityRole="button"
           hitSlop={12}
           onPress={event => {

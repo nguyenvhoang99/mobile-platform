@@ -75,13 +75,13 @@ export function HomeCollectionPickerModal({
               </Text>
             </View>
             <Pressable
-              accessibilityLabel="Done"
+              accessibilityLabel="Xong"
               accessibilityRole="button"
               onPress={onClose}
               style={[styles.done, { backgroundColor: palette.primarySoft }]}
             >
               <Text style={[styles.doneText, { color: palette.primary }]}>
-                Done
+                Xong
               </Text>
             </Pressable>
           </View>

@@ -1,0 +1,3 @@
+Android Medium_Phone emulator, default Debug/no Firebase; test runner SplitBillInstrumentation.
+PASS: real WebView boot, shared bridge, durable draft/reopen, dedupe, malformed/forged/version/unknown/oversized, egress/navigation/storage isolation, scanner cancel, quota flood rejection.
+

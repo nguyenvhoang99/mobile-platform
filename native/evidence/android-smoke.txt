@@ -1,0 +1,2 @@
+PASS: bundled parity, snapshot roundtrip/isolation, malformed push rejection, card search/back, SDK bridge write/read and retained input.
+

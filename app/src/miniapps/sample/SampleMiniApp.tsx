@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react';
+import type { BridgeClient } from '../../bridge/client';
+import { HostFeatureDemos } from './HostFeatureDemos';
 import {
   Pressable,
   ScrollView,
@@ -19,9 +21,10 @@ import {
 
 type Props = {
   onClose?: () => void;
+  bridge?: BridgeClient;
 };
 
-export function SampleMiniApp({ onClose }: Props) {
+export function SampleMiniApp({ onClose, bridge }: Props) {
   const [slots, setSlots] = useState<SampleSlot[]>(() => [...initialSampleSlots]);
   const [selectedDate, setSelectedDate] = useState<SampleDateId>('today');
 
@@ -34,10 +37,10 @@ export function SampleMiniApp({ onClose }: Props) {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerRow}>
-          <Text style={styles.badge}>SAMPLE WEB MINI APP</Text>
+          <Text style={styles.badge}>MINI-APP MẪU · POC RN</Text>
           {onClose ? (
             <Pressable
-              accessibilityLabel="Close mini-app"
+              accessibilityLabel="Đóng mini-app"
               accessibilityRole="button"
               onPress={onClose}
               style={styles.closeBtn}
@@ -46,9 +49,9 @@ export function SampleMiniApp({ onClose }: Props) {
             </Pressable>
           ) : null}
         </View>
-        <Text style={styles.title}>Cầu lông / Badminton</Text>
+        <Text style={styles.title}>Sample · Tính năng host</Text>
         <Text style={styles.subtitle}>
-          Sample source demonstrating decoupled mini-app execution.
+          Mẫu đặt sân và gọi capability qua host. Đặt sân chỉ thay đổi dữ liệu mẫu trong màn hình.
         </Text>
       </View>
 
@@ -56,6 +59,8 @@ export function SampleMiniApp({ onClose }: Props) {
         {sampleDates.map(date => (
           <Pressable
             key={date.id}
+            accessibilityRole="button"
+            accessibilityState={{ selected: selectedDate === date.id }}
             onPress={() => setSelectedDate(date.id)}
             style={[
               styles.dateTab,
@@ -74,7 +79,9 @@ export function SampleMiniApp({ onClose }: Props) {
         ))}
       </View>
 
-      <ScrollView contentContainerStyle={styles.list}>
+      <ScrollView contentContainerStyle={styles.list} keyboardShouldPersistTaps="handled">
+        <HostFeatureDemos bridge={bridge} />
+        <Text style={styles.courtName}>Đặt sân mẫu (không đặt sân thật)</Text>
         {filteredSlots.map(slot => (
           <View key={slot.id} style={styles.card}>
             <View style={styles.cardHeader}>

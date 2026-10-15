@@ -134,8 +134,11 @@ export function scheduleNativeReminder(
   request: NativeReminderRequest,
 ): Promise<ReminderResult> {
   const runner = nativeModule?.scheduleReminder;
+  const { input, ...nativeRequest } = request;
   return runner
-    ? asResult<ReminderResult>(runner(JSON.stringify(request)))
+    ? asResult<ReminderResult>(
+        runner(JSON.stringify({ ...nativeRequest, targetInput: input })),
+      )
     : Promise.resolve({
         status: 'unavailable',
         surface: null,

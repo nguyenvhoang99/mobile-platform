@@ -8,11 +8,12 @@ const MAX_VALUE_BYTES = 64 * 1024;
 const MAX_KEYS_PER_NAMESPACE = 200;
 
 function nsFor(appId: string, tenantId: string, userId: string): string {
-  return `${tenantId}:${appId}:${userId}`;
+  return JSON.stringify([tenantId, appId, userId]);
 }
 
 export function handleStorageKv(): HandlerFn {
   return async (session, args) => {
+    if (Object.keys(args).some(field => !['op', 'key', 'value'].includes(field))) throw new Error('INVALID_ARGUMENT: unknown field');
     const op = args.op as string;
     const key = args.key as string | undefined;
     const value = args.value as string | undefined;

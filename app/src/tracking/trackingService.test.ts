@@ -4,6 +4,7 @@ import {
   replaceTrackingEventLines,
 } from '../native/hostStorage';
 import { TrackingService } from './trackingService';
+import { MiniAppLoadTracker } from './miniAppLoadTracker';
 import {
   TrackingBatch,
   TrackingNetworkSnapshot,
@@ -43,6 +44,34 @@ describe('tracking service', () => {
   beforeEach(async () => {
     __resetHostStorageForTests();
     await replaceTrackingEventLines([]);
+  });
+
+  test('journals host load metrics through the allowlist and rejects raw URLs and forged mini-app events', async () => {
+    const service = new TrackingService(config(), { network: async () => online, now: () => 1_000 });
+    const deliveries: Promise<unknown>[] = [];
+    let clock = 100;
+    const loads = new MiniAppLoadTracker((name, data, occurredAtMs) => {
+      const delivery = service.trackHost(name, data, { occurredAtMs });
+      deliveries.push(delivery);
+      return delivery;
+    }, () => clock, () => 1_000);
+    const frame = { appId: 'weather', sessionId: 'weather-session', history: ['/forecast?private=value'] };
+    loads.begin(frame, 1, 'category', 'new_session', loads.requestTime());
+    clock = 130;
+    loads.signalsFor(frame)!.committed();
+    clock = 180;
+    loads.signalsFor(frame)!.contentLaidOut();
+    await Promise.all(deliveries);
+    const events = service.getBufferedEventsForDebug();
+    expect(events).toHaveLength(2);
+    expect(events.every(event => event.priority === 'operational' && event.privacy_class === 'essential')).toBe(true);
+    expect(events.every(event => event.source_type === 'react_native' && event.occurred_at_ms === 1_000)).toBe(true);
+    const finished = events.find(event => event.event_name === 'mini_app_load_finished')!;
+    expect(finished.event_data).toMatchObject({ elapsed_ms: 80, navigation_commit_ms: 30, commit_to_layout_ms: 50 });
+    expect(JSON.stringify(events)).not.toContain('private=value');
+    await expect(service.trackHost('mini_app_load_finished', { ...finished.event_data, url: 'https://private.invalid/' })).resolves.toBeNull();
+    await expect(service.trackMiniApp({ appId: 'weather', appVersion: 1, sessionId: 'forged' }, 'mini_app_load_finished', 1, finished.event_data)).resolves.toBeNull();
+    service.stop();
   });
 
   test('derives mini-app identity and priority from the reviewed catalog', async () => {

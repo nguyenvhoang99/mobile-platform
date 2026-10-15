@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-04",
+  "variants": "Android default Firebase off, debug APK and unsigned release APK; iOS unsigned Release arm64 directory, not thinned IPA",
+  "artifacts": [
+    {
+      "path": "android/app/build/outputs/apk/debug/app-debug.apk",
+      "bytes": 70382663,
+      "sha256": "b855983b103484628d337a9e35f5e3b57828f8779c17c9cd74916505b1f34925"
+    },
+    {
+      "path": "android/app/build/outputs/apk/release/app-release-unsigned.apk",
+      "bytes": 315658,
+      "sha256": "e5f1fb16f3128a7b66c7f81611588894ae77129b1280cff921114cdabeb2cd76"
+    }
+  ],
+  "mini_app_package_bytes": 224707,
+  "ios_unsigned_release_logical_bytes": 2499446,
+  "raw_baseline_comparison": {
+    "android_previous_unsigned_apk_bytes": 155134,
+    "android_delta_percent": 103.47,
+    "ios_previous_unsigned_directory_bytes": 2044098,
+    "ios_delta_percent": 22.28
+  },
+  "verdict": "Raw growth measured; download/thinned size ratchet and device resource budgets NOT accepted. No release gate exemption or policy change.",
+  "source": {
+    "appId": "split-bill",
+    "branch": "feat/expense-first-ux",
+    "commit": "ba17a96e4a735f3eb4ba30afe633956b82b266ea",
+    "sourceIncludesWorkingTree": true,
+    "sharedPlatformContract": "host-bridge v1",
+    "files": {
+      "index.html": "6dcee891cde790e912f82b66518cea6db652c6ed5010b686f9c8726b9d4cc48b",
+      "bundle.js": "d799303f081cd519ac8e36408142393caded70c1610682ee3fcb6164d1f279bc",
+      "host.js": "6fd4934f644552c4ce1e1be77ec7cd5f830b4d61950988247d5f22b15db97367",
+      "manifest.json": "ecb0e8f39017b56d8521233fa85fe17aa8317de51e3d935e60a717837e9e7065"
+    }
+  }
+}

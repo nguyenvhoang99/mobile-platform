@@ -1,0 +1,5 @@
+{
+  "source": "shared-platform/packages/host-bridge/core/index.js",
+  "sha256": "f4424f13d0b169ad1468c733f42cc49e79e7c8ba01918980eb2ab93b47ff0e13",
+  "usage": "Test-only snapshot of workspace host-bridge v1; not bundled in product"
+}

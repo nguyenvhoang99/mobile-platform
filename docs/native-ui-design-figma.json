@@ -1,0 +1,446 @@
+{
+  "schemaVersion": 1,
+  "fileKey": "aSnrJJ38Pbif95uoYt4FK5",
+  "url": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5",
+  "revision": "proposed-v0.1",
+  "createdAt": "2026-10-04",
+  "status": "draft-partially-verified",
+  "pendingRefinement": {
+    "revision": "dock-v0.5",
+    "registryIds": [
+      "shell.navigation.dock",
+      "shell.dock_picker"
+    ],
+    "status": "pending-tool-quota",
+    "prototype": "native-ui-dock-review.html",
+    "contract": "native-ui-dock-design.md",
+    "figmaFileUnchanged": true,
+    "nativeAppsUnchanged": true
+  },
+  "pages": {
+    "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=0-1",
+    "foundations": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=3-2",
+    "screens": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=3-3"
+  },
+  "startHere": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-833",
+  "registryMap": {
+    "shell.root": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-840",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-776",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-779"
+      }
+    },
+    "shell.header": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-854",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-15",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-57"
+      }
+    },
+    "shell.navigation.dock": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-868",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-45",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-87"
+      }
+    },
+    "home.landing": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-882",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-14",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-56"
+      }
+    },
+    "home.app_row": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-896",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=3-114",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=3-118"
+      }
+    },
+    "home.customize": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-910",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-175",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-206"
+      }
+    },
+    "shell.dock_picker": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-924",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-243",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-264"
+      }
+    },
+    "explore.search": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-938",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-103",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-136"
+      }
+    },
+    "tenant.picker": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-952",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-290",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-317"
+      }
+    },
+    "miniapp.preview": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-966",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-349",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-367"
+      }
+    },
+    "cards.search": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-980",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-390",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-407"
+      }
+    },
+    "cards.detail": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-994",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-429",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-456"
+      }
+    },
+    "notifications.inbox": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1008",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-488",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-505"
+      }
+    },
+    "account.device_access": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1022",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-527",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-552"
+      }
+    },
+    "sample.booking": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1036",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-582",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-623"
+      }
+    },
+    "sample.host_actions": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1050",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-582",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-623"
+      }
+    },
+    "sample.bridge_storage": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1064",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-669",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-692"
+      }
+    },
+    "sample.bill_draft": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1078",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-720",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-747"
+      }
+    },
+    "sample.status": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1092",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-816",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-819"
+      }
+    },
+    "calendar.editor": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1106",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-830",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-830"
+      }
+    },
+    "reminder.live_activity": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1120",
+      "proposals": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-830",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-830"
+      }
+    }
+  },
+  "componentSets": {
+    "Action": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=3-113",
+    "AppRow": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=3-122",
+    "Field": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=3-129",
+    "Feedback": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=3-148",
+    "Header": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=3-161",
+    "Dock": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=3-180"
+  },
+  "collections": [
+    "VariableCollectionId:3:4",
+    "VariableCollectionId:3:5",
+    "VariableCollectionId:3:6"
+  ],
+  "textStyles": {
+    "ios/caption": "S:447be0af47dd841950ac2835753136527dd265b3,",
+    "ios/label": "S:eed07010108476b8185dd8c96156c763c9bb620a,",
+    "ios/body": "S:3688de5ad1a0d06d81799d82b61b5e9dbaed758b,",
+    "ios/heading": "S:3f3d46aebb69563c995bbd572fadd58b28242171,",
+    "ios/title": "S:2ef61d0e6ee8c571401a3ecccb2d761189684540,",
+    "android/caption": "S:47c94f6d46b41c18be48bb8b8886e53d733e951b,",
+    "android/label": "S:e2c9a172c21f7611e39f789880aefde94c172c33,",
+    "android/body": "S:7a7a8ed55637ee2dd674f9159717d16f6530e102,",
+    "android/heading": "S:915d51dccc731afa9a251b8496f8d513e6dd7242,",
+    "android/title": "S:fd33830f6c60b6dce0daab2e1f6888aab467cf0f,"
+  },
+  "counts": {
+    "registryIDs": 21,
+    "screenFrames": 26,
+    "componentFamilies": 6,
+    "componentVariants": 22,
+    "variables": 40,
+    "textStyles": 10
+  },
+  "prototype": {
+    "status": "not-wired",
+    "pendingConnections": [
+      {
+        "node": "11:23",
+        "destination": "11:103"
+      },
+      {
+        "node": "11:27",
+        "destination": "11:103"
+      },
+      {
+        "node": "11:31",
+        "destination": "11:175"
+      },
+      {
+        "node": "11:34",
+        "destination": "11:582"
+      },
+      {
+        "node": "11:38",
+        "destination": "11:390"
+      },
+      {
+        "node": "11:42",
+        "destination": "11:527"
+      },
+      {
+        "node": "11:65",
+        "destination": "11:136"
+      },
+      {
+        "node": "11:69",
+        "destination": "11:136"
+      },
+      {
+        "node": "11:73",
+        "destination": "11:206"
+      },
+      {
+        "node": "11:76",
+        "destination": "11:623"
+      },
+      {
+        "node": "11:80",
+        "destination": "11:407"
+      },
+      {
+        "node": "11:84",
+        "destination": "11:552"
+      },
+      {
+        "node": "11:113",
+        "destination": "11:582"
+      },
+      {
+        "node": "11:117",
+        "destination": "11:390"
+      },
+      {
+        "node": "11:121",
+        "destination": "11:349"
+      },
+      {
+        "node": "11:146",
+        "destination": "11:623"
+      },
+      {
+        "node": "11:150",
+        "destination": "11:407"
+      },
+      {
+        "node": "11:154",
+        "destination": "11:367"
+      },
+      {
+        "node": "11:196",
+        "destination": "11:243"
+      },
+      {
+        "node": "11:200",
+        "destination": "11:14"
+      },
+      {
+        "node": "11:202",
+        "destination": "11:14"
+      },
+      {
+        "node": "11:227",
+        "destination": "11:264"
+      },
+      {
+        "node": "11:231",
+        "destination": "11:56"
+      },
+      {
+        "node": "11:233",
+        "destination": "11:56"
+      },
+      {
+        "node": "11:250",
+        "destination": "11:175"
+      },
+      {
+        "node": "11:254",
+        "destination": "11:175"
+      },
+      {
+        "node": "11:258",
+        "destination": "11:175"
+      },
+      {
+        "node": "11:260",
+        "destination": "11:175"
+      },
+      {
+        "node": "11:271",
+        "destination": "11:206"
+      },
+      {
+        "node": "11:275",
+        "destination": "11:206"
+      },
+      {
+        "node": "11:279",
+        "destination": "11:206"
+      },
+      {
+        "node": "11:281",
+        "destination": "11:206"
+      },
+      {
+        "node": "11:296",
+        "destination": "11:14"
+      },
+      {
+        "node": "11:300",
+        "destination": "11:14"
+      },
+      {
+        "node": "11:304",
+        "destination": "11:14"
+      },
+      {
+        "node": "11:308",
+        "destination": "11:14"
+      },
+      {
+        "node": "11:323",
+        "destination": "11:56"
+      },
+      {
+        "node": "11:327",
+        "destination": "11:56"
+      },
+      {
+        "node": "11:331",
+        "destination": "11:56"
+      },
+      {
+        "node": "11:335",
+        "destination": "11:56"
+      },
+      {
+        "node": "11:400",
+        "destination": "11:429"
+      },
+      {
+        "node": "11:417",
+        "destination": "11:456"
+      },
+      {
+        "node": "I11:15;3:150",
+        "destination": "11:290"
+      },
+      {
+        "node": "I11:15;3:151",
+        "destination": "11:488"
+      },
+      {
+        "node": "I11:45;3:163",
+        "destination": "11:14"
+      },
+      {
+        "node": "I11:45;3:169",
+        "destination": "11:103"
+      },
+      {
+        "node": "I11:125;3:163",
+        "destination": "11:14"
+      },
+      {
+        "node": "I11:125;3:169",
+        "destination": "11:103"
+      },
+      {
+        "node": "I11:57;3:156",
+        "destination": "11:317"
+      },
+      {
+        "node": "I11:57;3:157",
+        "destination": "11:505"
+      },
+      {
+        "node": "I11:87;3:172",
+        "destination": "11:56"
+      },
+      {
+        "node": "I11:87;3:178",
+        "destination": "11:136"
+      },
+      {
+        "node": "I11:158;3:172",
+        "destination": "11:56"
+      },
+      {
+        "node": "I11:158;3:178",
+        "destination": "11:136"
+      }
+    ]
+  },
+  "limitations": [
+    "Starter MCP tool-call limit reached before final canvas audit and fixes.",
+    "SF Pro text did not render in the inspected anonymous web session; iOS proposals need font rendering repair or a documented review-font fallback before visual acceptance.",
+    "Prototype connections are planned, not wired. Screens intro text describing a prototype needs correction at next Figma edit.",
+    "State lists cover the required review contract; only seven generic feedback concepts are drawn, not every screen/state combination.",
+    "Header library Actions default was normalized across variants; actual Home screen overrides show Inbox, but library defaults need repair.",
+    "Dock currently shows the Home-selected concept; Explore-selected and configured shortcut variants need completion.",
+    "Ten typography styles exist but are not yet bound to text nodes.",
+    "A temporary header text-override trial at node 9:2 remains on Foundations; remove during next cleanup.",
+    "Dark, tenant accent, native device captures, accessibility reflow and runtime behavior are unverified."
+  ],
+  "checks": {
+    "registryMapping": "21 IDs matched",
+    "editableStructure": "Use_figma returned text, auto-layout, component instances and property overrides; full subtree audit pending",
+    "visual": "Android Home readable and iOS SF Pro rendering issue observed in web; full screen audit pending",
+    "appSourceChanges": "none"
+  }
+}

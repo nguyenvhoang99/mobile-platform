@@ -68,7 +68,7 @@ function categoryItem(
     description: category.description,
     glyph: category.glyph,
     icon: category.icon,
-    badge: suggested ? 'For you' : undefined,
+    badge: suggested ? 'Dành cho bạn' : undefined,
   };
 }
 
@@ -78,9 +78,7 @@ function miniAppItem(appId: string): HomeCollectionItem | null {
     ? {
         id: app.id,
         label: app.name,
-        description: `${
-          app.englishName ? `${app.englishName} · ` : ''
-        }Verified mini-app · v${app.version}`,
+        description: `Mini-app đã xác minh · v${app.version}`,
         glyph: app.glyph,
         icon: app.icon,
       }
@@ -218,10 +216,10 @@ export const HomeScreen = memo(function HomeScreen({
       trackingResetKey="home"
     >
       <View style={styles.topRow}>
-        <Text style={[styles.title, { color: palette.text }]}>Home</Text>
+        <Text style={[styles.title, { color: palette.text }]}>Trang chủ</Text>
         <View style={styles.headerActions}>
           <Pressable
-            accessibilityLabel="Open notifications"
+            accessibilityLabel="Mở thông báo"
             accessibilityRole="button"
             onPress={() => {
               signalNavigationSelection();
@@ -261,7 +259,7 @@ export const HomeScreen = memo(function HomeScreen({
             ) : null}
           </Pressable>
           <Pressable
-            accessibilityLabel="Open account"
+            accessibilityLabel="Mở tài khoản"
             accessibilityRole="button"
             onPress={() => {
               signalNavigationSelection();
@@ -288,16 +286,16 @@ export const HomeScreen = memo(function HomeScreen({
       {!preferencesLoaded ? (
         <View style={styles.loading}>
           <Text style={[styles.loadingText, { color: palette.mutedText }]}>
-            Loading your Home…
+            Đang tải Trang chủ…
           </Text>
         </View>
       ) : !preferences.hasCustomized ? (
         <View style={styles.firstRun}>
           <Text style={[styles.sectionTitle, { color: palette.text }]}>
-            Choose what matters
+            Chọn điều quan trọng với bạn
           </Text>
           <Text style={[styles.sectionBody, { color: palette.mutedText }]}>
-            Press and hold a category to place it on Home.
+            Nhấn giữ một nhóm để ghim lên Trang chủ.
           </Text>
           <View style={styles.constellationWrap}>
             <HomeCollection
@@ -314,21 +312,21 @@ export const HomeScreen = memo(function HomeScreen({
             <View style={styles.section}>
               <View style={styles.sectionHeaderRow}>
                 <Text style={[styles.sectionTitle, { color: palette.text }]}>
-                  Pinned apps
+                  Ứng dụng đã ghim
                 </Text>
                 {editingMiniAppId ? (
                   <Pressable
-                    accessibilityLabel="Done editing"
+                    accessibilityLabel="Kết thúc chỉnh sửa"
                     accessibilityRole="button"
                     onPress={() => setEditingMiniAppId(null)}
                     style={[styles.doneBadge, { backgroundColor: palette.primarySoft }]}
                   >
-                    <Text style={[styles.doneBadgeText, { color: palette.primary }]}>Done</Text>
+                    <Text style={[styles.doneBadgeText, { color: palette.primary }]}>Xong</Text>
                   </Pressable>
                 ) : null}
               </View>
               <Text style={[styles.sectionHint, { color: palette.mutedText }]}>
-                Hold an app to edit.
+                Nhấn giữ ứng dụng để chỉnh sửa.
               </Text>
               <View style={styles.railWrap}>
                 <HomeCollection
@@ -362,25 +360,25 @@ export const HomeScreen = memo(function HomeScreen({
           <View style={styles.section}>
             <View style={styles.sectionHeaderRow}>
               <Text style={[styles.sectionTitle, { color: palette.text }]}>
-                Your categories
+                Nhóm của bạn
               </Text>
               {editingCategoryId ? (
                 <Pressable
-                  accessibilityLabel="Done editing"
+                  accessibilityLabel="Kết thúc chỉnh sửa"
                   accessibilityRole="button"
                   onPress={() => setEditingCategoryId(null)}
                   style={[styles.doneBadge, { backgroundColor: palette.primarySoft }]}
                 >
-                  <Text style={[styles.doneBadgeText, { color: palette.primary }]}>Done</Text>
+                  <Text style={[styles.doneBadgeText, { color: palette.primary }]}>Xong</Text>
                 </Pressable>
               ) : null}
             </View>
             <Text style={[styles.sectionHint, { color: palette.mutedText }]}>
-              Tap an app to open. Hold category to edit.
+              Chạm ứng dụng để mở. Nhấn giữ nhóm để chỉnh sửa.
             </Text>
             {pinnedCategoryItems.length === 0 ? (
               <Text style={[styles.empty, { color: palette.mutedText }]}>
-                Nothing pinned yet.
+                Chưa có gì được ghim.
               </Text>
             ) : (
               pinnedCategoryItems.map(catItem => {
@@ -406,13 +404,12 @@ export const HomeScreen = memo(function HomeScreen({
                       }}
                       style={styles.categoryHeader}
                     >
-                      <LineIcon name={cat.icon} size={22} color={palette.primary} strokeWidth={1.5} />
                       <Text style={[styles.categoryTitle, { color: palette.text }]}>{cat.name}</Text>
                       <Text style={[styles.categoryCount, { color: palette.mutedText }]}>{miniApps.length}</Text>
                       <View style={styles.categoryHeaderSpacer} />
                       {isEditingThis ? (
                         <Pressable
-                          accessibilityLabel={`Remove ${cat.name}`}
+                          accessibilityLabel={`Xóa ${cat.name}`}
                           accessibilityRole="button"
                           onPress={() => {
                             setEditingCategoryId(null);
@@ -455,15 +452,14 @@ export const HomeScreen = memo(function HomeScreen({
                             pressed && styles.pressed,
                           ]}
                         >
-                          <LineIcon name={app.icon ?? 'home'} size={26} color={palette.primary} strokeWidth={1.4} />
-                          <Text numberOfLines={1} style={[styles.miniAppLabel, { color: palette.text }]}>
+                          <Text numberOfLines={2} style={[styles.miniAppLabel, { color: palette.text }]}>
                             {app.label}
                           </Text>
                         </Pressable>
                       ))}
                       {hasMore ? (
                         <Pressable
-                          accessibilityLabel={`View all ${miniApps.length} apps in ${cat.name}`}
+                          accessibilityLabel={`Xem tất cả ${miniApps.length} ứng dụng trong ${cat.name}`}
                           accessibilityRole="button"
                           onPress={() => openCategory(cat.id)}
                           style={({ pressed }) => [
@@ -478,8 +474,8 @@ export const HomeScreen = memo(function HomeScreen({
                           ]}
                         >
                           <LineIcon name="more-horizontal" size={22} color={palette.primary} strokeWidth={1.6} />
-                          <Text style={[styles.miniAppLabel, { color: palette.primary }]}>View all</Text>
-                          <Text style={[styles.moreCount, { color: palette.primary }]}>{miniApps.length} apps</Text>
+                          <Text style={[styles.miniAppLabel, { color: palette.primary }]}>Xem tất cả</Text>
+                          <Text style={[styles.moreCount, { color: palette.primary }]}>{miniApps.length} ứng dụng</Text>
                         </Pressable>
                       ) : null}
                     </ScrollView>
@@ -489,7 +485,7 @@ export const HomeScreen = memo(function HomeScreen({
             )}
             <View style={styles.addWrap}>
               <HomeAddCard
-                label="Add more categories"
+                label="Thêm nhóm khác"
                 onPress={openCategoryPicker}
                 palette={palette}
               />
@@ -499,7 +495,7 @@ export const HomeScreen = memo(function HomeScreen({
       )}
 
       <HomeCollectionPickerModal
-        body="Press and hold a category to add it to Home."
+        body="Nhấn giữ một nhóm để thêm vào Trang chủ."
         items={suggestedItems}
         layout="constellation"
         onClose={() => setCategoryPickerOpen(false)}
@@ -507,12 +503,12 @@ export const HomeScreen = memo(function HomeScreen({
         onScrollDepth={depth => onSurfaceScrollDepth('category_picker', depth)}
         palette={palette}
         selectedIds={selectedCategoryIds}
-        title="Add categories"
+        title="Thêm nhóm"
         trackingKey="category-picker"
         visible={categoryPickerOpen}
       />
       <HomeCollectionPickerModal
-        body="Tap to open. Press and hold an app to pin it above your categories."
+        body="Chạm để mở. Nhấn giữ ứng dụng để ghim lên trên các nhóm."
         items={activeCategoryMiniApps}
         layout="list"
         onClose={() => setActiveCategoryId(null)}

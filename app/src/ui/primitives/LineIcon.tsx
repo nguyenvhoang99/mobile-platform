@@ -27,7 +27,6 @@ export type LineIconName =
   | 'bus' // transit
   | 'file-text' // notes
   | 'shopping-bag' // market
-  | 'split' // split-bill
   | 'bell'
   | 'user'
   | 'plus'
@@ -50,7 +49,6 @@ const GLYPH: Record<LineIconName, string> = {
   bus: '🚌',
   'file-text': '✎',
   'shopping-bag': '◇',
-  split: '₫',
   bell: '🔔',
   user: '◯',
   plus: '＋',

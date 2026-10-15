@@ -91,7 +91,7 @@ function harness(pending: NativeNotificationEvent[] = []) {
           cancelled.push(id);
         },
         presentCalendarEvent: async request => {
-          calendarEvents.push(request.id ?? request.bookingId ?? '');
+          calendarEvents.push(request.id);
           return { status: 'presented' };
         },
       },

@@ -1,0 +1,52 @@
+{
+  "$schema": "../../app/src/miniapps/manifest/schema.json",
+  "id": "manage-expense",
+  "name": "Quản lý chi tiêu",
+  "englishName": "Manage Expense",
+  "shortName": "Chi tiêu",
+  "glyph": "🧾",
+  "version": 1,
+  "versionName": "1.0.0",
+  "publisher": {
+    "id": "platform-first-party",
+    "displayName": "Platform"
+  },
+  "routes": [
+    "/"
+  ],
+  "rootRoute": "/",
+  "resourceEndpoint": "https://manage-expense.miniapp.platform.local/",
+  "origins": [
+    "mini://manage-expense",
+    "https://manage-expense.miniapp.platform.local"
+  ],
+  "capabilities": [
+    {
+      "name": "storage.kv",
+      "version": 1,
+      "purposeKey": "manage_expense.persist_ledger",
+      "scope": "while_using"
+    },
+    {
+      "name": "ai.extract_expenses",
+      "version": 1,
+      "purposeKey": "manage_expense.extract_selected_image",
+      "scope": "once"
+    },
+    {
+      "name": "notifications.schedule_digest",
+      "version": 1,
+      "purposeKey": "manage_expense.schedule_digest",
+      "scope": "while_using"
+    }
+  ],
+  "egressHosts": [],
+  "publicEntrypoints": [],
+  "crossAppLinks": [],
+  "trackingEvents": [],
+  "minWebViewVersion": 1,
+  "defaultLocale": "vi",
+  "supportedLocales": [
+    "vi"
+  ]
+}

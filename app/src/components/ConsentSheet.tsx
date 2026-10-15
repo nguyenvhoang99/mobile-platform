@@ -42,7 +42,7 @@ export function ConsentSheet({
           <View style={styles.actions}>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Not now"
+              accessibilityLabel="Để sau"
               onPress={onDeny}
               style={[styles.secondaryBtn, { borderColor: palette.border }]}
             >
@@ -50,7 +50,7 @@ export function ConsentSheet({
             </Pressable>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Continue"
+              accessibilityLabel="Cho phép"
               onPress={onAllow}
               style={[styles.primaryBtn, { backgroundColor: palette.primary }]}
             >

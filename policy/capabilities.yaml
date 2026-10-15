@@ -89,7 +89,7 @@ capabilities:
     audit: call
     owner: platform
     support_horizon: indefinite, reviewed annually
-    errors: [CAPABILITY_NOT_DECLARED, INVALID_ARGUMENT, RATE_LIMITED, TIMEOUT, NOT_FOUND]
+    errors: [CAPABILITY_NOT_DECLARED, INVALID_ARGUMENT, RATE_LIMITED, TIMEOUT, NOT_FOUND, CAPABILITY_NOT_GRANTED, UNAVAILABLE]
     notes: host-mediated fetch to exact manifest hosts; never raw fetch, wildcard, or direct sockets
 
   - name: storage.kv
@@ -99,13 +99,13 @@ capabilities:
     os_permission: none
     broker_ui: false
     min_tier: sandbox
-    quota: { sustained: 120, burst: 20 }
+    quota: { sustained: 600, burst: 120 }
     payload_cap: 65536
     stream_cap: 0
     audit: call
     owner: platform
     support_horizon: indefinite, reviewed annually
-    errors: [CAPABILITY_NOT_DECLARED, INVALID_ARGUMENT, RATE_LIMITED, REVOKED]
+    errors: [CAPABILITY_NOT_DECLARED, INVALID_ARGUMENT, RATE_LIMITED, REVOKED, CAPABILITY_NOT_GRANTED, UNAVAILABLE]
     notes: per-(tenant, appId, user) scoped KV; no cookies, no localStorage, no cross-app storage
 
   - name: scanner.scan
@@ -121,7 +121,7 @@ capabilities:
     audit: call_with_result
     owner: platform
     support_horizon: indefinite, reviewed annually
-    errors: [CAPABILITY_NOT_DECLARED, CONSENT_REQUIRED, CONSENT_DENIED, CONSENT_DENIED_PERMANENTLY, TIMEOUT]
+    errors: [CAPABILITY_NOT_DECLARED, CONSENT_REQUIRED, CONSENT_DENIED, CONSENT_DENIED_PERMANENTLY, TIMEOUT, CAPABILITY_NOT_GRANTED, INVALID_ARGUMENT, UNAVAILABLE]
     notes: host-owned scanner UI; pixels never cross the bridge, only the decoded string
 
   - name: location.current
@@ -137,7 +137,7 @@ capabilities:
     audit: call_with_result
     owner: platform
     support_horizon: indefinite, reviewed annually
-    errors: [CAPABILITY_NOT_DECLARED, CONSENT_REQUIRED, CONSENT_DENIED, CONSENT_DENIED_PERMANENTLY, RATE_LIMITED, TIMEOUT, REVOKED]
+    errors: [CAPABILITY_NOT_DECLARED, CONSENT_REQUIRED, CONSENT_DENIED, CONSENT_DENIED_PERMANENTLY, RATE_LIMITED, TIMEOUT, REVOKED, CAPABILITY_NOT_GRANTED, INVALID_ARGUMENT, UNAVAILABLE]
     notes: one-shot coarse by default; precise is a separate high-risk capability with separate review
 
   - name: crypto.sign
@@ -153,7 +153,7 @@ capabilities:
     audit: call
     owner: platform
     support_horizon: indefinite, reviewed annually
-    errors: [CAPABILITY_NOT_DECLARED, CONSENT_REQUIRED, CONSENT_DENIED, TIMEOUT, REVOKED]
+    errors: [CAPABILITY_NOT_DECLARED, CONSENT_REQUIRED, CONSENT_DENIED, TIMEOUT, REVOKED, CAPABILITY_NOT_GRANTED, INVALID_ARGUMENT, UNAVAILABLE]
     notes: hardware-backed assertion over host-minted challenge; never biometric material nor boolean
 
   - name: notify.subscribe
@@ -169,8 +169,56 @@ capabilities:
     audit: call
     owner: platform
     support_horizon: indefinite, reviewed annually
-    errors: [CAPABILITY_NOT_DECLARED, CONSENT_REQUIRED, CONSENT_DENIED, RATE_LIMITED]
+    errors: [CAPABILITY_NOT_DECLARED, CONSENT_REQUIRED, CONSENT_DENIED, RATE_LIMITED, CAPABILITY_NOT_GRANTED, INVALID_ARGUMENT, UNAVAILABLE]
     notes: host owns push tokens; mini-app receives subscription state only
+
+  - name: ai.extract_bill
+    version: 1
+    risk: high
+    consent: once
+    os_permission: none
+    broker_ui: host_image_picker
+    min_tier: first_party
+    quota: { sustained: 4, burst: 2 }
+    payload_cap: 8192
+    stream_cap: 0
+    audit: call_with_result
+    owner: platform
+    support_horizon: pilot through 2026-12, re-review before wider rollout
+    errors: [CAPABILITY_NOT_DECLARED, INVALID_ARGUMENT, CONSENT_REQUIRED, CONSENT_DENIED, CONSENT_DENIED_PERMANENTLY, RATE_LIMITED, TIMEOUT, REVOKED, UNAVAILABLE, CAPABILITY_NOT_GRANTED]
+    notes: pilot for split-bill — host-owned image picker (pixels never cross the bridge), on-device LLM returns derived bill fields only; extracted amounts are untrusted drafts requiring user review, never money authority
+
+  - name: ai.extract_expenses
+    version: 1
+    risk: high
+    consent: once
+    os_permission: none
+    broker_ui: host_image_picker
+    min_tier: first_party
+    quota: { sustained: 4, burst: 2 }
+    payload_cap: 32768
+    stream_cap: 0
+    audit: call
+    owner: mobile-platform
+    support_horizon: pilot through 2026-12
+    errors: [INVALID_ARGUMENT, CONSENT_DENIED, RATE_LIMITED, TIMEOUT, REVOKED, UNAVAILABLE, CAPABILITY_NOT_GRANTED]
+    notes: Manage Expense host-owned selected/pasted image, local model only, derived untrusted candidate rows, no paths/pixels returned, MCC always null
+
+  - name: notifications.schedule_digest
+    version: 1
+    risk: medium
+    consent: while_using
+    os_permission: notifications
+    broker_ui: os_notification_permission
+    min_tier: first_party
+    quota: { sustained: 20, burst: 5 }
+    payload_cap: 8192
+    stream_cap: 0
+    audit: call
+    owner: mobile-platform
+    support_horizon: pilot through 2026-12
+    errors: [INVALID_ARGUMENT, CONSENT_DENIED, RATE_LIMITED, TIMEOUT, REVOKED, UNAVAILABLE, CAPABILITY_NOT_GRANTED]
+    notes: Scoped periodic reminders opening local reports; no promised APNs/FCM delivery or stale numeric summaries on lock screen
 
 # ---------------------------------------------------------------------------
 # Never expose. Not judgment calls — these do not become acceptable at a higher tier,

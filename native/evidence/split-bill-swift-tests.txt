@@ -1,0 +1,39 @@
+Building for debugging...
+[2 / 6] PlatformCoreTests-product
+[4 / 8] PlatformCoreTests-product
+[9 / 11] PlatformCoreTests-product
+[11 / 11] PlatformCoreTests-product
+Build complete! (3,20 secs)
+Test Suite 'All tests' started at 2026-10-04 17:57:16.623.
+Test Suite 'PlatformCoreTests.xctest' started at 2026-10-04 17:57:16.627.
+Test Suite 'CoreTests' started at 2026-10-04 17:57:16.627.
+Test Case '-[PlatformCoreTests.CoreTests testBookingOwnershipAndCapacity]' started.
+Test Case '-[PlatformCoreTests.CoreTests testBookingOwnershipAndCapacity]' passed (0.006 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testBridgeGatesQuotaRevokeAudit]' started.
+Test Case '-[PlatformCoreTests.CoreTests testBridgeGatesQuotaRevokeAudit]' passed (0.004 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testConsentBoundsAndUnsupportedVersion]' started.
+Test Case '-[PlatformCoreTests.CoreTests testConsentBoundsAndUnsupportedVersion]' passed (0.001 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testContentAndSearch]' started.
+Test Case '-[PlatformCoreTests.CoreTests testContentAndSearch]' passed (0.002 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testNotificationBoundary]' started.
+Test Case '-[PlatformCoreTests.CoreTests testNotificationBoundary]' passed (0.001 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testRemotePayloadRejectsMalformedExpiredAndHalfTarget]' started.
+Test Case '-[PlatformCoreTests.CoreTests testRemotePayloadRejectsMalformedExpiredAndHalfTarget]' passed (0.007 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testRoutesAndCrossLinks]' started.
+Test Case '-[PlatformCoreTests.CoreTests testRoutesAndCrossLinks]' passed (0.001 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testSnapshotRoundtripAndIsolation]' started.
+Test Case '-[PlatformCoreTests.CoreTests testSnapshotRoundtripAndIsolation]' passed (0.001 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testSynchronousSessionRevocation]' started.
+Test Case '-[PlatformCoreTests.CoreTests testSynchronousSessionRevocation]' passed (0.001 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testUUIDv7UsesTimeVersionAndVariant]' started.
+Test Case '-[PlatformCoreTests.CoreTests testUUIDv7UsesTimeVersionAndVariant]' passed (0.001 seconds).
+Test Suite 'CoreTests' passed at 2026-10-04 17:57:16.653.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.025 (0.026) seconds
+Test Suite 'PlatformCoreTests.xctest' passed at 2026-10-04 17:57:16.653.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.025 (0.026) seconds
+Test Suite 'All tests' passed at 2026-10-04 17:57:16.653.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.025 (0.030) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

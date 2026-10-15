@@ -10,6 +10,7 @@ import { handleScanner } from './handlers/scanner';
 import { handleLocationCurrent } from './handlers/locationCurrent';
 import { handleCryptoSign } from './handlers/cryptoSign';
 import { handleNotifySubscribe } from './handlers/notifySubscribe';
+import { handleAiExtractBill } from './handlers/aiExtractBill';
 
 export function registerAllHandlers(egressHosts: readonly string[] = []): void {
   registerHandler('storage.kv', handleStorageKv());
@@ -18,4 +19,5 @@ export function registerAllHandlers(egressHosts: readonly string[] = []): void {
   registerHandler('location.current', handleLocationCurrent());
   registerHandler('crypto.sign', handleCryptoSign());
   registerHandler('notify.subscribe', handleNotifySubscribe());
+  registerHandler('ai.extract_bill', handleAiExtractBill());
 }

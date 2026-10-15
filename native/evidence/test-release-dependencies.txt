@@ -1,0 +1,13 @@
+
+> Task :app:dependencies
+
+------------------------------------------------------------
+Project ':app'
+------------------------------------------------------------
+
+releaseRuntimeClasspath - Runtime classpath of '/release'.
+\--- org.jetbrains.kotlin:kotlin-stdlib:2.1.20
+     \--- org.jetbrains:annotations:13.0
+
+A web-based, searchable dependency report is available by adding the --scan option.
+

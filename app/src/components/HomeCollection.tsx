@@ -12,7 +12,9 @@ export type HomeCollectionItem = {
   id: string;
   label: string;
   description: string;
+  /** Giữ lại cho tương thích — tile hiện chỉ render text, không render icon. */
   glyph: string;
+  /** Giữ lại cho tương thích — tile hiện chỉ render text, không render icon. */
   icon?: LineIconName;
   badge?: string;
 };
@@ -233,8 +235,8 @@ function HomeCollectionTile({
           accessibilityHint={
             onLongPress
               ? selected
-                ? 'Selected. Long press to edit on Home.'
-                : 'Long press to add to Home.'
+                ? 'Đã chọn. Nhấn giữ để chỉnh sửa trên Trang chủ.'
+                : 'Nhấn giữ để thêm vào Trang chủ.'
               : undefined
           }
           accessibilityLabel={item.label}
@@ -259,20 +261,6 @@ function HomeCollectionTile({
           }
           style={({ pressed }) => [tileStyle, pressed && styles.pressed]}
         >
-          <View
-            style={[
-              styles.glyphCircle,
-              { backgroundColor: palette.surface, borderWidth: 1.2, borderColor: palette.glassBorder },
-              layout === 'constellation' && styles.constellationGlyphCircle,
-            ]}
-          >
-            <LineIcon
-              name={item.icon ?? 'home'}
-              size={layout === 'constellation' ? 22 : 26}
-              color={palette.primary}
-              strokeWidth={1.4}
-            />
-          </View>
           <View style={layout === 'list' ? styles.listCopy : styles.centeredCopy}>
             <Text
               numberOfLines={layout === 'list' ? 1 : 2}
@@ -307,7 +295,7 @@ function HomeCollectionTile({
           style={[styles.removeWrap, badgeAnimatedStyle]}
         >
           <Pressable
-            accessibilityLabel={`Remove ${item.label} from Home`}
+            accessibilityLabel={`Xóa ${item.label} khỏi Trang chủ`}
             accessibilityRole="button"
             onPress={handleRemovePress}
             style={[styles.remove, { backgroundColor: palette.danger }]}
@@ -370,10 +358,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 10,
   },
-  constellationGlyphCircle: {
-    height: 34,
-    width: 34,
-  },
   rail: {
     gap: 10,
     paddingHorizontal: 20,
@@ -412,17 +396,6 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.8,
     transform: [{ scale: 0.98 }],
-  },
-  glyphCircle: {
-    alignItems: 'center',
-    borderRadius: 16,
-    height: 44,
-    justifyContent: 'center',
-    width: 44,
-  },
-  glyph: {
-    fontSize: 20,
-    fontWeight: '800',
   },
   centeredCopy: {
     alignItems: 'center',

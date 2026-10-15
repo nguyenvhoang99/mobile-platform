@@ -1,0 +1,10 @@
+Test Case '-[NativeJourneyTests.NativeJourneyTests testHomeSearchCardsAndHostBack]' started.
+Test Case '-[NativeJourneyTests.NativeJourneyTests testHomeSearchCardsAndHostBack]' passed (23.147 seconds).
+Test Case '-[NativeJourneyTests.NativeJourneyTests testNativeTestEntryOCRAndClose]' started.
+Test Case '-[NativeJourneyTests.NativeJourneyTests testNativeTestEntryOCRAndClose]' passed (33.389 seconds).
+Test Case '-[NativeJourneyTests.NativeJourneyTests testSampleBridgeDraftAndUnsupportedAI]' started.
+Test Case '-[NativeJourneyTests.NativeJourneyTests testSampleBridgeDraftAndUnsupportedAI]' passed (27.296 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 83.832 (83.839) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 83.832 (83.845) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 83.832 (83.906) seconds
+** TEST SUCCEEDED **

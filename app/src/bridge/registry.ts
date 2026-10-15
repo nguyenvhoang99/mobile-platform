@@ -2,13 +2,14 @@
  * Capability registry — typed mirror of policy/capabilities.yaml.
  * CI (R1) asserts every handler has an entry and every entry has a handler.
  *
- * MVP six capabilities — all broker/host-owned, zero raw OS permission spend
+ * MVP six capabilities + ai.extract_bill pilot — all broker/host-owned, zero raw OS permission spend
  * where possible (native-capability Step 1: prefer picker/host UI).
  */
 
 export type CapabilityDef = {
   name: string; // namespace.operation
   version: number;
+  payloadCap: number; // typed mirror of policy/capabilities.yaml
   risk: 'low' | 'medium' | 'high' | 'critical';
   consent: 'none' | 'once' | 'while_using' | 'session' | 'persistent';
   osPermission: 'none' | string;
@@ -25,6 +26,7 @@ export const CAPABILITIES: readonly CapabilityDef[] = [
   {
     name: 'net.request',
     version: 1,
+    payloadCap: 65536,
     risk: 'medium',
     consent: 'none',
     osPermission: 'none',
@@ -34,11 +36,12 @@ export const CAPABILITIES: readonly CapabilityDef[] = [
     audit: 'call',
     owner: 'platform',
     supportHorizon: 'indefinite, reviewed annually',
-    errors: ['CAPABILITY_NOT_DECLARED', 'INVALID_ARGUMENT', 'RATE_LIMITED', 'TIMEOUT', 'NOT_FOUND'],
+    errors: ['CAPABILITY_NOT_DECLARED', 'INVALID_ARGUMENT', 'RATE_LIMITED', 'TIMEOUT', 'NOT_FOUND', 'CAPABILITY_NOT_GRANTED', 'UNAVAILABLE'],
   },
   {
     name: 'storage.kv',
     version: 1,
+    payloadCap: 65536,
     risk: 'low',
     consent: 'none',
     osPermission: 'none',
@@ -48,11 +51,12 @@ export const CAPABILITIES: readonly CapabilityDef[] = [
     audit: 'call',
     owner: 'platform',
     supportHorizon: 'indefinite, reviewed annually',
-    errors: ['CAPABILITY_NOT_DECLARED', 'INVALID_ARGUMENT', 'RATE_LIMITED', 'REVOKED'],
+    errors: ['CAPABILITY_NOT_DECLARED', 'INVALID_ARGUMENT', 'RATE_LIMITED', 'REVOKED', 'CAPABILITY_NOT_GRANTED', 'UNAVAILABLE'],
   },
   {
     name: 'scanner.scan',
     version: 1,
+    payloadCap: 1024,
     risk: 'medium',
     consent: 'once',
     osPermission: 'none', // host-owned scanner UI — no OS prompt
@@ -62,11 +66,12 @@ export const CAPABILITIES: readonly CapabilityDef[] = [
     audit: 'call_with_result',
     owner: 'platform',
     supportHorizon: 'indefinite, reviewed annually',
-    errors: ['CAPABILITY_NOT_DECLARED', 'CONSENT_REQUIRED', 'CONSENT_DENIED', 'CONSENT_DENIED_PERMANENTLY', 'TIMEOUT'],
+    errors: ['CAPABILITY_NOT_DECLARED', 'CONSENT_REQUIRED', 'CONSENT_DENIED', 'CONSENT_DENIED_PERMANENTLY', 'TIMEOUT', 'CAPABILITY_NOT_GRANTED', 'INVALID_ARGUMENT', 'UNAVAILABLE'],
   },
   {
     name: 'location.current',
     version: 1,
+    payloadCap: 256,
     risk: 'high',
     consent: 'once',
     osPermission: 'none', // coarse one-shot derived server-side; precise is separate capability
@@ -76,11 +81,12 @@ export const CAPABILITIES: readonly CapabilityDef[] = [
     audit: 'call_with_result',
     owner: 'platform',
     supportHorizon: 'indefinite, reviewed annually',
-    errors: ['CAPABILITY_NOT_DECLARED', 'CONSENT_REQUIRED', 'CONSENT_DENIED', 'CONSENT_DENIED_PERMANENTLY', 'RATE_LIMITED', 'TIMEOUT', 'REVOKED'],
+    errors: ['CAPABILITY_NOT_DECLARED', 'CONSENT_REQUIRED', 'CONSENT_DENIED', 'CONSENT_DENIED_PERMANENTLY', 'RATE_LIMITED', 'TIMEOUT', 'REVOKED', 'CAPABILITY_NOT_GRANTED', 'INVALID_ARGUMENT', 'UNAVAILABLE'],
   },
   {
     name: 'crypto.sign',
     version: 1,
+    payloadCap: 1024,
     risk: 'high',
     consent: 'once',
     osPermission: 'none',
@@ -90,11 +96,12 @@ export const CAPABILITIES: readonly CapabilityDef[] = [
     audit: 'call',
     owner: 'platform',
     supportHorizon: 'indefinite, reviewed annually',
-    errors: ['CAPABILITY_NOT_DECLARED', 'CONSENT_REQUIRED', 'CONSENT_DENIED', 'TIMEOUT', 'REVOKED'],
+    errors: ['CAPABILITY_NOT_DECLARED', 'CONSENT_REQUIRED', 'CONSENT_DENIED', 'TIMEOUT', 'REVOKED', 'CAPABILITY_NOT_GRANTED', 'INVALID_ARGUMENT', 'UNAVAILABLE'],
   },
   {
     name: 'notify.subscribe',
     version: 1,
+    payloadCap: 256,
     risk: 'low',
     consent: 'while_using',
     osPermission: 'none',
@@ -104,7 +111,22 @@ export const CAPABILITIES: readonly CapabilityDef[] = [
     audit: 'call',
     owner: 'platform',
     supportHorizon: 'indefinite, reviewed annually',
-    errors: ['CAPABILITY_NOT_DECLARED', 'CONSENT_REQUIRED', 'CONSENT_DENIED', 'RATE_LIMITED'],
+    errors: ['CAPABILITY_NOT_DECLARED', 'CONSENT_REQUIRED', 'CONSENT_DENIED', 'RATE_LIMITED', 'CAPABILITY_NOT_GRANTED', 'INVALID_ARGUMENT', 'UNAVAILABLE'],
+  },
+  {
+    name: 'ai.extract_bill',
+    version: 1,
+    payloadCap: 8192,
+    risk: 'high',
+    consent: 'once',
+    osPermission: 'none', // host-owned image picker — no OS prompt, picker is the consent gesture
+    brokerUi: 'host_image_picker',
+    minTier: 'first_party',
+    quota: { sustainedPerMinute: 4, burst: 2 },
+    audit: 'call_with_result',
+    owner: 'platform',
+    supportHorizon: 'pilot through 2026-12, re-review before wider rollout',
+    errors: ['CAPABILITY_NOT_DECLARED', 'INVALID_ARGUMENT', 'CONSENT_REQUIRED', 'CONSENT_DENIED', 'CONSENT_DENIED_PERMANENTLY', 'RATE_LIMITED', 'TIMEOUT', 'REVOKED', 'UNAVAILABLE', 'CAPABILITY_NOT_GRANTED'],
   },
 ] as const;
 

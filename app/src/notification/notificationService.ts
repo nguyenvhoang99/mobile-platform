@@ -351,9 +351,8 @@ export class NotificationService {
   ): Promise<ReminderResult> {
     const leadMs = this.config.reminderLeadMs ?? 60 * 60 * 1_000;
     const reminderAtMs = request.startAtMs - leadMs;
-    const id = request.id ?? request.bookingId ?? '';
-    const title = request.title ?? request.courtName ?? '';
-    const location = request.location ?? request.venue ?? '';
+    const { id, title } = request;
+    const location = request.location ?? '';
     // Copy and routing are composed here in React Native. The native shell
     // only renders and delivers what it receives — never product content.
     const body = request.body ?? (location ? `${title} · ${location}` : title);
@@ -365,9 +364,9 @@ export class NotificationService {
       request.startAtMs <= this.now() ||
       request.endAtMs <= request.startAtMs ||
       reminderAtMs >= request.endAtMs ||
-      title.length === 0 ||
+      title.trim().length === 0 ||
       title.length > 100 ||
-      body.length === 0 ||
+      body.trim().length === 0 ||
       body.length > 600 ||
       location.length > 180
     ) {
@@ -398,12 +397,9 @@ export class NotificationService {
       return await this.native.scheduleReminder({
         ...request,
         id,
-        bookingId: id,
         title,
-        courtName: title,
         body,
         location,
-        venue: location,
         reminderAtMs,
       });
     } catch {
@@ -426,9 +422,8 @@ export class NotificationService {
   async presentCalendarEvent(
     request: CalendarEventRequest,
   ): Promise<CalendarEventResult> {
-    const id = request.id ?? request.bookingId ?? '';
-    const title = request.title ?? request.courtName ?? '';
-    const location = request.location ?? request.venue ?? '';
+    const { id, title } = request;
+    const location = request.location ?? '';
 
     if (
       !identifierPattern.test(id) ||
@@ -436,9 +431,8 @@ export class NotificationService {
       !Number.isFinite(request.endAtMs) ||
       request.startAtMs <= this.now() ||
       request.endAtMs <= request.startAtMs ||
-      title.length === 0 ||
+      title.trim().length === 0 ||
       title.length > 100 ||
-      location.length === 0 ||
       location.length > 180
     ) {
       return { status: 'failed' };
@@ -448,11 +442,8 @@ export class NotificationService {
       return await this.native.presentCalendarEvent({
         ...request,
         id,
-        bookingId: id,
         title,
-        courtName: title,
         location,
-        venue: location,
       });
     } catch {
       return { status: 'failed' };

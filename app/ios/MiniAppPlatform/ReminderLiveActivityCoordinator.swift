@@ -20,12 +20,9 @@ private struct ReminderPayload: Decodable {
 
   enum CodingKeys: String, CodingKey {
     case id
-    case bookingId
     case title
-    case courtName
     case body
     case location
-    case venue
     case reminderAtMs
     case startAtMs
     case endAtMs
@@ -33,7 +30,6 @@ private struct ReminderPayload: Decodable {
     case targetAppId
     case entrypointId
     case targetInput
-    case input
   }
 
   /// Small string map forwarded into the notification target input.
@@ -54,7 +50,10 @@ private struct ReminderPayload: Decodable {
         values = dict
         return
       }
-      values = [:]
+      throw DecodingError.typeMismatch(
+        [String: String].self,
+        DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "targetInput must be a string map or JSON string map")
+      )
     }
 
     init(values: [String: String]) {
@@ -64,16 +63,9 @@ private struct ReminderPayload: Decodable {
 
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    // Legacy keys (bookingId/courtName/venue) stay readable so payloads
-    // composed by older RN builds keep working.
-    let rawId = try container.decodeIfPresent(String.self, forKey: .id)
-      ?? container.decodeIfPresent(String.self, forKey: .bookingId)
-    let rawTitle = try container.decodeIfPresent(String.self, forKey: .title)
-      ?? container.decodeIfPresent(String.self, forKey: .courtName)
-    let location = try container.decodeIfPresent(String.self, forKey: .location)
-      ?? container.decodeIfPresent(String.self, forKey: .venue)
-    id = rawId ?? ""
-    title = rawTitle ?? ""
+    id = try container.decodeIfPresent(String.self, forKey: .id) ?? ""
+    title = try container.decodeIfPresent(String.self, forKey: .title) ?? ""
+    let location = try container.decodeIfPresent(String.self, forKey: .location) ?? ""
     let explicitBody = try container.decodeIfPresent(String.self, forKey: .body) ?? ""
     if !explicitBody.isEmpty {
       body = explicitBody
@@ -89,7 +81,6 @@ private struct ReminderPayload: Decodable {
     targetAppId = try container.decodeIfPresent(String.self, forKey: .targetAppId)
     entrypointId = try container.decodeIfPresent(String.self, forKey: .entrypointId)
     targetInput = try container.decodeIfPresent(TargetInput.self, forKey: .targetInput)
-      ?? container.decodeIfPresent(TargetInput.self, forKey: .input)
   }
 
   var reminderAt: Date { Date(timeIntervalSince1970: reminderAtMs / 1000) }
@@ -99,6 +90,8 @@ private struct ReminderPayload: Decodable {
   var effectiveCategory: String { category?.isEmpty == false ? category! : "scheduled_reminder" }
 
   var isValid: Bool {
+    let titleLength = (title as NSString).length
+    let bodyLength = (body as NSString).length
     let identifier = id.range(
       of: #"^[A-Za-z0-9._:-]{1,160}$"#,
       options: .regularExpression
@@ -125,8 +118,8 @@ private struct ReminderPayload: Decodable {
       endAt > startAt &&
       endAt.timeIntervalSinceNow <= 366 * 24 * 60 * 60 &&
       reminderAt < startAt &&
-      !title.isEmpty && title.count <= 100 &&
-      !body.isEmpty && body.count <= 600
+      !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && titleLength <= 100 &&
+      !body.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && bodyLength <= 600
   }
 }
 

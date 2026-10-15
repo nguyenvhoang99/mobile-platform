@@ -45,16 +45,16 @@ function relativeTime(timestamp: number): string {
     Math.floor((Date.now() - timestamp) / 60_000),
   );
   if (elapsedMinutes < 1) {
-    return 'Now';
+    return 'Bây giờ';
   }
   if (elapsedMinutes < 60) {
-    return `${elapsedMinutes}m`;
+    return `${elapsedMinutes}ph`;
   }
   const elapsedHours = Math.floor(elapsedMinutes / 60);
   if (elapsedHours < 24) {
-    return `${elapsedHours}h`;
+    return `${elapsedHours}g`;
   }
-  return `${Math.floor(elapsedHours / 24)}d`;
+  return `${Math.floor(elapsedHours / 24)}ngày`;
 }
 
 export function NotificationSheet({
@@ -173,10 +173,10 @@ export function NotificationSheet({
           />
           <View style={styles.heading}>
             <Text style={[styles.title, { color: palette.text }]}>
-              Notifications
+              Thông báo
             </Text>
             <Pressable
-              accessibilityLabel="Close notifications"
+              accessibilityLabel="Đóng thông báo"
               accessibilityRole="button"
               onPress={onClose}
               style={[styles.close, { backgroundColor: palette.primarySoft }]}
@@ -197,18 +197,18 @@ export function NotificationSheet({
             >
               <View style={styles.permissionCopy}>
                 <Text style={[styles.permissionTitle, { color: palette.text }]}>
-                  {permissionWasDenied ? 'Alerts are off' : 'Enable alerts'}
+                  {permissionWasDenied ? 'Thông báo đang tắt' : 'Bật thông báo'}
                 </Text>
                 <Text
                   style={[styles.permissionBody, { color: palette.mutedText }]}
                 >
                   {permissionWasDenied
-                    ? 'Turn on notifications in system settings to receive alerts.'
-                    : 'Inbox delivery works now. Allow system alerts when the app is away.'}
+                    ? 'Bật thông báo trong Cài đặt hệ thống để nhận tin.'
+                    : 'Hộp thư vẫn nhận tin. Cho phép thông báo hệ thống khi bạn rời ứng dụng.'}
                 </Text>
               </View>
               <Text style={[styles.enable, { color: palette.primary }]}>
-                {permissionWasDenied ? 'Settings' : 'Enable'}
+                {permissionWasDenied ? 'Cài đặt' : 'Bật'}
               </Text>
             </Pressable>
           ) : null}
@@ -221,10 +221,10 @@ export function NotificationSheet({
             ListEmptyComponent={
               <View style={styles.empty}>
                 <Text style={[styles.emptyTitle, { color: palette.text }]}>
-                  You're all caught up
+                  Bạn đã xem hết
                 </Text>
                 <Text style={[styles.emptyBody, { color: palette.mutedText }]}>
-                  New updates will appear here.
+                  Cập nhật mới sẽ hiện ở đây.
                 </Text>
               </View>
             }

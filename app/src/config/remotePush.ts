@@ -11,7 +11,7 @@
  *  - Native iOS: `NotificationModule.registerForRemoteNotifications` and
  *    `AppDelegate.didRegister* / didReceiveRemoteNotification` become no-ops.
  *
- * Local notifications (UNUserNotificationCenter schedule, badminton reminders,
+ * Local notifications (UNUserNotificationCenter schedule, generic reminders,
  * calendar presentation) remain enabled — they use a different permission
  * (`requestPermission`) and do not require APNs.
  *

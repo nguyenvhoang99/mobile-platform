@@ -34,6 +34,7 @@ export type MiniAppCapability = {
 };
 
 import type { LineIconName } from '../ui/primitives/LineIcon';
+import { BUNDLED_MINI_APP_DISPLAY } from '../content/displayContent';
 
 export type MiniAppManifest = {
   id: string;
@@ -56,11 +57,10 @@ export type MiniAppManifest = {
 export const miniAppCatalog: readonly MiniAppManifest[] = [
   {
     id: 'badminton',
-    name: 'Cầu lông',
-    englishName: 'Badminton',
-    shortName: 'Cầu lông',
-    glyph: '🏸',
-    icon: 'badminton',
+    name: BUNDLED_MINI_APP_DISPLAY.badminton.name,
+    shortName: BUNDLED_MINI_APP_DISPLAY.badminton.shortName,
+    glyph: BUNDLED_MINI_APP_DISPLAY.badminton.glyph,
+    icon: BUNDLED_MINI_APP_DISPLAY.badminton.icon,
     version: 1,
     resourceEndpoint: 'https://miniapps.platform.local/badminton',
     rootRoute: '/',
@@ -150,10 +150,10 @@ export const miniAppCatalog: readonly MiniAppManifest[] = [
   },
   {
     id: 'weather',
-    name: 'Local Weather',
-    shortName: 'Weather',
-    glyph: '☀',
-    icon: 'cloud-sun',
+    name: BUNDLED_MINI_APP_DISPLAY.weather.name,
+    shortName: BUNDLED_MINI_APP_DISPLAY.weather.shortName,
+    glyph: BUNDLED_MINI_APP_DISPLAY.weather.glyph,
+    icon: BUNDLED_MINI_APP_DISPLAY.weather.icon,
     version: 1,
     resourceEndpoint: 'https://miniapps.platform.local/weather',
     rootRoute: '/',
@@ -169,7 +169,7 @@ export const miniAppCatalog: readonly MiniAppManifest[] = [
     crossAppLinks: [
       {
         id: 'open_transit',
-        label: 'Check nearby transit',
+        label: 'Xem xe gần đây',
         targetAppId: 'transit',
         targetEntrypoint: 'nearby',
         allowedInputKeys: ['area'],
@@ -186,10 +186,10 @@ export const miniAppCatalog: readonly MiniAppManifest[] = [
   },
   {
     id: 'transit',
-    name: 'City Transit',
-    shortName: 'Transit',
-    glyph: '↝',
-    icon: 'bus',
+    name: BUNDLED_MINI_APP_DISPLAY.transit.name,
+    shortName: BUNDLED_MINI_APP_DISPLAY.transit.shortName,
+    glyph: BUNDLED_MINI_APP_DISPLAY.transit.glyph,
+    icon: BUNDLED_MINI_APP_DISPLAY.transit.icon,
     version: 1,
     resourceEndpoint: 'https://miniapps.platform.local/transit',
     rootRoute: '/',
@@ -205,7 +205,7 @@ export const miniAppCatalog: readonly MiniAppManifest[] = [
     crossAppLinks: [
       {
         id: 'open_weather',
-        label: 'Check destination weather',
+        label: 'Xem thời tiết điểm đến',
         targetAppId: 'weather',
         targetEntrypoint: 'forecast',
         allowedInputKeys: ['area'],
@@ -222,10 +222,10 @@ export const miniAppCatalog: readonly MiniAppManifest[] = [
   },
   {
     id: 'notes',
-    name: 'Quick Notes',
-    shortName: 'Notes',
-    glyph: '✎',
-    icon: 'file-text',
+    name: BUNDLED_MINI_APP_DISPLAY.notes.name,
+    shortName: BUNDLED_MINI_APP_DISPLAY.notes.shortName,
+    glyph: BUNDLED_MINI_APP_DISPLAY.notes.glyph,
+    icon: BUNDLED_MINI_APP_DISPLAY.notes.icon,
     version: 1,
     resourceEndpoint: 'https://miniapps.platform.local/notes',
     rootRoute: '/',
@@ -243,10 +243,10 @@ export const miniAppCatalog: readonly MiniAppManifest[] = [
   },
   {
     id: 'market',
-    name: 'Daily Market',
-    shortName: 'Market',
-    glyph: '◇',
-    icon: 'shopping-bag',
+    name: BUNDLED_MINI_APP_DISPLAY.market.name,
+    shortName: BUNDLED_MINI_APP_DISPLAY.market.shortName,
+    glyph: BUNDLED_MINI_APP_DISPLAY.market.glyph,
+    icon: BUNDLED_MINI_APP_DISPLAY.market.icon,
     version: 1,
     resourceEndpoint: 'https://miniapps.platform.local/market',
     rootRoute: '/',
@@ -264,11 +264,10 @@ export const miniAppCatalog: readonly MiniAppManifest[] = [
   },
   {
     id: 'card',
-    name: 'Thẻ',
-    englishName: 'Card',
-    shortName: 'Thẻ',
-    glyph: '💳',
-    icon: 'credit-card',
+    name: BUNDLED_MINI_APP_DISPLAY.card.name,
+    shortName: BUNDLED_MINI_APP_DISPLAY.card.shortName,
+    glyph: BUNDLED_MINI_APP_DISPLAY.card.glyph,
+    icon: BUNDLED_MINI_APP_DISPLAY.card.icon,
     version: 1,
     resourceEndpoint: 'https://miniapps.platform.local/card',
     rootRoute: '/',
@@ -291,30 +290,30 @@ export const miniAppCatalog: readonly MiniAppManifest[] = [
     ],
   },
   {
-    id: 'split-bill',
-    name: 'Chia tiền',
-    englishName: 'Split Bill',
-    shortName: 'Chia tiền',
-    glyph: '₫',
-    icon: 'split',
+    id: 'sample',
+    name: BUNDLED_MINI_APP_DISPLAY.sample.name,
+    shortName: BUNDLED_MINI_APP_DISPLAY.sample.shortName,
+    glyph: BUNDLED_MINI_APP_DISPLAY.sample.glyph,
+    icon: BUNDLED_MINI_APP_DISPLAY.sample.icon,
     version: 1,
-    resourceEndpoint: 'https://miniapps.platform.local/split-bill',
+    resourceEndpoint: 'bundle://sample-rn-poc',
     rootRoute: '/',
-    routes: ['/', '/bill/:billId', '/settle/:billId'],
+    routes: ['/'],
     publicEntrypoints: [],
     crossAppLinks: [],
     capabilities: [
-      { name: 'storage.kv', version: 1, purposeKey: 'persist bill draft', scope: 'while_using' },
-      { name: 'scanner.scan', version: 1, purposeKey: 'scan VietQR', scope: 'once' },
-      { name: 'net.request', version: 1, purposeKey: 'fetch VietQR bank list', scope: 'once' },
+      { name: 'storage.kv', version: 1, purposeKey: 'demo memory-only storage' },
+      { name: 'ai.extract_bill', version: 1, purposeKey: 'demo on-device bill extraction' },
     ],
-    egressHosts: ['vietqr.net'],
-    trackingEvents: [
-      { name: 'bill_created', version: 1, priority: 'product', allowedDataKeys: ['participant_count'] },
-      { name: 'bill_item_added', version: 1, priority: 'product', allowedDataKeys: ['input_mode', 'has_ask_back'] },
-      { name: 'bill_settled', version: 1, priority: 'product', allowedDataKeys: ['participant_count', 'item_count', 'transfer_count'] },
-      { name: 'vietqr_parsed', version: 1, priority: 'product', allowedDataKeys: ['has_amount', 'bank_bin'] },
-    ],
+    trackingEvents: [],
+  },
+  {
+    id: 'test',
+    ...BUNDLED_MINI_APP_DISPLAY.test,
+    version: 1,
+    resourceEndpoint: 'bundle://native-integration-test',
+    rootRoute: '/', routes: ['/'], publicEntrypoints: [], crossAppLinks: [],
+    capabilities: [], trackingEvents: [],
   },
 ] as const;
 

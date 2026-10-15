@@ -1,0 +1,43 @@
+Building for debugging...
+[2 / 11] PlatformCore
+[4 / 13] PlatformCore
+[8 / 15] PlatformCore
+[10 / 16] PlatformCore
+[11 / 15] PlatformCoreTests-product
+[13 / 17] PlatformCoreTests-product
+[19 / 21] PlatformCoreTests-product
+[21 / 21] PlatformCoreTests-product
+Build complete! (3,40 secs)
+Test Suite 'All tests' started at 2026-10-03 23:13:01.801.
+Test Suite 'PlatformCoreTests.xctest' started at 2026-10-03 23:13:01.804.
+Test Suite 'CoreTests' started at 2026-10-03 23:13:01.804.
+Test Case '-[PlatformCoreTests.CoreTests testBookingOwnershipAndCapacity]' started.
+Test Case '-[PlatformCoreTests.CoreTests testBookingOwnershipAndCapacity]' passed (0.004 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testBridgeGatesQuotaRevokeAudit]' started.
+Test Case '-[PlatformCoreTests.CoreTests testBridgeGatesQuotaRevokeAudit]' passed (0.025 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testConsentBoundsAndUnsupportedVersion]' started.
+Test Case '-[PlatformCoreTests.CoreTests testConsentBoundsAndUnsupportedVersion]' passed (0.001 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testContentAndSearch]' started.
+Test Case '-[PlatformCoreTests.CoreTests testContentAndSearch]' passed (0.002 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testNotificationBoundary]' started.
+Test Case '-[PlatformCoreTests.CoreTests testNotificationBoundary]' passed (0.001 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testRemotePayloadRejectsMalformedExpiredAndHalfTarget]' started.
+Test Case '-[PlatformCoreTests.CoreTests testRemotePayloadRejectsMalformedExpiredAndHalfTarget]' passed (0.004 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testRoutesAndCrossLinks]' started.
+Test Case '-[PlatformCoreTests.CoreTests testRoutesAndCrossLinks]' passed (0.001 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testSnapshotRoundtripAndIsolation]' started.
+Test Case '-[PlatformCoreTests.CoreTests testSnapshotRoundtripAndIsolation]' passed (0.001 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testSynchronousSessionRevocation]' started.
+Test Case '-[PlatformCoreTests.CoreTests testSynchronousSessionRevocation]' passed (0.001 seconds).
+Test Case '-[PlatformCoreTests.CoreTests testUUIDv7UsesTimeVersionAndVariant]' started.
+Test Case '-[PlatformCoreTests.CoreTests testUUIDv7UsesTimeVersionAndVariant]' passed (0.001 seconds).
+Test Suite 'CoreTests' passed at 2026-10-03 23:13:01.845.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.041 (0.042) seconds
+Test Suite 'PlatformCoreTests.xctest' passed at 2026-10-03 23:13:01.846.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.041 (0.042) seconds
+Test Suite 'All tests' passed at 2026-10-03 23:13:01.846.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.041 (0.045) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

@@ -1,0 +1,6 @@
+RN source unchanged by integration.
+Typecheck: PASS
+Static conformance: PASS
+Counter budgets: PASS
+verify.sh: FAIL at existing app/App.tsx:742 unnecessary activeFrame.sessionId useMemo dependency.
+Jest: 24 suites / 151 tests pass; 2 suites / 13 tests fail in existing aiExtractBill and handler tests.

@@ -15,7 +15,6 @@ import { ShellPalette } from '../config/palette';
 import { useReducedMotion } from '../config/useReducedMotion';
 import { TenantId, TENANTS } from '../config/tenants';
 import { catalogForTenant } from '../miniapps/catalogTenant';
-import { LineIcon } from '../ui/primitives/LineIcon';
 
 type Message = {
   id: string;
@@ -99,10 +98,10 @@ export function ExploreSheet({
             {/* Header */}
             <View style={styles.heading}>
               <Text style={[styles.title, { color: palette.text }]}>
-                Explore
+                Khám phá
               </Text>
               <Pressable
-                accessibilityLabel="Close explore"
+                accessibilityLabel="Đóng khám phá"
                 accessibilityRole="button"
                 onPress={onClose}
                 style={[
@@ -134,7 +133,7 @@ export function ExploreSheet({
               {suggestedApps.map(app => (
                 <Pressable
                   key={app.id}
-                  accessibilityLabel={`Open ${app.name}`}
+                  accessibilityLabel={`Mở ${app.name}`}
                   accessibilityRole="button"
                   onPress={() => {
                     onClose();
@@ -146,7 +145,6 @@ export function ExploreSheet({
                     pressed && styles.chipPressed,
                   ]}
                 >
-                  <LineIcon name={app.icon} size={16} color={palette.primary} strokeWidth={1.4} />
                   <Text
                     numberOfLines={1}
                     style={[styles.chipLabel, { color: palette.primary }]}
@@ -208,7 +206,7 @@ export function ExploreSheet({
                 ref={inputRef}
                 autoFocus
                 multiline={false}
-                placeholder="Search or ask anything…"
+                placeholder="Tìm kiếm hoặc hỏi bất cứ điều gì…"
                 placeholderTextColor={palette.mutedText}
                 returnKeyType="send"
                 style={[styles.input, { color: palette.text }]}
@@ -217,7 +215,7 @@ export function ExploreSheet({
                 onSubmitEditing={handleSend}
               />
               <Pressable
-                accessibilityLabel="Send"
+                accessibilityLabel="Gửi"
                 accessibilityRole="button"
                 disabled={!query.trim()}
                 onPress={handleSend}

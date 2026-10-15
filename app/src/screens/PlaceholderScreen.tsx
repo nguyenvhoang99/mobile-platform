@@ -23,9 +23,9 @@ type Props = {
 
 const copy = {
   account: {
-    eyebrow: 'HOST ACCOUNT',
-    title: 'Your shell, on your terms.',
-    body: 'Account controls remain host-owned and never depend on a mini-app WebView.',
+    eyebrow: 'TÀI KHOẢN HOST',
+    title: 'Không gian của bạn, theo cách của bạn.',
+    body: 'Điều khiển tài khoản do host quản lý, không phụ thuộc WebView của mini-app.',
   },
 };
 
@@ -49,7 +49,7 @@ export function PlaceholderScreen({
     >
       {onBack ? (
         <Pressable
-          accessibilityLabel="Go back to Home"
+          accessibilityLabel="Về Trang chủ"
           accessibilityRole="button"
           onPress={onBack}
           style={[styles.backBtn, { backgroundColor: palette.primarySoft }]}
@@ -58,7 +58,7 @@ export function PlaceholderScreen({
             ‹
           </Text>
           <Text style={[styles.backBtnLabel, { color: palette.primary }]}>
-            Home
+            Trang chủ
           </Text>
         </Pressable>
       ) : null}

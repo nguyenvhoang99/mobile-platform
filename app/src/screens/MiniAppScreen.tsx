@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useLayoutEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -8,11 +8,12 @@ import {
   TrackedScrollView,
 } from '../components/TrackedScrollView';
 import { CardCatalogBody } from '../components/CardCatalogBody';
-import { SplitBillBody } from '../components/SplitBillBody';
 import { MiniAppManifest } from '../miniapps/catalog';
 import { MiniAppFrame } from '../navigation/navigationBroker';
 import { signalNavigationSelection } from '../native/nativeShell';
-import { LineIcon } from '../ui/primitives/LineIcon';
+import { SampleMiniApp } from '../miniapps/sample/SampleMiniApp';
+import type { BridgeClient } from '../bridge/client';
+import type { MiniAppLoadSignals } from '../tracking/miniAppLoadTracker';
 
 type Props = {
   palette: ShellPalette;
@@ -28,6 +29,8 @@ type Props = {
     version: number,
     data: Record<string, unknown>,
   ) => void;
+  bridge?: BridgeClient;
+  loadSignals?: MiniAppLoadSignals;
 };
 
 function samplePath(pattern: string): string {
@@ -48,9 +51,15 @@ export const MiniAppScreen = memo(function MiniAppScreen({
   onOpenCrossApp,
   onScrollDepth,
   onTrackEvent,
+  bridge,
+  loadSignals,
 }: Props) {
   const insets = useSafeAreaInsets();
   const currentPath = frame.history.at(-1) ?? manifest.rootRoute;
+
+  useLayoutEffect(() => {
+    loadSignals?.committed();
+  }, [loadSignals]);
 
   return (
     <View style={[styles.screen, { backgroundColor: palette.canvas }]}>
@@ -65,7 +74,7 @@ export const MiniAppScreen = memo(function MiniAppScreen({
         ]}
       >
         <Pressable
-          accessibilityLabel="Back"
+          accessibilityLabel="Quay lại"
           accessibilityRole="button"
           onPress={() => {
             signalNavigationSelection();
@@ -82,18 +91,17 @@ export const MiniAppScreen = memo(function MiniAppScreen({
         </Pressable>
         <View style={styles.identity}>
           <Text style={[styles.identityLabel, { color: palette.mutedText }]}>
-            VERIFIED MINI-APP
+            MINI-APP ĐÃ XÁC MINH
           </Text>
           <Text
             numberOfLines={1}
             style={[styles.identityName, { color: palette.text }]}
           >
             {manifest.name}
-            {manifest.englishName ? ` · ${manifest.englishName}` : ''}
           </Text>
         </View>
         <Pressable
-          accessibilityLabel="Close mini-app"
+          accessibilityLabel="Đóng mini-app"
           accessibilityRole="button"
           onPress={() => {
             signalNavigationSelection();
@@ -105,7 +113,17 @@ export const MiniAppScreen = memo(function MiniAppScreen({
         </Pressable>
       </View>
 
-      <TrackedScrollView
+      <View
+        style={styles.contentRegion}
+        testID="miniapp-load-content"
+        onLayout={event => {
+          const { width, height } = event.nativeEvent.layout;
+          if (width > 0 && height > 0) loadSignals?.contentLaidOut();
+        }}
+      >
+      {manifest.id === 'sample' ? (
+        <SampleMiniApp key={`${frame.sessionId}:${frame.appId}`} bridge={bridge} />
+      ) : <TrackedScrollView
         contentContainerStyle={styles.content}
         onScrollDepth={onScrollDepth}
         trackingResetKey={`${manifest.id}:${currentPath}`}
@@ -117,33 +135,26 @@ export const MiniAppScreen = memo(function MiniAppScreen({
             onNavigate={onNavigate}
             onTrackEvent={onTrackEvent}
           />
-        ) : manifest.id === 'split-bill' ? (
-          <SplitBillBody palette={palette} onTrackEvent={onTrackEvent} />
         ) : (
           <>
         <View
           style={[styles.hero, { backgroundColor: palette.canvasAccent }]}
         >
-          <View
-            style={[styles.appIcon, { backgroundColor: palette.surface, borderWidth: 1.2, borderColor: palette.glassBorder }]}
-          >
-            <LineIcon name={manifest.icon} size={28} color={palette.primary} strokeWidth={1.5} />
-          </View>
           <Text style={[styles.eyebrow, { color: palette.primary }]}>
-            HOST-CONTAINED EXPERIENCE
+            TRẢI NGHIỆM TRONG HOST
           </Text>
           <Text style={[styles.title, { color: palette.text }]}>
             {manifest.name}
           </Text>
           <Text style={[styles.body, { color: palette.mutedText }]}>
-            This mini-app is loaded from the configured remote resource endpoint.
-            The host owns navigation, identity, tracking, and native capabilities.
+            Mini-app được tải từ địa chỉ tài nguyên đã cấu hình. Host quản lý
+            điều hướng, định danh, theo dõi và các capability gốc.
           </Text>
           <View
             style={[styles.endpointPill, { backgroundColor: palette.surface }]}
           >
             <Text style={[styles.endpointLabel, { color: palette.mutedText }]}>
-              ENDPOINT:
+              ĐIỂM TẢI:
             </Text>
             <Text numberOfLines={1} style={[styles.endpointText, { color: palette.primary }]}>
               {manifest.resourceEndpoint}
@@ -153,13 +164,13 @@ export const MiniAppScreen = memo(function MiniAppScreen({
             style={[styles.pathPill, { backgroundColor: palette.surface }]}
           >
             <Text style={[styles.pathText, { color: palette.text }]}>
-              Route: {currentPath}
+              Đường dẫn: {currentPath}
             </Text>
           </View>
         </View>
 
         <Text style={[styles.sectionTitle, { color: palette.text }]}>
-          Declared pages
+          Các trang đã khai báo
         </Text>
         <View style={styles.actionList}>
           {manifest.routes.map(route => {
@@ -190,7 +201,7 @@ export const MiniAppScreen = memo(function MiniAppScreen({
         {manifest.crossAppLinks.length > 0 ? (
           <>
             <Text style={[styles.sectionTitle, { color: palette.text }]}>
-              Approved cross-app links
+              Liên kết chéo đã duyệt
             </Text>
             <View style={styles.actionList}>
               {manifest.crossAppLinks.map(link => (
@@ -223,13 +234,15 @@ export const MiniAppScreen = memo(function MiniAppScreen({
         ) : null}
           </>
         )}
-      </TrackedScrollView>
+      </TrackedScrollView>}
+      </View>
     </View>
   );
 });
 
 const styles = StyleSheet.create({
   screen: { flex: 1 },
+  contentRegion: { flex: 1 },
   trustedHeader: {
     alignItems: 'center',
     borderBottomWidth: 1,
@@ -251,14 +264,6 @@ const styles = StyleSheet.create({
   identityName: { fontSize: 14, fontWeight: '800', marginTop: 2 },
   content: { padding: 20, paddingBottom: 142 },
   hero: { borderRadius: 28, padding: 22 },
-  appIcon: {
-    alignItems: 'center',
-    borderRadius: 18,
-    height: 54,
-    justifyContent: 'center',
-    width: 54,
-  },
-  appGlyph: { fontSize: 25, fontWeight: '800' },
   eyebrow: {
     fontSize: 10,
     fontWeight: '800',

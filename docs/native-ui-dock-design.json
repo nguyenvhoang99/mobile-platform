@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "revision": "dock-v0.5",
+  "date": "2026-10-04",
+  "status": "visual-draft-user-requirements-confirmed",
+  "prototype": "native-ui-dock-review.html",
+  "contract": "native-ui-dock-design.md",
+  "figmaStatus": "pending-tool-quota; existing Figma v0.1 unchanged",
+  "appImplementation": "unchanged",
+  "requirements": [
+    "iOS Liquid Glass style; Android minimum transparency",
+    "Default Home dock contains only a central Explore entrypoint",
+    "Swipe starting at central Explore chooses the left or right shortcut list",
+    "Configured shortcuts appear beside Explore on Home; long press removes with Undo",
+    "Inside a mini app, central Explore becomes Home and both side shortcuts hide",
+    "Home minimizes the mini app to one floating resume handle, preserving review page and draft",
+    "Return to Home restores shortcuts with animation; reduced motion removes transition time and travel"
+  ],
+  "scope": "Host design-review dock, two optional app-root shortcuts and one floating resume handle; native app/runtime implementation unchanged",
+  "overrides": {
+    "shell.navigation.dock": {
+      "proposal": "Dock v0.5: Home mặc định chỉ có Khám phá ở giữa; vuốt từ đó để thêm lối tắt trái/phải. Trong mini app chỉ hiện Home ở giữa để thu nhỏ vào một nút nổi; giữ trang/nháp trong phiên. Về Home hiện lại lối tắt, có animation và Giảm chuyển động. iOS hướng Liquid Glass; Android nền đặc. Chưa sửa Figma/app.",
+      "states": [
+        "Home default central Explore",
+        "Home one/two configured",
+        "mini app central Home; sides hidden",
+        "minimized single floating handle",
+        "resume child page/draft/scroll",
+        "closed no floating handle",
+        "picker left/right from center",
+        "removed with undo",
+        "rapid transition/cancel",
+        "reduced motion/transparency",
+        "large/long labels",
+        "native persistence/runtime unverified"
+      ],
+      "sketch": [
+        "Dock v0.5",
+        "Mặc định: Khám phá ở giữa",
+        "Home đã thêm: Trái · Khám phá · Phải",
+        "Mini app: chỉ Home ở giữa",
+        "Home → giữ phiên và thu nhỏ vào nút nổi",
+        "Nút nổi → mở lại trang con / nháp",
+        "Ẩn / hiện có animation; Giảm chuyển động = 0",
+        "Thử prototype tương tác qua link phía trên"
+      ]
+    },
+    "shell.dock_picker": {
+      "proposal": "Dock v0.5: chỉ ở Home, vuốt bắt đầu từ Khám phá ở giữa hoặc nút Thêm thay thế → danh sách đúng bên. Chọn rồi xác nhận Thêm/Thay; Hủy giữ nguyên và focus về giữa. Không chọn trùng slot kia. Gesture bắt đầu từ lối tắt không mở picker; trong mini app không sửa dock.",
+      "states": [
+        "pick left/right",
+        "replace occupied",
+        "selected candidate",
+        "duplicate disabled",
+        "cancel",
+        "tenant/catalog changed",
+        "commit failed"
+      ],
+      "sketch": [
+        "Chọn lối tắt",
+        "Bên trái / bên phải",
+        "Tiện ích từ catalog khu vực",
+        "Chọn ứng viên",
+        "Thêm lối tắt / Thay lối tắt",
+        "Hủy: giữ dock nguyên vẹn"
+      ]
+    }
+  }
+}

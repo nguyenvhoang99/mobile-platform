@@ -1,0 +1,24 @@
+2026-10-04 18:05:18.363 appintentsnltrainingprocessor[6314:6116506] Parsing options for appintentsnltrainingprocessor
+2026-10-04 18:05:18.363 appintentsnltrainingprocessor[6314:6116506] Starting AppIntents SSU YAML Generation
+2026-10-04 18:05:18.364 appintentsnltrainingprocessor[6314:6116506] No AppShortcuts found - Skipping.
+
+RegisterExecutionPolicyException /tmp/split-bill-ios-release/Build/Products/Release-iphoneos/MobileNative.app (in target 'MobileNative' from project 'MiniAppPlatform')
+    cd /Users/lap16954/Documents/mine/platform/mobile/ios
+    builtin-RegisterExecutionPolicyException /tmp/split-bill-ios-release/Build/Products/Release-iphoneos/MobileNative.app
+
+Validate /tmp/split-bill-ios-release/Build/Products/Release-iphoneos/MobileNative.app (in target 'MobileNative' from project 'MiniAppPlatform')
+    cd /Users/lap16954/Documents/mine/platform/mobile/ios
+    builtin-validationUtility /tmp/split-bill-ios-release/Build/Products/Release-iphoneos/MobileNative.app -shallow-bundle -infoplist-subpath Info.plist
+
+Touch /tmp/split-bill-ios-release/Build/Products/Release-iphoneos/MobileNative.app (in target 'MobileNative' from project 'MiniAppPlatform')
+    cd /Users/lap16954/Documents/mine/platform/mobile/ios
+    /usr/bin/touch -c /tmp/split-bill-ios-release/Build/Products/Release-iphoneos/MobileNative.app
+
+PruneExplicitPrecompiledModules /tmp/split-bill-ios-release/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /tmp/split-bill-ios-release/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /tmp/split-bill-ios-release/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+** BUILD SUCCEEDED **
+

@@ -36,7 +36,11 @@ let prevHash = 'genesis';
 const records: AuditRecord[] = [];
 
 function digestArgs(args: Record<string, unknown>): string {
-  return hashHex(JSON.stringify(args)).slice(0, 16);
+  try {
+    return hashHex(JSON.stringify(args) ?? 'null').slice(0, 16);
+  } catch {
+    return hashHex('invalid-arguments').slice(0, 16);
+  }
 }
 
 export function appendAudit(partial: {

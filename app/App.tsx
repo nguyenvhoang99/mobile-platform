@@ -8,6 +8,9 @@ import { ForegroundNotificationBanner } from './src/components/ForegroundNotific
 import { MiniAppPickerModal } from './src/components/MiniAppPickerModal';
 import { appConfig } from './src/config/appConfig';
 import { createPalette } from './src/config/palette';
+import { createBridgeClient } from './src/bridge/client';
+import { registerAllHandlers } from './src/bridge/register';
+import type { BridgeSession } from './src/bridge/types';
 import {
   createDefaultHomePreferences,
   HomePreferences,
@@ -47,6 +50,10 @@ import { HomeScreen } from './src/screens/HomeScreen';
 import { MiniAppScreen } from './src/screens/MiniAppScreen';
 import { PlaceholderScreen } from './src/screens/PlaceholderScreen';
 import { tracking } from './src/tracking';
+import {
+  MiniAppLoadTracker,
+  MiniAppLoadRequestTime,
+} from './src/tracking/miniAppLoadTracker';
 
 const emptyDock: DockSelection = { left: null, right: null };
 const emptyNotificationSnapshot = {
@@ -157,13 +164,46 @@ function App() {
     useState<InboxNotification | null>(null);
   const [exploreSheetOpen, setExploreSheetOpen] = useState(false);
   const [tenantPickerOpen, setTenantPickerOpen] = useState(false);
+  const [miniAppLoads] = useState(
+    () => new MiniAppLoadTracker(
+      (name, data, occurredAtMs) => tracking.trackHost(name, data, { occurredAtMs }),
+    ),
+  );
 
   const commitNavigation = useCallback(
-    (next: ReturnType<typeof createNavigationState>) => {
+    (
+      next: ReturnType<typeof createNavigationState>,
+      launch?: { source: string; requested: MiniAppLoadRequestTime },
+    ) => {
+      const previous = navigationRef.current.miniApps.at(-1);
+      const frame = next.miniApps.at(-1);
+      if (
+        launch && frame && (
+          previous?.sessionId !== frame.sessionId || !sameVisibleMiniApp(previous, frame)
+        )
+      ) {
+        const manifest = findMiniApp(frame.appId);
+        if (manifest) {
+          miniAppLoads.begin(
+            frame,
+            manifest.version,
+            launch.source,
+            navigationRef.current.miniApps.some(
+              item => item.sessionId === frame.sessionId,
+            )
+              ? 'existing_session' : 'new_session',
+            launch.requested,
+          );
+          if (AppState.currentState === 'background') {
+            miniAppLoads.cancel('background');
+          }
+        }
+      }
+      miniAppLoads.navigationChanged(frame);
       navigationRef.current = next;
       setNavigation(next);
     },
-    [],
+    [miniAppLoads],
   );
 
   const commitHomePreferences = useCallback((next: HomePreferences) => {
@@ -223,6 +263,7 @@ function App() {
         if (!activeNotification.target) {
           return;
         }
+        const requested = miniAppLoads.requestTime();
         const current = navigationRef.current;
         const result = openNotificationMiniApp(
           current,
@@ -236,7 +277,7 @@ function App() {
             current.miniApps,
             result.state.miniApps,
           );
-          commitNavigation(result.state);
+          commitNavigation(result.state, { source: 'notification', requested });
           if (removed.length > 0) {
             runAsync(recordMiniAppsClosed(removed, 'notification_replaced'));
           }
@@ -271,12 +312,14 @@ function App() {
         runAsync(notification.refreshPermissionStatus());
         runAsync(((tracking as unknown as { notifyForeground?: () => Promise<void> }).notifyForeground?.() ?? Promise.resolve()));
       } else {
+        if (state === 'background') miniAppLoads.cancel('background');
         runAsync(((tracking as unknown as { notifyBackground?: () => Promise<void> }).notifyBackground?.() ?? Promise.resolve()));
         runAsync(tracking.flush('app_background'));
       }
     });
     return () => {
       active = false;
+      miniAppLoads.cancel('host_unmounted');
       subscription.remove();
       unsubscribeNotifications();
       unsubscribeForeground();
@@ -284,13 +327,14 @@ function App() {
       notification.stop();
       tracking.stop();
     };
-  }, [commitNavigation]);
+  }, [commitNavigation, miniAppLoads]);
 
   const openMiniApp = useCallback(
     (
       appId: string,
       source: 'navigation_bar' | 'mini_app_picker' | 'home_pinned' | 'category',
     ) => {
+      const requested = miniAppLoads.requestTime();
       const current = navigationRef.current;
       const result = openDockMiniApp(current, appId);
       if (!result.ok) {
@@ -306,7 +350,7 @@ function App() {
       const previousFrame = current.miniApps.at(-1);
       const nextFrame = result.state.miniApps.at(-1);
       const removed = removedMiniApps(current.miniApps, result.state.miniApps);
-      commitNavigation(result.state);
+      commitNavigation(result.state, { source, requested });
       if (removed.length > 0) {
         runAsync(recordMiniAppsClosed(removed, `${source}_switch`));
       }
@@ -314,7 +358,7 @@ function App() {
         runAsync(recordMiniAppOpened(nextFrame, source));
       }
     },
-    [commitNavigation],
+    [commitNavigation, miniAppLoads],
   );
 
   const changeHomePreference = useCallback(
@@ -541,6 +585,7 @@ function App() {
 
   const openCrossAppLink = useCallback(
     (linkId: string) => {
+      const requested = miniAppLoads.requestTime();
       const current = navigationRef.current;
       const sourceFrame = current.miniApps.at(-1);
       const sourceManifest = sourceFrame
@@ -571,7 +616,7 @@ function App() {
       }
       const frame = result.state.miniApps.at(-1);
       const removed = removedMiniApps(current.miniApps, result.state.miniApps);
-      commitNavigation(result.state);
+      commitNavigation(result.state, { source: 'cross_app', requested });
       if (removed.length > 0) {
         runAsync(recordMiniAppsClosed(removed, 'cross_app_replaced'));
       }
@@ -579,7 +624,7 @@ function App() {
         runAsync(recordMiniAppOpened(frame, 'cross_app'));
       }
     },
-    [commitNavigation],
+    [commitNavigation, miniAppLoads],
   );
 
   const goBackFromMiniApp = useCallback(() => {
@@ -675,10 +720,38 @@ function App() {
     ? findMiniApp(activeFrame.appId)
     : undefined;
 
+  // Host-only React Native preview. This does not authenticate an external
+  // WebView session or prove native-origin enforcement; the real bridge runtime
+  // is still a separate platform gap.
+  const sampleBridge = useMemo(() => {
+    if (activeFrame?.appId !== 'sample' || !tenantId || !activeManifest) {
+      return undefined;
+    }
+    const session: BridgeSession = {
+      tier: 'first_party',
+      appId: activeFrame.appId,
+      tenantId,
+      userId: 'local-preview-user',
+      origin: 'host://sample-preview',
+      isMainFrame: true,
+    };
+    return createBridgeClient({
+      session,
+      manifestCapabilities: (activeManifest.capabilities ?? []).map(capability => capability.name),
+    });
+  }, [activeFrame?.appId, activeFrame?.sessionId, activeManifest, tenantId]);
+
+  useEffect(() => {
+    registerAllHandlers();
+  }, []);
+
+  useEffect(() => () => sampleBridge?.dispose(), [sampleBridge]);
+
   const screen = useMemo(() => {
     if (activeFrame && activeManifest) {
       return (
         <MiniAppScreen
+          key={activeFrame.sessionId}
           frame={activeFrame}
           manifest={activeManifest}
           onBack={goBackFromMiniApp}
@@ -709,6 +782,8 @@ function App() {
             );
           }}
           palette={palette}
+          bridge={sampleBridge}
+          loadSignals={miniAppLoads.signalsFor(activeFrame)}
         />
       );
     }
@@ -834,6 +909,8 @@ function App() {
   }, [
     activeFrame,
     activeManifest,
+    miniAppLoads,
+    sampleBridge,
     closeAllMiniApps,
     changeHomePreference,
     commitNavigation,
@@ -876,6 +953,7 @@ function App() {
           visible={tenantPickerOpen}
           selectedId={tenantId}
           onSelect={id => {
+            if (id !== tenantId) miniAppLoads.cancel('tenant_changed');
             void switchTenant(id);
             setTenantPickerOpen(false);
           }}
@@ -949,6 +1027,7 @@ function App() {
           visible={tenantPickerOpen}
           selectedId={tenantId}
           onSelect={id => {
+            if (id !== tenantId) miniAppLoads.cancel('tenant_changed');
             void switchTenant(id);
             setTenantPickerOpen(false);
           }}

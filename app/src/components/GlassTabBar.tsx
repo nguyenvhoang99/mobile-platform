@@ -68,8 +68,8 @@ export const GlassTabBar = memo(function GlassTabBar({
             {...explorePanResponder.panHandlers}
           >
             <Pressable
-              accessibilityHint="Swipe left or right to choose a mini-app shortcut"
-              accessibilityLabel="Explore"
+              accessibilityHint="Vuốt trái hoặc phải để chọn lối tắt mini-app"
+              accessibilityLabel="Khám phá"
               accessibilityRole="tab"
               accessibilityState={{ selected: activeMiniAppId === null }}
               onPress={() => {
@@ -89,7 +89,7 @@ export const GlassTabBar = memo(function GlassTabBar({
             >
               <LineIcon name="search" size={18} color={palette.onPrimary} strokeWidth={1.6} />
               <Text style={[styles.label, { color: palette.onPrimary }]}>
-                Explore
+                Khám phá
               </Text>
             </Pressable>
           </View>
@@ -126,8 +126,8 @@ export const GlassTabBar = memo(function GlassTabBar({
           {...explorePanResponder.panHandlers}
         >
           <Pressable
-            accessibilityHint="Swipe left or right to choose a mini-app shortcut"
-            accessibilityLabel="Explore"
+            accessibilityHint="Vuốt trái hoặc phải để chọn lối tắt mini-app"
+            accessibilityLabel="Khám phá"
             accessibilityRole="tab"
             accessibilityState={{ selected: activeMiniAppId === null }}
             onPress={() => {
@@ -146,7 +146,7 @@ export const GlassTabBar = memo(function GlassTabBar({
           >
             <LineIcon name="search" size={18} color={palette.onPrimary} strokeWidth={1.6} />
             <Text style={[styles.label, { color: palette.onPrimary }]}>
-              Explore
+              Khám phá
             </Text>
           </Pressable>
         </View>
@@ -189,8 +189,8 @@ function ShortcutSlot({
     const homeSelected = activeMiniAppId === null;
     return (
       <Pressable
-        accessibilityHint="Tap to go Home, or long press to assign a mini-app shortcut"
-        accessibilityLabel="Home"
+        accessibilityHint="Chạm để về Trang chủ, hoặc nhấn giữ để gán lối tắt mini-app"
+        accessibilityLabel="Trang chủ"
         accessibilityRole="tab"
         accessibilityState={{ selected: homeSelected }}
         delayLongPress={420}
@@ -221,7 +221,7 @@ function ShortcutSlot({
             { color: homeSelected ? palette.primary : palette.mutedText },
           ]}
         >
-          Home
+          Trang chủ
         </Text>
       </Pressable>
     );
@@ -230,7 +230,7 @@ function ShortcutSlot({
   const selected = activeMiniAppId === app.id;
   return (
     <Pressable
-      accessibilityHint="Long press to replace this shortcut"
+      accessibilityHint="Nhấn giữ để thay lối tắt này"
       accessibilityLabel={app.name}
       accessibilityRole="tab"
       accessibilityState={{ selected }}
@@ -249,12 +249,6 @@ function ShortcutSlot({
         pressed && styles.pressed,
       ]}
     >
-      <LineIcon
-        name={app.icon}
-        size={18}
-        color={selected ? palette.primary : palette.mutedText}
-        strokeWidth={1.5}
-      />
       <Text
         numberOfLines={1}
         style={[

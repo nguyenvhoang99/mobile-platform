@@ -1,0 +1,13 @@
+{
+  "appId": "split-bill",
+  "branch": "feat/expense-first-ux",
+  "commit": "ba17a96e4a735f3eb4ba30afe633956b82b266ea",
+  "sourceIncludesWorkingTree": true,
+  "sharedPlatformContract": "host-bridge v1",
+  "files": {
+    "index.html": "6dcee891cde790e912f82b66518cea6db652c6ed5010b686f9c8726b9d4cc48b",
+    "bundle.js": "d799303f081cd519ac8e36408142393caded70c1610682ee3fcb6164d1f279bc",
+    "host.js": "07bb153c83f78c4f41bac43d11b0d500cc77c7cd40d8804a5b77c322506260e1",
+    "manifest.json": "ecb0e8f39017b56d8521233fa85fe17aa8317de51e3d935e60a717837e9e7065"
+  }
+}

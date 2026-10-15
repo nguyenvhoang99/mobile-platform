@@ -1,0 +1,16 @@
+2026-10-03 23:13:00.562 appintentsmetadataprocessor[47258:4242072] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-03 23:13:06.522 appintentsmetadataprocessor[47360:4242811] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+Test Suite 'All tests' started at 2026-10-03 23:13:18.190.
+Test Suite 'NativeJourneyTests.xctest' started at 2026-10-03 23:13:18.196.
+Test Suite 'NativeJourneyTests' started at 2026-10-03 23:13:18.197.
+Test Case '-[NativeJourneyTests.NativeJourneyTests testHomeSearchCardsAndHostBack]' started.
+Test Case '-[NativeJourneyTests.NativeJourneyTests testHomeSearchCardsAndHostBack]' passed (18.526 seconds).
+Test Case '-[NativeJourneyTests.NativeJourneyTests testSampleBridgeDraftAndUnsupportedAI]' started.
+Test Case '-[NativeJourneyTests.NativeJourneyTests testSampleBridgeDraftAndUnsupportedAI]' passed (30.279 seconds).
+Test Suite 'NativeJourneyTests' passed at 2026-10-03 23:14:07.011.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 48.806 (48.814) seconds
+Test Suite 'NativeJourneyTests.xctest' passed at 2026-10-03 23:14:07.016.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 48.806 (48.819) seconds
+Test Suite 'All tests' passed at 2026-10-03 23:14:07.016.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 48.806 (48.826) seconds
+** TEST SUCCEEDED **

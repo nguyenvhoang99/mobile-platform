@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-04",
+  "artifacts": [
+    {
+      "path": "android/app/build/outputs/apk/debug/app-debug.apk",
+      "bytes": 66682896,
+      "sha256": "19fa9d74feac84529ed93a88e27eddab08d0a1c40ff736557906c5111c896495"
+    },
+    {
+      "path": "android/app/build/outputs/apk/release/app-release-unsigned.apk",
+      "bytes": 155134,
+      "sha256": "2561296e82762035a68cfbd395f0636f873989d43654c4f74e391b8373ebb072"
+    },
+    {
+      "path": "android/app/build/outputs/bundle/release/app-release.aab",
+      "bytes": 223286,
+      "sha256": "441d01692ce450d897daef8ad1815c42e9980f79691396fd34804294517909d3"
+    }
+  ],
+  "limitations": [
+    "Raw unthinned/unsigned sizes; not a device performance or download budget verdict.",
+    "Physical NFC/biometric/location/speech acceptance pending.",
+    "Passkey backend and iOS ML Kit/TFLite SDK not configured."
+  ],
+  "ios_unsigned_release_logical_bytes": 2044098,
+  "raw_baseline_comparison": {
+    "android_release_aab_previous_bytes": 222060,
+    "android_release_aab_delta_percent": 0.55,
+    "ios_previous_unsigned_release_bytes": 2017388,
+    "ios_unsigned_directory_delta_percent": 1.32,
+    "verdict": "Raw sizes only, not thinned/download ratchet or device performance acceptance."
+  },
+  "optional_fcm_debug": {
+    "variant": "Debug -PenableFirebase=true",
+    "bytes": 72976264,
+    "sha256": "5cca9b6e1d3d4d3d4e1477191b7880c31cfa0d10473fdc64d44e8fd99ec2afad"
+  }
+}

@@ -154,6 +154,7 @@ const FEATURES = [
       'src/bridge/handlers/locationCurrent.ts',
       'src/bridge/handlers/cryptoSign.ts',
       'src/bridge/handlers/notifySubscribe.ts',
+      'src/bridge/handlers/aiExtractBill.ts',
     ],
     // bridge owns all capabilities; per-handler detail below in permission table
     permissions: [
@@ -163,6 +164,7 @@ const FEATURES = [
       { kind: 'capability', name: 'location.current', consent: 'once', osPermission: 'none', brokerUi: 'false', risk: 'high', minTier: 'partner_verified' },
       { kind: 'capability', name: 'crypto.sign', consent: 'once', osPermission: 'none', brokerUi: 'biometric_prompt', risk: 'high', minTier: 'partner_verified' },
       { kind: 'capability', name: 'notify.subscribe', consent: 'while_using', osPermission: 'none', brokerUi: 'false', risk: 'low', minTier: 'self_serve' },
+      { kind: 'capability', name: 'ai.extract_bill', consent: 'once', osPermission: 'none', brokerUi: 'host_image_picker', risk: 'high', minTier: 'first_party' },
     ],
   },
   {
@@ -173,6 +175,7 @@ const FEATURES = [
     globs: ['src/tracking/*', 'src/components/TrackedScrollView.tsx'],
     components: [
       'src/tracking/trackingService.ts',
+      'src/tracking/miniAppLoadTracker.ts',
       'src/tracking/trace.ts',
       'src/tracking/types.ts',
       'src/components/TrackedScrollView.tsx',
@@ -218,6 +221,22 @@ const FEATURES = [
     ],
   },
   {
+    id: 'onDeviceLlm',
+    label: 'On-device LLM (pilot)',
+    layer: 'native',
+    description: 'Host-only on-device LLM mechanism — availability/extractBill/cancelBill via OnDeviceLlm TurboModule; bill pilot behind ai.extract_bill bridge capability',
+    globs: ['src/native/onDeviceLlm.ts', 'src/native/specs/NativeOnDeviceLlm.ts'],
+    components: [
+      'src/native/onDeviceLlm.ts',
+      'src/native/specs/NativeOnDeviceLlm.ts',
+      'src/bridge/handlers/aiExtractBill.ts',
+      'src/utils/withTimeout.ts',
+    ],
+    permissions: [
+      { kind: 'capability', name: 'ai.extract_bill', consent: 'once', osPermission: 'none', brokerUi: 'host_image_picker', risk: 'high', minTier: 'first_party', via: 'bridge handler ai.extract_bill' },
+    ],
+  },
+  {
     id: 'storage',
     label: 'Host Storage',
     layer: 'native',
@@ -241,22 +260,6 @@ const FEATURES = [
       'src/cards/cardStore.ts',
       'src/cards/dataset.ts',
       'src/components/CardCatalogBody.tsx',
-    ],
-    permissions: [],
-  },
-  {
-    id: 'splitBill',
-    label: 'Split Bill Domain',
-    layer: 'domain',
-    description: 'Chia tiền — bill items, min-cash-flow settlement, VietQR 38/A000000727 builder/parser, masked payout accounts',
-    globs: ['src/splitBill/*', 'src/components/SplitBillBody.tsx'],
-    components: [
-      'src/splitBill/model.ts',
-      'src/splitBill/vietqr.ts',
-      'src/splitBill/banks.ts',
-      'src/splitBill/i18n.ts',
-      'src/splitBill/storage.ts',
-      'src/components/SplitBillBody.tsx',
     ],
     permissions: [],
   },
@@ -368,14 +371,6 @@ const EDGES = [
   { from: 'cards', to: 'tracking', reason: 'Card tracking events (budget view)', evidence: 'src/cards/model.test.ts' },
   { from: 'cards', to: 'explore', reason: 'Card appears in catalogTenant featured', evidence: 'src/miniapps/catalog.ts:card' },
 
-  // splitBill
-  { from: 'splitBill', to: 'container', reason: 'Split Bill mini-app uses container CSP + signing', evidence: 'src/splitBill/model.ts' },
-  { from: 'splitBill', to: 'tracking', reason: 'Split Bill tracking events (bill_created/settled)', evidence: 'src/splitBill/model.test.ts' },
-  { from: 'splitBill', to: 'explore', reason: 'Split Bill appears in catalogTenant featured', evidence: 'src/miniapps/catalog.ts:split-bill' },
-  { from: 'splitBill', to: 'storage', reason: 'Bill draft persisted via storage.kv', evidence: 'src/splitBill/storage.ts' },
-  { from: 'splitBill', to: 'designSystem', reason: 'SplitBillBody uses palette tokens', evidence: 'src/components/SplitBillBody.tsx:palette' },
-  { from: 'splitBill', to: 'bridge', reason: 'VietQR paste/scan via net.request + scanner.scan', evidence: 'src/splitBill/vietqr.ts' },
-
   // design system
   { from: 'designSystem', to: 'haptics', reason: 'Tokens include motion → reduceMotion controls surfaces', evidence: 'src/config/motion.ts:reduceMotion' },
 
@@ -481,10 +476,9 @@ function guessFeatureForFile(relPath) {
     ['src/components/ForegroundNotification', 'notifications'],
     ['src/native/notification', 'notifications'],
     ['src/native/deviceAccess', 'deviceAccess'],
+    ['src/native/onDeviceLlm', 'onDeviceLlm'],
     ['src/native/hostStorage', 'storage'],
     ['src/cards/', 'cards'],
-    ['src/splitBill/', 'splitBill'],
-    ['src/components/SplitBillBody', 'splitBill'],
     ['src/ui/', 'designSystem'],
     ['src/config/palette', 'designSystem'],
     ['src/config/layout', 'designSystem'],

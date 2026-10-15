@@ -1,0 +1,13 @@
+✔ native content exactly matches current RN source and policy (167.376708ms)
+✔ catalog, route targets and tenant references are complete (0.10725ms)
+✔ journal limits come from canonical budget rows (0.176958ms)
+✔ new host sources have no RN, embedded JS runtime or unsafe web transport (1.717583ms)
+✔ built iOS host resolves its bundled framework without test-runner paths (18.554166ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 226.994

@@ -1,0 +1,97 @@
+{
+  "$schema": "../../app/src/miniapps/manifest/schema.json",
+  "id": "split-bill",
+  "name": "Chia tiền",
+  "englishName": "Split Bill",
+  "shortName": "Chia tiền",
+  "glyph": "🧾",
+  "version": 1,
+  "versionName": "1.0.0",
+  "publisher": {
+    "id": "platform-first-party",
+    "displayName": "Platform"
+  },
+  "routes": [
+    "/",
+    "/bill/:billId",
+    "/settle/:billId"
+  ],
+  "rootRoute": "/",
+  "resourceEndpoint": "https://split-bill.miniapp.platform.local/",
+  "origins": [
+    "mini://split-bill",
+    "https://split-bill.miniapp.platform.local"
+  ],
+  "capabilities": [
+    {
+      "name": "storage.kv",
+      "version": 1,
+      "purposeKey": "split_bill.persist_draft",
+      "purpose": "Lưu nháp bill khi đang dùng, để thoát WebView không mất việc đã chia",
+      "scope": "while_using"
+    },
+    {
+      "name": "scanner.scan",
+      "version": 1,
+      "purposeKey": "split_bill.scan_vietqr",
+      "purpose": "Quét mã VietQR một lần để lấy số tài khoản, thay vì gõ tay",
+      "scope": "once"
+    },
+    {
+      "name": "net.request",
+      "version": 1,
+      "purposeKey": "split_bill.fetch_bank_list",
+      "purpose": "Tải danh sách ngân hàng VietQR một lần để nhận diện BIN",
+      "scope": "once"
+    }
+  ],
+  "egressHosts": [
+    "vietqr.net"
+  ],
+  "publicEntrypoints": [],
+  "crossAppLinks": [],
+  "trackingEvents": [
+    {
+      "name": "bill_created",
+      "version": 2,
+      "priority": "product",
+      "allowedDataKeys": [
+        "participant_count"
+      ]
+    },
+    {
+      "name": "bill_item_added",
+      "version": 1,
+      "priority": "product",
+      "allowedDataKeys": [
+        "input_mode",
+        "has_ask_back"
+      ]
+    },
+    {
+      "name": "bill_settled",
+      "version": 1,
+      "priority": "product",
+      "allowedDataKeys": [
+        "participant_count",
+        "item_count",
+        "transfer_count"
+      ]
+    },
+    {
+      "name": "vietqr_parsed",
+      "version": 1,
+      "priority": "product",
+      "allowedDataKeys": [
+        "has_amount",
+        "bank_bin"
+      ]
+    }
+  ],
+  "minWebViewVersion": 1,
+  "defaultLocale": "vi",
+  "supportedLocales": [
+    "vi",
+    "en"
+  ]
+}

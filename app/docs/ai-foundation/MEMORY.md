@@ -78,13 +78,14 @@ Repository có một vertical-slice PoC gồm:
 
 - React Native host, app orchestration, navigation broker, tenant selection và catalog;
 - bốn tenant MVP: `vn-hn`, `vn-hcm`, `vn-dn`, `vn-fallback`;
-- registry/model cho sáu capability: `net.request`, `storage.kv`, `scanner.scan`,
-  `location.current`, `crypto.sign`, `notify.subscribe`;
+- registry/model cho bảy capability: `net.request`, `storage.kv`, `scanner.scan`,
+  `location.current`, `crypto.sign`, `notify.subscribe` và `ai.extract_bill`
+  (pilot PoC cho split-bill — xem `docs/features/ai-extract-bill.md`);
 - TypeScript bridge orchestration, gate/quota/audit models và per-capability handlers;
 - manifest schema/validator/signer, local review model, CSP/navigation/container models,
   warm-pool logic và adversarial-fixture specification;
 - tracking journal, notification inbox/FCM/APNs integration, host storage/device access và
-  badminton Live Activity code;
+  generic reminder Live Activity code (`LiveActivityExtension` + `Reminder*` coordinators);
 - semantic palette/layout/motion tokens, host components, design-system docs và feature graph;
 - local scripts cho type/lint/tests, static conformance, counter budgets và provenance.
 
@@ -301,3 +302,12 @@ Ngược lại, camera/mic/location foreground không tự tiếp tục backgrou
 Việc “giữ” ở đây là giữ nguyên invariant, semantics và điều kiện áp dụng, đồng thời loại bỏ
 duplicate wording. Project-specific facts thay thế các giả định generic; canonical values vẫn
 ở `policy/*` để không sinh hai source of truth.
+
+## 2026-10-04 — Native integration Test screen
+
+Confirmed source/build change: common catalog adds `test` (Test) and category `other` (Khác) in all four tenants; root Swift/Kotlin hosts route it to a compiled Debug-only host test screen. Release shows an explanation and excludes diagnostic adapters/Android ML SDKs. Public capability registry unchanged; no generic debug broker grant. Contract/evidence: `native/TEST-CONTRACT.md`, `native/TEST-VERIFICATION.md`. Android Debug uses pinned ML Kit OCR and LiteRT ADD fixture; iOS uses system Vision OCR. Passkey RP/backend/app association and iOS ML Kit/TFLite SDK integration are still gaps. Simulator/build evidence is not physical NFC/biometric/product acceptance; no production readiness claim.
+
+
+## 2026-10-04 — Bundled Split Bill in root native hosts
+
+Repository now also has independent root `ios/` Swift and `android/` Kotlin hosts, documented in `native/README.md` (RN `app/` remains reference). The requested integration targets these two native hosts: bundle `split-bill` from `feat/expense-first-ux` through `native/tools/sync-miniapps.cjs`, then generate catalog/tenant registration via `native/tools/export-data.cjs`. Both mini-app source repos are read-only in this task. Native WebViews use the shared-platform host-bridge v1 protocol; frozen handshake advertises only existing manifest-declared storage.kv/scanner.scan/net.request. Persistent atomic KV is separate from SDK Demo's memory-only broker and scoped by tenant/app/local-preview-user. Camera/photo broker returns only decoded QR; Android uses ZXing core, iOS Vision. No extra public capability/policy values or RN dependency changed. Bundled asset hashes are checked before execution; they do not replace dual signatures or production external package admission. Canonical resource budgets and physical camera/a11y/device acceptance remain unverified. Contract/evidence and mini-app's existing delayed-save caveat are in `native/SPLIT-BILL-CONTRACT.md` and `native/SPLIT-BILL-VERIFICATION.md`.

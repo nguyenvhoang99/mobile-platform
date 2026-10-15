@@ -23,14 +23,6 @@ data class CalendarEvent(
   companion object {
     private val identifier = Regex("^[A-Za-z0-9._:-]{1,160}$")
 
-    private fun optText(value: JSONObject, vararg keys: String): String {
-      for (key in keys) {
-        val candidate = value.optString(key, "")
-        if (candidate.isNotEmpty()) return candidate
-      }
-      return ""
-    }
-
     fun fromJson(raw: String, now: Long = System.currentTimeMillis()): CalendarEvent? {
       return try {
         val value = JSONObject(raw)
@@ -42,10 +34,10 @@ data class CalendarEvent(
             }
         val event =
             CalendarEvent(
-                id = optText(value, "id", "bookingId"),
-                title = optText(value, "title", "courtName"),
-                location = optText(value, "location", "venue"),
-                description = optText(value, "description", ""),
+                id = value.optString("id", ""),
+                title = value.optString("title", ""),
+                location = value.optString("location", ""),
+                description = value.optString("description", ""),
                 startAtMs = value.optLong("startAtMs"),
                 endAtMs = value.optLong("endAtMs"),
                 alarmMinutes = alarmMinutes)
@@ -56,7 +48,6 @@ data class CalendarEvent(
               it.endAtMs <= now + MAX_FUTURE_MS &&
               it.title.isNotBlank() &&
               it.title.length <= 100 &&
-              it.location.isNotBlank() &&
               it.location.length <= 180 &&
               it.description.length <= 1000 &&
               it.alarmMinutes in 0..1440

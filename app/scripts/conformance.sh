@@ -117,6 +117,11 @@ check "S3" "spec methods exist on both platforms" '
         swift="$ROOT/ios/MiniAppPlatform/NotificationModule.swift"
         base_provided="addListener removeListeners"
         ;;
+      NativeOnDeviceLlm)
+        kt="$ROOT/android/app/src/main/java/com/miniappplatform/ondevicellm/OnDeviceLlmModule.kt"
+        mm="$ROOT/ios/MiniAppPlatform/OnDeviceLlmModule.mm"
+        swift=""; base_provided=""
+        ;;
       *) echo "⚠️  S3 — no native mapping for $base" >&2; spec_fail=1; continue ;;
     esac
     for method in $(grep -oE "^  [A-Za-z0-9_]+" "$spec" | tr -d " "); do

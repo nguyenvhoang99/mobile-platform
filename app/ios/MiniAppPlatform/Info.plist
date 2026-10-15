@@ -43,9 +43,9 @@
 		<true/>
 	</dict>
 	<key>NSCalendarsUsageDescription</key>
-	<string>Let you review and save a badminton booking in Calendar.</string>
+	<string>Let you review and save your booking in Calendar.</string>
 	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
-	<string>Let you review and save a badminton booking in Calendar.</string>
+	<string>Let you review and save your booking in Calendar.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Use Face ID to confirm sign-in to the host.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

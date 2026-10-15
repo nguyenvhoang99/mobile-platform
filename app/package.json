@@ -59,6 +59,9 @@
         },
         "NotificationModule": {
           "className": "NotificationModule"
+        },
+        "OnDeviceLlm": {
+          "className": "OnDeviceLlmModule"
         }
       }
     }

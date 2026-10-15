@@ -58,15 +58,13 @@ export type LiveActivitySurface =
   | 'local_notification';
 
 export type ReminderRequest = {
-  id?: string;
-  bookingId?: string;
-  title?: string;
+  id: string;
+  title: string;
   /** Explicit body copy. Defaults to "<title> · <location>" when omitted. */
   body?: string;
   startAtMs: number;
   endAtMs: number;
-  courtName?: string;
-  venue?: string;
+  /** Optional location, suitable for physical or virtual events. */
   location?: string;
   /** Notification channel (Android). Defaults to a generic channel. */
   channelId?: string;
@@ -106,12 +104,9 @@ export type CalendarEventRequest = ReminderRequest & {
 
 export type CalendarEventStatus =
   | 'presented'
-  | 'saved'
-  | 'cancelled'
   | 'unavailable'
   | 'failed';
 
 export type CalendarEventResult = {
   status: CalendarEventStatus;
 };
-

@@ -28,6 +28,7 @@ export function MiniAppPickerModal({
 }: Props) {
   const insets = useSafeAreaInsets();
   const reducedMotion = useReducedMotion();
+  const slotLabel = slot === 'left' ? 'trái' : slot === 'right' ? 'phải' : 'đã chọn';
   return (
     <Modal
       animationType={reducedMotion ? 'none' : 'slide'}
@@ -52,14 +53,13 @@ export function MiniAppPickerModal({
             style={[styles.handle, { backgroundColor: palette.primarySoft }]}
           />
           <Text style={[styles.eyebrow, { color: palette.primary }]}>
-            CUSTOMIZE
+            TÙY CHỈNH
           </Text>
           <Text style={[styles.title, { color: palette.text }]}>
-            Choose a mini-app
+            Chọn mini-app
           </Text>
           <Text style={[styles.body, { color: palette.mutedText }]}>
-            This will occupy the {slot ?? 'selected'} side of Explore. Long
-            press it later to choose another.
+            Ứng dụng sẽ nằm ở phía {slotLabel} của Khám phá. Nhấn giữ để đổi sau.
           </Text>
           <TrackedScrollView
             contentContainerStyle={styles.list}
@@ -85,16 +85,6 @@ export function MiniAppPickerModal({
                     pressed && styles.pressed,
                   ]}
                 >
-                  <View
-                    style={[
-                      styles.icon,
-                      { backgroundColor: palette.primarySoft },
-                    ]}
-                  >
-                    <Text style={[styles.glyph, { color: palette.primary }]}>
-                      {app.glyph}
-                    </Text>
-                  </View>
                   <View style={styles.appCopy}>
                     <Text style={[styles.appName, { color: palette.text }]}>
                       {app.name}
@@ -102,8 +92,7 @@ export function MiniAppPickerModal({
                     <Text
                       style={[styles.appMeta, { color: palette.mutedText }]}
                     >
-                      {app.englishName ? `${app.englishName} · ` : ''}Verified
-                      package · v{app.version}
+                      Gói đã xác minh · v{app.version}
                     </Text>
                   </View>
                   <Text style={[styles.check, { color: palette.primary }]}>
@@ -123,7 +112,7 @@ export function MiniAppPickerModal({
                 ]}
               >
                 <Text style={[styles.actionText, { color: palette.primary }]}>
-                  Remove shortcut
+                  Gỡ lối tắt
                 </Text>
               </Pressable>
             ) : null}
@@ -135,7 +124,7 @@ export function MiniAppPickerModal({
               ]}
             >
               <Text style={[styles.actionText, { color: palette.text }]}>
-                Cancel
+                Hủy
               </Text>
             </Pressable>
           </View>
@@ -199,20 +188,8 @@ const styles = StyleSheet.create({
     opacity: 0.78,
     transform: [{ scale: 0.99 }],
   },
-  icon: {
-    alignItems: 'center',
-    borderRadius: 15,
-    height: 44,
-    justifyContent: 'center',
-    width: 44,
-  },
-  glyph: {
-    fontSize: 20,
-    fontWeight: '800',
-  },
   appCopy: {
     flex: 1,
-    marginLeft: 12,
   },
   appName: {
     fontSize: 15,

@@ -14,6 +14,7 @@ import android.os.Build
 import com.miniappplatform.MainActivity
 import com.miniappplatform.R
 import org.json.JSONObject
+import java.lang.reflect.Method
 import kotlin.math.roundToInt
 
 /**
@@ -59,32 +60,42 @@ data class ScheduledReminder(
     private val channelIdentifier = Regex("^[A-Za-z0-9._:-]{1,100}$")
     private const val MAX_FUTURE_MS = 366L * 24 * 60 * 60 * 1_000
 
-    private fun optText(value: JSONObject, vararg keys: String): String {
-      for (key in keys) {
-        val candidate = value.optString(key, "")
-        if (candidate.isNotEmpty()) return candidate
+    private fun optText(value: JSONObject, key: String): String =
+        value.optString(key, "")
+
+    private fun stringMapJson(value: Any?): String? {
+      val map = when (value) {
+        is JSONObject -> value
+        is String -> try {
+          JSONObject(value)
+        } catch (_: Exception) {
+          return null
+        }
+        else -> return null
       }
-      return ""
+      val keys = map.keys()
+      while (keys.hasNext()) {
+        if (map.opt(keys.next()) !is String) return null
+      }
+      return map.toString().takeIf { it.length <= 4096 }
     }
 
     fun fromJson(raw: String, now: Long = System.currentTimeMillis()): ScheduledReminder? {
       return try {
         val value = JSONObject(raw)
-        val targetAppId = optText(value, "targetAppId").ifEmpty { null }
-        val entrypointId = optText(value, "entrypointId").ifEmpty { null }
+        val targetAppId = value.optString("targetAppId", "").ifEmpty { null }
+        val entrypointId = value.optString("entrypointId", "").ifEmpty { null }
         val reminder =
             ScheduledReminder(
-                // Legacy keys (bookingId/courtName/venue) stay readable so
-                // reminders persisted by older builds still restore.
-                id = optText(value, "id", "bookingId"),
+                id = value.optString("id", ""),
                 reminderAtMs = value.optLong("reminderAtMs"),
                 startAtMs = value.optLong("startAtMs"),
                 endAtMs = value.optLong("endAtMs"),
-                title = optText(value, "title", "courtName"),
+                title = value.optString("title", ""),
                 body =
-                    optText(value, "body").ifEmpty {
-                      val location = optText(value, "location", "venue")
-                      val fallbackTitle = optText(value, "title", "courtName")
+                    value.optString("body", "").ifEmpty {
+                      val location = value.optString("location", "")
+                      val fallbackTitle = value.optString("title", "")
                       if (location.isEmpty()) fallbackTitle
                       else "$fallbackTitle · $location"
                     },
@@ -95,18 +106,7 @@ data class ScheduledReminder(
                 entrypointId = entrypointId,
                 targetInputJson =
                     if (value.has("targetInput") && !value.isNull("targetInput")) {
-                      val input = value.opt("targetInput")
-                      when (input) {
-                        is JSONObject -> input.toString()
-                        is String ->
-                            try {
-                              JSONObject(input)
-                              input
-                            } catch (_: Exception) {
-                              return null
-                            }
-                        else -> return null
-                      }
+                      stringMapJson(value.opt("targetInput")) ?: return null
                     } else null)
         reminder.takeIf {
           identifier.matches(it.id) &&
@@ -156,13 +156,17 @@ object ReminderScheduler {
         alarmIntent(context, reminder, ACTION_SHOW))
     scheduleAlarm(manager, reminder.endAtMs, alarmIntent(context, reminder, ACTION_END))
     val active = reminder.reminderAtMs <= System.currentTimeMillis()
+    val surface =
+        if (Build.VERSION.SDK_INT >= 36 && supportsPromotedOngoingNotifications()) {
+          "android_live_update"
+        } else {
+          "ongoing_notification"
+        }
     return mapOf(
-        "status" to if (active) "active" else "scheduled",
-        "surface" to
-            if (Build.VERSION.SDK_INT >= 36) "android_live_update"
-            else "ongoing_notification",
-        "reminderAtMs" to reminder.reminderAtMs.toDouble(),
-        "activityId" to reminder.id)
+      "status" to if (active) "active" else "scheduled",
+      "surface" to surface,
+      "reminderAtMs" to reminder.reminderAtMs.toDouble(),
+      "activityId" to reminder.id)
   }
 
   fun cancel(context: Context, id: String) {
@@ -258,6 +262,7 @@ object ReminderScheduler {
               .roundToInt()
               .coerceIn(0, 100)
       builder.setStyle(Notification.ProgressStyle().setProgress(progress))
+      requestLiveUpdatePromotion(builder)
     } else {
       builder.setStyle(Notification.BigTextStyle().bigText(reminder.body))
     }
@@ -320,6 +325,36 @@ object ReminderScheduler {
 
   private fun notificationManager(context: Context) =
       context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+  /**
+   * Android 16 Live Updates require a promoted ongoing request in addition to
+   * ProgressStyle, the manifest permission, and an ongoing notification. The
+   * builder method shipped in the 36.1 platform extension, so use reflection
+   * to keep the API-36.0 build compatible and retain the ordinary notification
+   * fallback when that method is unavailable.
+   */
+  private fun requestLiveUpdatePromotion(builder: Notification.Builder): Boolean {
+    if (Build.VERSION.SDK_INT < 36) return false
+    return try {
+      val method: Method =
+          Notification.Builder::class.java.getMethod(
+              "setRequestPromotedOngoing", Boolean::class.javaPrimitiveType)
+      method.invoke(builder, true)
+      true
+    } catch (_: ReflectiveOperationException) {
+      false
+    }
+  }
+
+  private fun supportsPromotedOngoingNotifications(): Boolean =
+      Build.VERSION.SDK_INT >= 36 &&
+          try {
+            Notification.Builder::class.java.getMethod(
+                "setRequestPromotedOngoing", Boolean::class.javaPrimitiveType)
+            true
+          } catch (_: ReflectiveOperationException) {
+            false
+          }
 }
 
 class ReminderReceiver : BroadcastReceiver() {

@@ -1,0 +1,2 @@
+/* Review-only tokens generated from app/src/config/motion.ts; SHA256 96b6b90b6cc52a896a932b3c96e71c5f92d60216b9152b95eb32f81f15eb1cd1. Native apps do not import this file. */
+(function(root){root.NativeDockMotion={"durationMs":{"instant":0,"feedback":100,"standard":200,"emphasized":300},"easing":{"standard":[0.2,0,0,1],"enter":[0,0,0,1],"exit":[0.3,0,1,1]},"distance":{"none":0,"micro":4,"small":12,"medium":24},"scale":{"rest":1,"pressed":0.98}};})(window);

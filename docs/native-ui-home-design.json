@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "revision": "home-grid-v0.3",
+  "status": "draft",
+  "registryIDs": [
+    "home.landing",
+    "home.app_row"
+  ],
+  "source": "native/shared/platform.json",
+  "layout": {
+    "minColumns": 2,
+    "maxColumns": 8,
+    "preferredCardWidth": 160,
+    "gap": 12,
+    "contentInset": 16,
+    "aspectRatio": 1,
+    "largeText": "Retain full name; allow card height to grow instead of clipping."
+  },
+  "categories": [
+    {
+      "id": "sport",
+      "name": "Thể thao",
+      "description": "Đặt sân và tìm người chơi cùng",
+      "miniAppIds": [
+        "badminton"
+      ]
+    },
+    {
+      "id": "daily",
+      "name": "Hằng ngày",
+      "description": "Thời tiết, đi lại và ghi chú nhanh",
+      "miniAppIds": [
+        "weather",
+        "transit",
+        "notes"
+      ]
+    },
+    {
+      "id": "around_you",
+      "name": "Quanh bạn",
+      "description": "Có gì đang diễn ra quanh bạn",
+      "miniAppIds": [
+        "weather",
+        "transit"
+      ]
+    },
+    {
+      "id": "plan_focus",
+      "name": "Kế hoạch & tập trung",
+      "description": "Giữ nhịp ngày của bạn",
+      "miniAppIds": [
+        "notes",
+        "transit"
+      ]
+    },
+    {
+      "id": "money",
+      "name": "Tiền & chợ giá",
+      "description": "Theo dõi giá cả và ghi chú",
+      "miniAppIds": [
+        "market",
+        "notes"
+      ]
+    },
+    {
+      "id": "finance",
+      "name": "Tài chính",
+      "description": "So sánh thẻ",
+      "miniAppIds": [
+        "card"
+      ]
+    }
+  ],
+  "limitations": [
+    "Web design review only; native apps and Figma v0.1 unchanged.",
+    "Prototype uses six product category fixtures; the native integration-test category is excluded. Native filtering and preferences remain source-owned.",
+    "7 fixture apps; an 8-column layout can contain unused tracks."
+  ]
+}

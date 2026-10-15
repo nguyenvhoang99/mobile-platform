@@ -1,0 +1,19 @@
+✔ native content exactly matches current RN source and policy (185.492208ms)
+✔ catalog, route targets and tenant references are complete (0.114709ms)
+✔ journal limits come from canonical budget rows (0.806333ms)
+✔ native sources have no RN dependency or raw authority-free JS interface (1.912834ms)
+✔ built iOS host resolves its bundled framework without test-runner paths (32.339041ms)
+✔ Test is a private bundled screen in Khác for every tenant (1.655584ms)
+✔ bundled assets are pinned, host-only, and import provenance exists (5.434834ms)
+✔ iOS transport is compatible with shared-platform adapters and frozen handshake (5.759625ms)
+✔ Android MessagePort transports replies exactly once (0.377167ms)
+✔ timed-out Android calls never dispatch after a late connection (0.262792ms)
+✔ one native factory per platform; header CSP and scoped native transport (12.364167ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 294.2245

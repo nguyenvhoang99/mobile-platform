@@ -160,7 +160,7 @@ On iOS 26+, ActivityKit schedules the Live Activity and its alert even when the 
 longer running. On iOS 16.2–18, a future booking uses a local notification because those OS
 versions cannot locally schedule a future Live Activity; opening or foreground-receiving
 that reminder starts the Live Activity when the device permits it. Older iOS versions keep
-the local-notification fallback. The `BadmintonLiveActivityExtension` target renders the
+the local-notification fallback. The `LiveActivityExtension` target renders the
 Lock Screen and Dynamic Island countdown, and `NSSupportsLiveActivities` is enabled in the
 host Info.plist.
 

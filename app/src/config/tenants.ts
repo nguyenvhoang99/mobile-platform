@@ -42,7 +42,7 @@ export const TENANTS: Record<TenantId, TenantMeta> = {
       primarySoft: '#E2E8FF',
       canvasAccent: '#E6ECFF',
     },
-    featuredAppIds: ['weather', 'transit', 'badminton', 'notes', 'market', 'card', 'split-bill'],
+    featuredAppIds: ['weather', 'transit', 'badminton', 'notes', 'market', 'card', 'sample', 'test'],
     description: 'Thủ đô — thời tiết, giao thông và tiện ích đô thị.',
   },
   'vn-hcm': {
@@ -56,7 +56,7 @@ export const TENANTS: Record<TenantId, TenantMeta> = {
       primarySoft: '#FFF0E2',
       canvasAccent: '#FFF2E6',
     },
-    featuredAppIds: ['badminton', 'market', 'weather', 'transit', 'notes', 'card', 'split-bill'],
+    featuredAppIds: ['badminton', 'market', 'weather', 'transit', 'notes', 'card', 'sample', 'test'],
     description: 'Thành phố năng động — đặt sân cầu lông, chợ và di chuyển.',
   },
   'vn-dn': {
@@ -71,7 +71,7 @@ export const TENANTS: Record<TenantId, TenantMeta> = {
       primarySoft: '#E0F6F9',
       canvasAccent: '#E6F9FC',
     },
-    featuredAppIds: ['weather', 'transit', 'market', 'notes', 'card', 'split-bill'],
+    featuredAppIds: ['weather', 'transit', 'market', 'notes', 'card', 'sample', 'test'],
     description: 'Thành phố biển — thời tiết, di chuyển và mua sắm.',
   },
   'vn-fallback': {
@@ -81,7 +81,7 @@ export const TENANTS: Record<TenantId, TenantMeta> = {
     provinceName: 'Toàn quốc',
     centre: { lat: 16.0, lon: 108.0 },
     paletteOverrides: {},
-    featuredAppIds: ['weather', 'transit', 'notes', 'market', 'badminton', 'card', 'split-bill'],
+    featuredAppIds: ['weather', 'transit', 'notes', 'market', 'badminton', 'card', 'sample', 'test'],
     description: 'Danh mục chung — hiển thị khi chưa xác định được tỉnh/thành.',
   },
 };

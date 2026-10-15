@@ -20,8 +20,9 @@ source of truth — no duplicated numbers.
 | 3 | `docs/guidelines.md` | **Central checklist + skill routing + gates.** How to propose/implement a feature without breaking a principle; which skill owns what; definition of done; motion/haptics kills | Before writing code — copy the checklist into your PR description |
 | 4 | `docs/host-core-components.md` | Host core modules: `App.tsx:132`, `navigationBroker.ts:21`, `bridge/`, `container/`, `config/`, `tracking/`, `notification/`, `tenancy`, `Live Activity` — responsibilities, boundaries, file paths | When you touch a core module or need to find the owner |
 | 5 | `docs/features/tracking.md` | Tracking pipeline: declarations → journal → batch → transport | When you add/modify an event |
+| 5a | `docs/features/mini-app-load-performance.md` | Host launch timings, interruption semantics and browser-metric limitations | When measuring mini-app load performance |
 | 6 | `docs/features/notification.md` | Push → inbox → foreground banner → entrypoint activation → permission | When you add a notification category or deep link |
-| 7 | `docs/features/live-activity.md` | Badminton booking → Live Activity / badminton reminder (coordinator, attributes) | When you touch booking, calendar, or Live Activity |
+| 7 | `docs/features/live-activity.md` | Generic reminder → Live Activity (coordinator, attributes, extension) | When you touch reminder, calendar, or Live Activity |
 | 8 | `docs/features/tenancy.md` | 4-tenant MVP on one binary, location-first resolve, per-tenant catalog/palette | When you add a tenant, catalog, or palette override |
 | 8b | `docs/features/mini-app-container.md` | One WebView factory, isolation, CSP, navigation allowlist, warm pool, signing | When you touch WebView, isolation, or packaging |
 | 8c | `docs/features/capability-bridge.md` | 10-step bridge, gates, quota, audit, 6 caps, versioning | When you add/modify a capability |
@@ -47,7 +48,7 @@ If this index conflicts with a policy file, the **policy file wins**.
 
 **PoC present:** thin native shell, RN host (New Arch, Hermes, bare CLI), models and
 handlers for 6 capabilities, container/CSP/navigation/warm-pool models, signing utilities,
-4-tenant MVP, tracking journal, notification integration, badminton Live Activity, design
+4-tenant MVP, tracking journal, notification integration, generic reminder Live Activity, design
 tokens, tests, and local verification scripts.
 
 **Not yet production-enforced:** real linked WebView and origin scheme handler, pre-script

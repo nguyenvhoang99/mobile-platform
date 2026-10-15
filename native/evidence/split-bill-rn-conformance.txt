@@ -1,0 +1,10 @@
+✅ C1 — one WebView factory
+✅ C2 — no tier/consent check in mini-app JS
+✅ C3 — no identity read from envelope
+✅ C4 — no filesystem path in bridge
+✅ C6 — no Intent parsing in container
+✅ C7 — no RN scroll handler on WebView
+✅ R1 — handlers ↔ capabilities.yaml agreement
+✅ S2 — budget numbers imported, not inlined
+✅ S3 — spec methods exist on both platforms
+conformance: all static checks passed

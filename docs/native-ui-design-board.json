@@ -1,0 +1,895 @@
+{
+  "schemaVersion": 1,
+  "revision": "proposed-v0.1",
+  "date": "2026-10-03",
+  "status": "proposed",
+  "scope": "Root SwiftUI and Kotlin/Android Views native PoC",
+  "registry": "native-ui-component-registry.md",
+  "sourceFingerprints": {
+    "docs/native-ui-component-registry.md": "e27218ce0edc13ba221f2339e1cc19503e52c3cde17992d4ad793695170f1e92",
+    "ios/Sources/PlatformApp/NativeApp.swift": "05298fdc07f7f5a36157caf8b37f88f0ee028c123c7bc0bba67fa96904141160",
+    "ios/Sources/PlatformApp/SampleView.swift": "26d626d9bdd1158c0c3dc97949affc9bd8386f6ade016a8e0c1acb343dcc98a2",
+    "ios/Sources/PlatformApp/Notifications.swift": "c6c9a1aafceae72ef520d4c749ac3997c7eca2ffab7be3bb92aff56a826ad864",
+    "ios/Sources/LiveActivityExtension/Widget.swift": "37aefabe41544601a80a6d43be5a2b20cdacbab67d8911ce75ddd64244ef43d1",
+    "android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt": "4cdda0d8f8ffe4c8f95ba88c47103b0c0699e0cb8eeb8b65f039ceca4b3340e6",
+    "android/app/src/main/java/com/miniappplatform/nativehost/Reminders.kt": "69a6f177b6f7bbd4455ae4c9c6766607e7ccecdccc4eb548207df25077aff7eb",
+    "android/app/src/main/res/values/styles.xml": "bf4d2ba8179f803e5a27d04f8bb0d8323152696d522b3838d446ddd309610fdb",
+    "android/app/src/main/res/values-night/styles.xml": "63a0c11481419bdd6d52cfb6024497310efb8928ea155745f6db981b83c1e831",
+    "app/src/config/layout.ts": "d6ef7a06c8ccaf345987572d95151554e2120a669b5859234af8a2567b1fbb2c",
+    "app/src/config/palette.ts": "36439eacd29a4b1cd5023dd5da3c20129fc80c98c22c40571929a8804071996b",
+    "native/shared/platform.json": "09848015b11bfd3c905b8e0bcbd9ee0f4864beb1efda1a854f777b1612c14898"
+  },
+  "referenceTokens": {
+    "source": "app/src/config/palette.ts + layout.ts (RN reference, not approved native tokens)",
+    "colors": {
+      "canvas": "#F4F7FB",
+      "canvasAccent": "#E7EDFF",
+      "surface": "#FFFFFF",
+      "surfaceElevated": "#FFFFFF",
+      "border": "#DCE2EC",
+      "text": "#162033",
+      "mutedText": "#657085",
+      "inverseText": "#FFFFFF",
+      "primary": "#5865F2",
+      "onPrimary": "#FFFFFF",
+      "primarySoft": "#E8EAFF",
+      "success": "#16794B",
+      "warning": "#9A5B00",
+      "danger": "#C2353F",
+      "onDanger": "#FFFFFF",
+      "focus": "#3559E8",
+      "disabled": "#A8B0BF"
+    },
+    "layout": {
+      "spacing": {
+        "none": 0,
+        "xxs": 4,
+        "xs": 8,
+        "sm": 12,
+        "md": 16,
+        "lg": 24,
+        "xl": 32,
+        "xxl": 48
+      },
+      "radius": {
+        "none": 0,
+        "sm": 8,
+        "md": 12,
+        "lg": 20,
+        "xl": 28,
+        "pill": 999
+      },
+      "size": {
+        "touchTarget": 48,
+        "icon": 24
+      }
+    },
+    "typography": {
+      "size": {
+        "caption": 12,
+        "label": 14,
+        "body": 16,
+        "heading": 20,
+        "title": 28
+      },
+      "lineHeight": {
+        "caption": 16,
+        "label": 20,
+        "body": 24,
+        "heading": 28,
+        "title": 34
+      },
+      "weight": {
+        "regular": "400",
+        "medium": "500",
+        "semibold": "600",
+        "bold": "700"
+      }
+    }
+  },
+  "entries": [
+    {
+      "id": "shell.root",
+      "responsibility": "App root, initial loading, surface selection, modal routing",
+      "mapping": "present; platform composition differs",
+      "iosLink": "../ios/Sources/PlatformApp/NativeApp.swift#L12",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L58",
+      "iosSymbol": "`RootView`",
+      "androidSymbol": "`MainActivity.onCreate` / `render`",
+      "group": "Shell",
+      "priority": "Ưu tiên 1",
+      "ios": "Loading trong RootView; NavigationView, sheet và alert do host quản lý.",
+      "android": "LinearLayout header/status/body/dock; Activity chọn surface trong render().",
+      "proposal": "Một shell ổn định; loading nằm trong vùng nội dung và vẫn phân biệt host với mini-app.",
+      "states": [
+        "initial",
+        "loading",
+        "content",
+        "local-data error"
+      ],
+      "sketch": [
+        "Shell",
+        "Đang đọc dữ liệu trên máy…",
+        "Nội dung sẽ xuất hiện sau khi đọc xong."
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-840",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-776",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-779"
+      }
+    },
+    {
+      "id": "shell.header",
+      "responsibility": "Back, current title/tenant, close or inbox actions",
+      "mapping": "present; action placement differs",
+      "iosLink": "../ios/Sources/PlatformApp/NativeApp.swift#L26",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L67",
+      "iosSymbol": "`RootView` toolbar",
+      "androidSymbol": "`MainActivity.onCreate`",
+      "group": "Shell",
+      "priority": "Ưu tiên 1",
+      "ios": "Home có nút khu vực/inbox; màn con có Quay lại/Đóng theo điều kiện.",
+      "android": "Header luôn tạo Quay lại và Đóng; tiêu đề Home chứa khu vực.",
+      "proposal": "Home: khu vực bên trái, inbox bên phải. Màn con: Back, tên tiện ích, Close; không hiển thị hành động vô nghĩa.",
+      "states": [
+        "home",
+        "child",
+        "account",
+        "long title"
+      ],
+      "sketch": [
+        "Home",
+        "Khu vực: Toàn quốc",
+        "Thông báo",
+        "Màn con: Quay lại · SDK Demo · Đóng"
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-854",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-15",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-57"
+      }
+    },
+    {
+      "id": "shell.navigation.dock",
+      "responsibility": "Home, two configurable shortcuts, Explore",
+      "mapping": "present; shortcut editing gestures differ",
+      "iosLink": "../ios/Sources/PlatformApp/NativeApp.swift#L35",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L110",
+      "iosSymbol": "`RootView` bottom `HStack`",
+      "androidSymbol": "`MainActivity.render`",
+      "group": "Shell",
+      "priority": "Ưu tiên 1",
+      "ios": "Home/Khám phá là Label; hai shortcut là Menu gồm Mở/Đổi/Xóa.",
+      "android": "Bốn Button; tap shortcut mở, long press đổi; có đường đổi trong Tùy chỉnh Home.",
+      "proposal": "Dock v0.5: Home mặc định chỉ có Khám phá ở giữa; vuốt từ đó để thêm lối tắt trái/phải. Trong mini app chỉ hiện Home ở giữa để thu nhỏ vào một nút nổi; giữ trang/nháp trong phiên. Về Home hiện lại lối tắt, có animation và Giảm chuyển động. iOS hướng Liquid Glass; Android nền đặc. Chưa sửa Figma/app.",
+      "states": [
+        "Home default central Explore",
+        "Home one/two configured",
+        "mini app central Home; sides hidden",
+        "minimized single floating handle",
+        "resume child page/draft/scroll",
+        "closed no floating handle",
+        "picker left/right from center",
+        "removed with undo",
+        "rapid transition/cancel",
+        "reduced motion/transparency",
+        "large/long labels",
+        "native persistence/runtime unverified"
+      ],
+      "sketch": [
+        "Dock v0.5",
+        "Mặc định: Khám phá ở giữa",
+        "Home đã thêm: Trái · Khám phá · Phải",
+        "Mini app: chỉ Home ở giữa",
+        "Home → giữ phiên và thu nhỏ vào nút nổi",
+        "Nút nổi → mở lại trang con / nháp",
+        "Ẩn / hiện có animation; Giảm chuyển động = 0",
+        "Thử prototype tương tác qua link phía trên"
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-868",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-45",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-87"
+      },
+      "proposalRevision": "dock-v0.5",
+      "proposalArtifact": "native-ui-dock-review.html"
+    },
+    {
+      "id": "home.landing",
+      "responsibility": "Home greeting, curated categories, pinned/recommended apps, account entry",
+      "mapping": "present; information hierarchy differs",
+      "iosLink": "../ios/Sources/PlatformApp/NativeApp.swift#L56",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L142",
+      "iosSymbol": "`HomeView`",
+      "androidSymbol": "`MainActivity.homeRows`",
+      "group": "Home",
+      "priority": "Ưu tiên 1",
+      "ios": "List insetGrouped; hero largeTitle; Bộ sưu tập gồm disclosure groups/pinned; Dành cho bạn gồm mọi app.",
+      "android": "Greeting, khu vực, customize, categories rồi pinned + apps được dedupe trong một danh sách.",
+      "proposal": "v0.3: category và mini app dùng card vuông, 2–8 cột mỗi hàng theo width content; icon + tên đầy đủ + thông tin ngắn. Giữ ranh giới nhóm; khi implement giữ tenant order, visibility, pinned và dedupe của Home model. Chữ lớn cho phép tăng chiều cao.",
+      "states": [
+        "2–8 columns",
+        "category / mini app",
+        "long name",
+        "large text reflow",
+        "empty group (handoff)",
+        "pinned (handoff)"
+      ],
+      "sketch": [
+        "Home · square cards v0.3",
+        "Ngày của bạn, nhẹ nhàng hơn",
+        "Tiện ích cho Toàn quốc",
+        "Bộ sưu tập của bạn",
+        "Category: icon · tên · số tiện ích",
+        "Dành cho bạn",
+        "Mini app: icon · tên · thông tin ngắn",
+        "Lưới 2–8 cột theo width; thử ở prototype liên kết phía trên."
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-882",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-14",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-56"
+      },
+      "proposalRevision": "home-grid-v0.3",
+      "proposalArtifact": "native-ui-dock-review.html"
+    },
+    {
+      "id": "home.app_row",
+      "responsibility": "Launch a mini-app preview; pin/unpin affordance",
+      "mapping": "present; iOS uses context menu, Android uses row options",
+      "iosLink": "../ios/Sources/PlatformApp/NativeApp.swift#L77",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L94",
+      "iosSymbol": "`AppRow`",
+      "androidSymbol": "`MainActivity.appRow` / `RowsAdapter`",
+      "group": "Home",
+      "priority": "Ưu tiên 1",
+      "ios": "Button có headline/caption/chevron; context menu Ghim/Bỏ ghim.",
+      "android": "Row title/detail và Button Tùy chọn gọi toggleApp trực tiếp.",
+      "proposal": "v0.3: thay row bằng card vuông cùng geometry với category; toàn card mở app, tên đầy đủ, không truncate. Giữ stable ID và hành động ghim qua menu/action native khi implement. Prototype chỉ mở điểm đến minh họa, chưa mô phỏng ghim.",
+      "states": [
+        "default",
+        "focus / pressed",
+        "long name",
+        "large text reflow",
+        "pinned (handoff)"
+      ],
+      "sketch": [
+        "Mini-app card v0.3",
+        "Icon",
+        "SDK Demo",
+        "SDK & đặt sân mẫu",
+        "Toàn card mở tiện ích",
+        "Menu ghim giữ qua adapter native khi implement."
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-896",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=3-114",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=3-118"
+      },
+      "proposalRevision": "home-grid-v0.3",
+      "proposalArtifact": "native-ui-dock-review.html"
+    },
+    {
+      "id": "home.customize",
+      "responsibility": "Choose Home categories/apps and restore defaults",
+      "mapping": "present; form versus dialogs",
+      "iosLink": "../ios/Sources/PlatformApp/NativeApp.swift#L82",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L152",
+      "iosSymbol": "`CustomizeView`",
+      "androidSymbol": "`MainActivity.customize` / `toggleApp` / `toggleCategory`",
+      "group": "Home",
+      "priority": "Ưu tiên 2",
+      "ios": "Form toggle ghi preferences ngay; Xong dismiss; có restore defaults.",
+      "android": "Dialog lựa chọn nhóm; multi-choice có Lưu/Hủy, hai mục đổi dock và restore.",
+      "proposal": "Một form nhóm Danh mục/Tiện ích/Hai lối tắt; draft + Lưu/Hủy chung, khôi phục có feedback. Đổi semantics cần contract retention trước code.",
+      "states": [
+        "editing",
+        "dirty",
+        "saved",
+        "save error",
+        "cancel"
+      ],
+      "sketch": [
+        "Tùy chỉnh Home",
+        "Danh mục",
+        "Thể thao — Đã chọn",
+        "Hằng ngày — Đã chọn",
+        "Tiện ích",
+        "Hai lối tắt",
+        "Khôi phục gợi ý mặc định",
+        "Lưu · Hủy"
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-910",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-175",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-206"
+      }
+    },
+    {
+      "id": "shell.dock_picker",
+      "responsibility": "Select or remove one of the two dock shortcuts",
+      "mapping": "present; picker presentation differs",
+      "iosLink": "../ios/Sources/PlatformApp/NativeApp.swift#L48",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L161",
+      "iosSymbol": "`RootView` shortcut picker sheet",
+      "androidSymbol": "`MainActivity.dockPicker`",
+      "group": "Shell",
+      "priority": "Ưu tiên 2",
+      "ios": "Sheet danh sách app + Đóng; Xóa nằm trong Menu shortcut ngoài picker.",
+      "android": "Dialog: Xóa lối tắt + apps; giữ hai slot không trùng app.",
+      "proposal": "Dock v0.5: chỉ ở Home, vuốt bắt đầu từ Khám phá ở giữa hoặc nút Thêm thay thế → danh sách đúng bên. Chọn rồi xác nhận Thêm/Thay; Hủy giữ nguyên và focus về giữa. Không chọn trùng slot kia. Gesture bắt đầu từ lối tắt không mở picker; trong mini app không sửa dock.",
+      "states": [
+        "pick left/right",
+        "replace occupied",
+        "selected candidate",
+        "duplicate disabled",
+        "cancel",
+        "tenant/catalog changed",
+        "commit failed"
+      ],
+      "sketch": [
+        "Chọn lối tắt",
+        "Bên trái / bên phải",
+        "Tiện ích từ catalog khu vực",
+        "Chọn ứng viên",
+        "Thêm lối tắt / Thay lối tắt",
+        "Hủy: giữ dock nguyên vẹn"
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-924",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-243",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-264"
+      },
+      "proposalRevision": "dock-v0.5",
+      "proposalArtifact": "native-ui-dock-review.html"
+    },
+    {
+      "id": "explore.search",
+      "responsibility": "Search available mini-app previews and show empty state",
+      "mapping": "present",
+      "iosLink": "../ios/Sources/PlatformApp/NativeApp.swift#L91",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L163",
+      "iosSymbol": "`ExploreView`",
+      "androidSymbol": "`MainActivity.explore`",
+      "group": "Khám phá",
+      "priority": "Ưu tiên 2",
+      "ios": "Sheet searchable; chọn app rồi dismiss; có empty copy.",
+      "android": "Surface Activity có EditText; adapter update; lần render đầu dùng list filtered chưa có empty fallback.",
+      "proposal": "Chung search/clear/result count/no-result; mở app và Back giữ query theo contract được chốt. Đường đầu vào empty cần kiểm tra riêng.",
+      "states": [
+        "query empty",
+        "results",
+        "no results",
+        "keyboard"
+      ],
+      "sketch": [
+        "Khám phá",
+        "Tìm tiện ích",
+        "SDK Demo — SDK & đặt sân mẫu",
+        "Thẻ — Tìm quyền lợi thẻ",
+        "Không có kết quả: thử từ khóa khác"
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-938",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-103",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-136"
+      }
+    },
+    {
+      "id": "tenant.picker",
+      "responsibility": "Pick a region manually or resolve from approximate location",
+      "mapping": "present; selection UI differs",
+      "iosLink": "../ios/Sources/PlatformApp/NativeApp.swift#L101",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L162",
+      "iosSymbol": "`TenantPicker`",
+      "androidSymbol": "`MainActivity.tenantPicker`",
+      "group": "Khám phá",
+      "priority": "Ưu tiên 2",
+      "ios": "Sheet chọn tenant với dấu chọn + description; location button busy disabled; status local.",
+      "android": "Dialog khu vực + Dùng vị trí gần đúng; callback chuyển tenant, feedback qua shell.",
+      "proposal": "Cùng selected indicator, description và hành động vị trí; loading/denied local, luôn cho chọn thủ công, không tự coi location là quyền mini-app.",
+      "states": [
+        "selected",
+        "locating",
+        "denied",
+        "unavailable",
+        "cancel"
+      ],
+      "sketch": [
+        "Khu vực",
+        "Toàn quốc — Đang chọn",
+        "Hà Nội",
+        "TP. Hồ Chí Minh",
+        "Đà Nẵng",
+        "Chọn từ vị trí gần đúng",
+        "Bạn vẫn có thể chọn thủ công."
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-952",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-290",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-317"
+      }
+    },
+    {
+      "id": "miniapp.preview",
+      "responsibility": "Display declared routes/links for a local mini-app preview",
+      "mapping": "present; no external mini-app execution implied",
+      "iosLink": "../ios/Sources/PlatformApp/NativeApp.swift#L112",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L167",
+      "iosSymbol": "`MiniAppView`",
+      "androidSymbol": "`MainActivity.preview`",
+      "group": "Tiện ích",
+      "priority": "Ưu tiên 2",
+      "ios": "List tách Trang đã khai báo/Liên kết đã khai báo và copy local preview.",
+      "android": "Rows tên app/path, routes rồi links; cùng copy chưa thực thi gói bên ngoài.",
+      "proposal": "Chung nhóm route/link và trusted header; giữ nhãn Bản xem trước, không dùng hình làm tưởng app external đã chạy.",
+      "states": [
+        "route root",
+        "nested",
+        "invalid link",
+        "unavailable tenant"
+      ],
+      "sketch": [
+        "Bản xem trước tiện ích",
+        "Chưa tải hoặc thực thi gói mini-app bên ngoài.",
+        "Trang đã khai báo",
+        "Liên kết đã khai báo",
+        "Quay lại · Đóng"
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-966",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-349",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-367"
+      }
+    },
+    {
+      "id": "cards.search",
+      "responsibility": "Search sample cards and benefits",
+      "mapping": "present",
+      "iosLink": "../ios/Sources/PlatformApp/NativeApp.swift#L125",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L173",
+      "iosSymbol": "`CardsView`",
+      "androidSymbol": "`MainActivity.cards`",
+      "group": "Thẻ",
+      "priority": "Ưu tiên 2",
+      "ios": "Searchable + disclaimer; row bank/name/headline; empty fallback.",
+      "android": "EditText + disclaimer; row name với bank/headline ở detail; empty fallback.",
+      "proposal": "Cùng thứ tự bank → card name → benefit; search không dấu; disclaimer dữ liệu mẫu hiện rõ, không ngụ ý ưu đãi thật.",
+      "states": [
+        "all cards",
+        "query",
+        "no results",
+        "long card name"
+      ],
+      "sketch": [
+        "Thẻ",
+        "Dữ liệu minh họa; không phải ưu đãi hiện hành.",
+        "Tìm ngân hàng, thẻ hoặc quyền lợi",
+        "Vietcombank",
+        "Vietcombank Visa Platinum",
+        "Quyền lợi minh họa"
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-980",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-390",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-407"
+      }
+    },
+    {
+      "id": "cards.detail",
+      "responsibility": "Show one sample card and its benefit details",
+      "mapping": "present",
+      "iosLink": "../ios/Sources/PlatformApp/NativeApp.swift#L125",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L173",
+      "iosSymbol": "`CardsView` detail branch",
+      "androidSymbol": "`MainActivity.cards`",
+      "group": "Thẻ",
+      "priority": "Ưu tiên 2",
+      "ios": "Bank headline, card title2, brand, fee, first year copy rồi benefits section.",
+      "android": "Bank/name trong một Row; brand/fee/first year trong Row khác, tiếp theo benefits.",
+      "proposal": "Thông tin nhận dạng rõ trước fee/benefits; định dạng VND chung và label mẫu; Back quay về search theo contract.",
+      "states": [
+        "content",
+        "long benefit",
+        "invalid route",
+        "large text"
+      ],
+      "sketch": [
+        "Chi tiết thẻ mẫu",
+        "Vietcombank",
+        "Vietcombank Visa Platinum",
+        "VISA",
+        "Phí năm: 500.000 ₫",
+        "Miễn phí năm đầu (mẫu)",
+        "Quyền lợi"
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-994",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-429",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-456"
+      }
+    },
+    {
+      "id": "notifications.inbox",
+      "responsibility": "Notification permission state, inbox items, launch target",
+      "mapping": "present; date/permission detail differs",
+      "iosLink": "../ios/Sources/PlatformApp/NativeApp.swift#L143",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L181",
+      "iosSymbol": "`InboxView`",
+      "androidSymbol": "`MainActivity.inbox`",
+      "group": "Thông báo",
+      "priority": "Ưu tiên 2",
+      "ios": "Sheet, permission string/action, title/body/date và Mở tiện ích; markSeen onAppear.",
+      "android": "Surface, row permission, title/body clickable nếu có app; không render date; seen sau render.",
+      "proposal": "Item có title/body/time và đích mở rõ; trạng thái quyền không lấn inbox; empty/recovery cùng ý nghĩa. Capture unread/expired trước khi chốt affordance.",
+      "states": [
+        "empty",
+        "items",
+        "denied",
+        "invalid/expired target"
+      ],
+      "sketch": [
+        "Thông báo",
+        "Thông báo chưa cho phép",
+        "Cho phép thông báo",
+        "Chưa có thông báo",
+        "Nhắc lịch sẽ xuất hiện khi được nhận."
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1008",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-488",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-505"
+      }
+    },
+    {
+      "id": "account.device_access",
+      "responsibility": "Host-only device access demos and notification settings",
+      "mapping": "present; controls differ by OS capability",
+      "iosLink": "../ios/Sources/PlatformApp/NativeApp.swift#L153",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L178",
+      "iosSymbol": "`AccountView`",
+      "androidSymbol": "`MainActivity.account`",
+      "group": "Tài khoản",
+      "priority": "Ưu tiên 2",
+      "ios": "Form nhóm thiết bị/thông báo/dữ liệu; trạng thái local, APNs; nút theo busy.",
+      "android": "Danh sách action; Dừng luôn hiện; FCM; status ở shell.",
+      "proposal": "Chung nhóm/status và privacy copy; APNs/FCM có nhãn platform. Không quảng bá OS grant là mini-app grant; chỉ khóa action xung đột.",
+      "states": [
+        "idle",
+        "busy",
+        "permission denied",
+        "unavailable",
+        "cancel"
+      ],
+      "sketch": [
+        "Tài khoản",
+        "Truy cập thiết bị",
+        "Kiểm tra mạng",
+        "Xác thực cục bộ",
+        "Vị trí gần đúng",
+        "Lệnh thoại trên máy",
+        "Thông báo",
+        "Cài đặt hệ thống",
+        "Dữ liệu lưu theo khu vực trên máy."
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1022",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-527",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-552"
+      }
+    },
+    {
+      "id": "sample.booking",
+      "responsibility": "Sample court list, date/filter controls, booking and participant actions",
+      "mapping": "present; interaction pattern differs",
+      "iosLink": "../ios/Sources/PlatformApp/SampleView.swift#L4",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L184",
+      "iosSymbol": "`SampleView` booking section",
+      "androidSymbol": "`MainActivity.sample` / `slotActions`",
+      "group": "SDK Demo",
+      "priority": "Ưu tiên 3",
+      "ios": "Section booking trước storage/bill; segmented Tìm sân/Lịch của tôi; action trực tiếp trong slot.",
+      "android": "Header có ngày/filter rồi storage/bill; danh sách slots nằm sau; tap slot mở action dialog.",
+      "proposal": "Booking là nhóm đầu; cùng filter và thông tin sân/giá/capacity/visibility; một primary action theo state; demo storage/bill xuống nhóm riêng.",
+      "states": [
+        "available",
+        "mine",
+        "joinable",
+        "full/private",
+        "no slots",
+        "cancel"
+      ],
+      "sketch": [
+        "SDK Demo",
+        "Dữ liệu fixture trong phiên; chưa đặt chỗ thật.",
+        "Đặt sân mẫu",
+        "Tìm sân · Lịch của tôi",
+        "Hôm nay · Ngày mai · Cuối tuần",
+        "Tên sân · Khung giờ",
+        "Giá VND · Số người / Sức chứa",
+        "Đặt sân mẫu"
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1036",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-582",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-623"
+      }
+    },
+    {
+      "id": "sample.host_actions",
+      "responsibility": "Host reminder, calendar, and live/ongoing activity actions for a sample booking",
+      "mapping": "platform-specific affordances; Android/iOS behavior is not identical",
+      "iosLink": "../ios/Sources/PlatformApp/SampleView.swift#L47",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L203",
+      "iosSymbol": "`SampleView` booking actions / `showCalendar`",
+      "androidSymbol": "`MainActivity.slotActions`",
+      "group": "SDK Demo",
+      "priority": "Ưu tiên 3",
+      "ios": "Nhắc 1 giờ/lịch/Live Activity trong slot đã tham gia; host-only copy.",
+      "android": "Nhắc/lịch/ongoing notification trong action dialog với prefix Host.",
+      "proposal": "Tách nhóm Công cụ host, giữ ý nghĩa chung; live label/fallback theo OS. Phản hồi phân biệt request nhận và OS đã hiển thị/lưu.",
+      "states": [
+        "eligible",
+        "denied",
+        "pending",
+        "unsupported",
+        "cancel reminder"
+      ],
+      "sketch": [
+        "Công cụ của host",
+        "Nhắc trước 1 giờ",
+        "Mở lịch hệ thống",
+        "iOS: Mở Live Activity",
+        "Android: Thông báo đang diễn ra",
+        "Không phải API public cho mini-app."
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1050",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-582",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-623"
+      }
+    },
+    {
+      "id": "sample.bridge_storage",
+      "responsibility": "Sample note input and bridge storage read/write/delete controls",
+      "mapping": "present",
+      "iosLink": "../ios/Sources/PlatformApp/SampleView.swift#L57",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L184",
+      "iosSymbol": "`SampleView` storage section",
+      "androidSymbol": "`MainActivity.sample` / `storage`",
+      "group": "SDK Demo",
+      "priority": "Ưu tiên 3",
+      "ios": "Section note + Ghi/Đọc/Xóa; disabled busy hoặc session nil.",
+      "android": "Nhóm trong header + ba Button; bridge guard busy, feedback shell.",
+      "proposal": "Nhóm riêng, field label bền, ba action theo thứ bậc; pending scoped và status cạnh nhóm; copy memory-only đúng.",
+      "states": [
+        "idle",
+        "pending",
+        "no note",
+        "consent/session error",
+        "deleted"
+      ],
+      "sketch": [
+        "Kho mẫu qua bridge",
+        "Bộ nhớ theo khu vực; mất khi khởi động lại.",
+        "Ghi chú mẫu",
+        "Ghi mẫu · Đọc mẫu · Xóa mẫu",
+        "Trạng thái thao tác"
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1064",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-669",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-692"
+      }
+    },
+    {
+      "id": "sample.bill_draft",
+      "responsibility": "Manual bill draft inputs, consent prompt, review action",
+      "mapping": "present; underlying AI extraction is unavailable in this PoC",
+      "iosLink": "../ios/Sources/PlatformApp/SampleView.swift#L64",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L184",
+      "iosSymbol": "`SampleView` bill section / `extract`",
+      "androidSymbol": "`MainActivity.sample` / `extract`",
+      "group": "SDK Demo",
+      "priority": "Ưu tiên 3",
+      "ios": "Consent confirmationDialog, amount/recipient, review flag/copy, AI unavailable.",
+      "android": "Consent AlertDialog; fields trong header; review phản hồi global và không render review flag.",
+      "proposal": "Giữ flow nhập thủ công/consent/unavailable; nhãn field/validation sát lỗi; thể hiện đã kiểm tra hoặc chưa; không dựng AI/payment thành công.",
+      "states": [
+        "editing",
+        "invalid",
+        "consent denied",
+        "pending",
+        "AI unavailable",
+        "reviewed"
+      ],
+      "sketch": [
+        "Bản nháp hóa đơn",
+        "Chưa có AI; nhập thủ công. Không lưu hóa đơn hoặc thanh toán.",
+        "Gợi ý hóa đơn",
+        "Tổng tiền VND",
+        "Người nhận / cửa hàng",
+        "Yêu cầu AI tới host",
+        "Xác nhận đã kiểm tra bản nháp",
+        "Bản nháp mất khi đóng tiện ích."
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1078",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-720",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-747"
+      }
+    },
+    {
+      "id": "sample.status",
+      "responsibility": "User-facing status and bridge/action feedback",
+      "mapping": "present; Android status is shared at shell level",
+      "iosLink": "../ios/Sources/PlatformApp/SampleView.swift#L43",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt#L84",
+      "iosSymbol": "`SampleView` status section",
+      "androidSymbol": "`MainActivity.report`",
+      "group": "SDK Demo",
+      "priority": "Ưu tiên 1",
+      "ios": "Section Trạng thái; đổi status gửi UIAccessibility announcement.",
+      "android": "TextView status ở shell, accessibilityLiveRegion polite.",
+      "proposal": "Feedback thuộc nhóm/intent đang làm; text giải thích + action recovery, announce khi thay đổi; không show mã raw nếu chưa có copy mapping.",
+      "states": [
+        "idle",
+        "pending",
+        "local success",
+        "denied",
+        "unavailable",
+        "failure"
+      ],
+      "sketch": [
+        "Trạng thái thao tác",
+        "Chưa có bộ đọc hóa đơn.",
+        "Tiếp tục nhập thủ công; nội dung đang nhập được giữ.",
+        "Chưa lưu hóa đơn hoặc thanh toán."
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1092",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-816",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-819"
+      }
+    },
+    {
+      "id": "calendar.editor",
+      "responsibility": "System calendar event editor presented for a sample booking",
+      "mapping": "platform-owned UI; not a shared in-app component",
+      "iosLink": "../ios/Sources/PlatformApp/Notifications.swift#L73",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/Reminders.kt#L90",
+      "iosSymbol": "`CalendarEditor`",
+      "androidSymbol": "`Reminders.calendar`",
+      "group": "Hệ thống",
+      "priority": "Platform-owned",
+      "ios": "EventKitUI CalendarEditor sheet; kết quả user edit/cancel ở source Notifications.swift.",
+      "android": "Reminders.calendar mở system INSERT intent; editor ngoài app.",
+      "proposal": "Giữ system editor; chỉ chuẩn hóa điểm vào, copy và kết quả quan sát được. Không vẽ lại calendar UI hoặc báo đã lưu khi chỉ mở editor.",
+      "states": [
+        "presenting",
+        "canceled",
+        "denied",
+        "unavailable",
+        "result unknown"
+      ],
+      "sketch": [
+        "Trình chỉnh sửa lịch hệ thống",
+        "OS sở hữu giao diện",
+        "iOS: EventKitUI",
+        "Android: Calendar INSERT",
+        "Mở editor không chứng minh đã lưu."
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1106",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-830",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-830"
+      }
+    },
+    {
+      "id": "reminder.live_activity",
+      "responsibility": "Live reminder surface outside the app",
+      "mapping": "platform-specific; no Android Live Activity counterpart",
+      "iosLink": "../ios/Sources/LiveActivityExtension/Widget.swift#L6",
+      "androidLink": "../android/app/src/main/java/com/miniappplatform/nativehost/Reminders.kt#L57",
+      "iosSymbol": "`NativeReminderWidget`",
+      "androidSymbol": "`Reminders.display`",
+      "group": "Hệ thống",
+      "priority": "Platform-owned",
+      "ios": "ActivityKit lock screen/Dynamic Island: title/body/startAt relative; widgetURL theo reminder ID.",
+      "android": "Ongoing notification/countdown và promotion khi OS hỗ trợ trong Reminders.display.",
+      "proposal": "Chung nội dung/reminder identity/đích mở; hai variant platform riêng và unavailable rõ; không coi Android có Dynamic Island.",
+      "states": [
+        "available",
+        "active",
+        "unsupported",
+        "ended",
+        "dismissed"
+      ],
+      "sketch": [
+        "Nhắc lịch ngoài app",
+        "iOS: Live Activity / Dynamic Island",
+        "Android: Ongoing notification",
+        "Tên hoạt động · Nội dung · Thời gian",
+        "Hiển thị do hệ thống quyết định."
+      ],
+      "reviewStatus": "draft",
+      "figmaNode": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-1120",
+      "figmaFrames": {
+        "ios": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-830",
+        "android": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=11-830"
+      }
+    }
+  ],
+  "figma": {
+    "fileKey": "aSnrJJ38Pbif95uoYt4FK5",
+    "url": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5",
+    "revision": "proposed-v0.1",
+    "createdAt": "2026-10-04",
+    "status": "draft-partially-verified",
+    "pages": {
+      "review": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=0-1",
+      "foundations": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=3-2",
+      "screens": "https://www.figma.com/design/aSnrJJ38Pbif95uoYt4FK5?node-id=3-3"
+    },
+    "limitations": [
+      "Starter MCP tool-call limit reached before final canvas audit and fixes.",
+      "SF Pro text did not render in the inspected anonymous web session; iOS proposals need font rendering repair or a documented review-font fallback before visual acceptance.",
+      "Prototype connections are planned, not wired. Screens intro text describing a prototype needs correction at next Figma edit.",
+      "State lists cover the required review contract; only seven generic feedback concepts are drawn, not every screen/state combination.",
+      "Header library Actions default was normalized across variants; actual Home screen overrides show Inbox, but library defaults need repair.",
+      "Dock currently shows the Home-selected concept; Explore-selected and configured shortcut variants need completion.",
+      "Ten typography styles exist but are not yet bound to text nodes.",
+      "A temporary header text-override trial at node 9:2 remains on Foundations; remove during next cleanup.",
+      "Dark, tenant accent, native device captures, accessibility reflow and runtime behavior are unverified."
+    ]
+  },
+  "dockRefinement": {
+    "revision": "dock-v0.5",
+    "date": "2026-10-04",
+    "status": "visual-draft-user-requirements-confirmed",
+    "prototype": "native-ui-dock-review.html",
+    "contract": "native-ui-dock-design.md",
+    "figmaStatus": "pending-tool-quota; existing Figma v0.1 unchanged",
+    "appImplementation": "unchanged"
+  },
+  "homeRefinement": {
+    "revision": "home-grid-v0.3",
+    "date": "2026-10-04",
+    "status": "visual-draft",
+    "prototype": "native-ui-dock-review.html",
+    "contract": "native-ui-home-design.md",
+    "layout": "square cards; 2–8 columns per row",
+    "figmaStatus": "pending-tool-quota; existing Figma v0.1 unchanged",
+    "appImplementation": "unchanged"
+  },
+  "sourceAudit": {
+    "date": "2026-10-04",
+    "status": "baseline-drift; re-audit before implementation",
+    "changedSinceBaseline": [
+      "ios/Sources/PlatformApp/NativeApp.swift",
+      "android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt",
+      "native/shared/platform.json"
+    ],
+    "baselineFingerprintsPreserved": true
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "appId": "manage-expense",
+  "branch": "feat/manage-expense-revamp",
+  "commit": "786bb61a65a1b0b8f16f2fd8f1f450583fbfe42c",
+  "sourceIncludesWorkingTree": true,
+  "sharedPlatformContract": "host-bridge v1",
+  "files": {
+    "index.html": "010e542c2b73bb0c7957708e9463383597e9c9c29856da83edddd700321dc9de",
+    "bundle.js": "48a3c25e4f999d85126c2e38c8d5c0551feddb29c397ae06aeb2ef5dedf0b865",
+    "host.js": "07bb153c83f78c4f41bac43d11b0d500cc77c7cd40d8804a5b77c322506260e1",
+    "manifest.json": "932e29ec1668b1c559bd2ab1695e8034eb8493c2b8dfc6b9b05a377c254e9852"
+  }
+}

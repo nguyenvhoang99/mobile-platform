@@ -1,0 +1,337 @@
+{
+  "date": "2026-10-03",
+  "machine": {
+    "os": "macOS-27.0.1-arm64-arm-64bit",
+    "architecture": "arm64"
+  },
+  "variants": {
+    "android": "default; Firebase disabled; unsigned release AAB; debug APK",
+    "ios": "unsigned Release generic iOS arm64; not thinned or exported IPA"
+  },
+  "android_release_aab": {
+    "path": "/Users/lap16954/Documents/mine/platform/mobile/android/app/build/outputs/bundle/release/app-release.aab",
+    "bytes": 222060,
+    "sha256": "5648b15fbe78c622385e930fc8170647adc59a08796d0cdd8df1d55edffcb7ee"
+  },
+  "android_debug_apk": {
+    "path": "/Users/lap16954/Documents/mine/platform/mobile/android/app/build/outputs/apk/debug/app-debug.apk",
+    "bytes": 1754722,
+    "sha256": "bf42fb519c3d9eb6fd71a91b78c3c161772fcea3a686d53a07e4a37b746c7dfa"
+  },
+  "ios_unsigned_release_directory": {
+    "path": "/private/tmp/mobile-native-ios-release/Build/Products/Release-iphoneos/MobileNative.app",
+    "logical_file_bytes": 2017388,
+    "files": [
+      {
+        "relative_path": "Frameworks/PlatformCore.framework/Info.plist",
+        "bytes": 707,
+        "sha256": "4f06b01e496428beea067c02f71d79121a45c2f9cb692fa4c10fa3dfb8197382"
+      },
+      {
+        "relative_path": "Frameworks/PlatformCore.framework/PlatformCore",
+        "bytes": 523120,
+        "sha256": "4d424bacc9dd862425122ea62025c30d7bf6785bab576baebf306c5d0b938142"
+      },
+      {
+        "relative_path": "Info.plist",
+        "bytes": 2009,
+        "sha256": "9f45f61a6981f8c58c80e02515ab8128e0ac40f497b007a1942a6fb13ad2ffb9"
+      },
+      {
+        "relative_path": "MobileNative",
+        "bytes": 1315864,
+        "sha256": "bc1413ac6e941741c775ab1cfc8e813621c8d7541154050a329159012dc5afcc"
+      },
+      {
+        "relative_path": "PkgInfo",
+        "bytes": 8,
+        "sha256": "82502191c9484b04d685374f9879a0066069c49b8acae7a04b01d38d07e8eca0"
+      },
+      {
+        "relative_path": "PlugIns/NativeReminder.appex/Info.plist",
+        "bytes": 832,
+        "sha256": "c2daaadd1beb4890942d2dbae7b6b9d07345c61ffe59491861236e1796d57cf6"
+      },
+      {
+        "relative_path": "PlugIns/NativeReminder.appex/NativeReminder",
+        "bytes": 138480,
+        "sha256": "a8292fbb1b6b5044bb90bedcc3959710d760ac7c216afdca649380af04e4571d"
+      },
+      {
+        "relative_path": "PrivacyInfo.xcprivacy",
+        "bytes": 986,
+        "sha256": "b9289ecfec677540a293fba948db7268c02b1d44943fa66b1e7a85ba0c31a252"
+      },
+      {
+        "relative_path": "platform.json",
+        "bytes": 35382,
+        "sha256": "09848015b11bfd3c905b8e0bcbd9ee0f4864beb1efda1a854f777b1612c14898"
+      }
+    ]
+  },
+  "shared_content": {
+    "path": "/Users/lap16954/Documents/mine/platform/mobile/native/shared/platform.json",
+    "bytes": 35382,
+    "sha256": "09848015b11bfd3c905b8e0bcbd9ee0f4864beb1efda1a854f777b1612c14898"
+  },
+  "source_fingerprints": [
+    {
+      "path": "ios/.gitignore",
+      "sha256": "08ee9ab6fe2a86513f25cc5d7ae5891c519bfaed8ef7c28e548337f977a4888a"
+    },
+    {
+      "path": "ios/Info.plist",
+      "sha256": "932f14f44d06b23d75f2667c951cc02d3da0412b6a6225b64e13dd0d8db5d781"
+    },
+    {
+      "path": "ios/MiniAppPlatform.xcodeproj/project.pbxproj",
+      "sha256": "271b92343d96463b37a289177c0cea6ce43d0888967f96508038d0c5754dfa82"
+    },
+    {
+      "path": "ios/MiniAppPlatform.xcodeproj/xcshareddata/xcschemes/MobileNative.xcscheme",
+      "sha256": "b01e6db8ea25f4013bb80cdccd7053f7bfbfbdc4a6837ceb224e80e35ef1962c"
+    },
+    {
+      "path": "ios/Package.swift",
+      "sha256": "5581fd56bcb1b64c90c22a8023a043ab60e4dfbe95b104a493f8b0ce691ab6da"
+    },
+    {
+      "path": "ios/PrivacyInfo.xcprivacy",
+      "sha256": "b9289ecfec677540a293fba948db7268c02b1d44943fa66b1e7a85ba0c31a252"
+    },
+    {
+      "path": "ios/Sources/LiveActivityExtension/Info.plist",
+      "sha256": "1d4323fded7b3cc6dd3cf9731575d50500a98156cd2d191a883363c65df9a8cc"
+    },
+    {
+      "path": "ios/Sources/LiveActivityExtension/Widget.swift",
+      "sha256": "37aefabe41544601a80a6d43be5a2b20cdacbab67d8911ce75ddd64244ef43d1"
+    },
+    {
+      "path": "ios/Sources/PlatformApp/DeviceServices.swift",
+      "sha256": "15ff14c7c83478ce70f5d5a69533c0325e5861e6a2c680a2b04d2249b8237d52"
+    },
+    {
+      "path": "ios/Sources/PlatformApp/HostStore.swift",
+      "sha256": "111a9981da7808bdf2f7a857e3c35cedadca6c2e6f29e2fe9e31a60f2d4c57e8"
+    },
+    {
+      "path": "ios/Sources/PlatformApp/LocalJournal.swift",
+      "sha256": "14186928ed03f09b3a343333d262dbb8ed12a5dce455949a5a0b9a566bd1a055"
+    },
+    {
+      "path": "ios/Sources/PlatformApp/NativeApp.swift",
+      "sha256": "05298fdc07f7f5a36157caf8b37f88f0ee028c123c7bc0bba67fa96904141160"
+    },
+    {
+      "path": "ios/Sources/PlatformApp/Notifications.swift",
+      "sha256": "c6c9a1aafceae72ef520d4c749ac3997c7eca2ffab7be3bb92aff56a826ad864"
+    },
+    {
+      "path": "ios/Sources/PlatformApp/ReminderActivityAttributes.swift",
+      "sha256": "d9f521c1ec51b93f9b773d2cd809d3c5f24c906857f78c45ce1134035a14dfda"
+    },
+    {
+      "path": "ios/Sources/PlatformApp/RemoteAppDelegate.swift",
+      "sha256": "6a6b4f26a2aca7e6d03d2f397dbd14bde7b3dbe54c656c9e67c58f8647b3571b"
+    },
+    {
+      "path": "ios/Sources/PlatformApp/SampleView.swift",
+      "sha256": "26d626d9bdd1158c0c3dc97949affc9bd8386f6ade016a8e0c1acb343dcc98a2"
+    },
+    {
+      "path": "ios/Sources/PlatformCore/Bridge.swift",
+      "sha256": "444e1e343904b780076ec0f5301692bdaab9978d2aabebdc2ad04aeeccd30d8f"
+    },
+    {
+      "path": "ios/Sources/PlatformCore/Models.swift",
+      "sha256": "cc72daa00d4549c6bd6b84a8ef3a462c99432b356b282e7da78d018688166d76"
+    },
+    {
+      "path": "ios/Sources/PlatformCore/Navigation.swift",
+      "sha256": "cf9e55b945ac979e281ef79a9bc05db95cc8b29d30a90105788f941ed8f07538"
+    },
+    {
+      "path": "ios/Sources/PlatformCore/RemotePayload.swift",
+      "sha256": "77885eab39b22e9324303fe10cc1eede67d87dacdc3d67e7fde9c8a896226f77"
+    },
+    {
+      "path": "ios/Tests/PlatformCoreTests/CoreTests.swift",
+      "sha256": "f25f234501905cf4ed8bed4dd53eeec140ee2aa5109a5c2f3220ebebf2f24c73"
+    },
+    {
+      "path": "ios/UITests/NativeJourneyTests.swift",
+      "sha256": "80ee7c58a81f2b7ae3069d30dab53c8f9814d11f4b8a2c977f493839febe39e3"
+    },
+    {
+      "path": "android/.gitignore",
+      "sha256": "4eebfe6403e64a736e49d05761137bb0f8016a47639f335e2357fcc849a95bba"
+    },
+    {
+      "path": "android/app/build.gradle.kts",
+      "sha256": "31d18c7827e4c8f799fdd84d18d25b595288d3225875a600d735e5e6d5ad117f"
+    },
+    {
+      "path": "android/app/proguard-rules.pro",
+      "sha256": "9d72567baed5537b9bb78a0025b274c46359adf54fbda5df56e57903aba28aad"
+    },
+    {
+      "path": "android/app/src/androidTest/java/com/miniappplatform/nativehost/SmokeInstrumentation.kt",
+      "sha256": "4f7249493242946d215b16459c12ecd05d771cdad86dfd6d494ee87a4051256b"
+    },
+    {
+      "path": "android/app/src/fcm/AndroidManifest.xml",
+      "sha256": "722ea32c06c27a0ddb376ef3c710ad3f8ee2f1a1bd14ba171528e6290ada151e"
+    },
+    {
+      "path": "android/app/src/fcm/java/com/miniappplatform/nativehost/PushRegistration.kt",
+      "sha256": "bdf34b24c6173d8ce702b1a68898469e1920ad23b8be4d170b8059a80b0f871c"
+    },
+    {
+      "path": "android/app/src/main/AndroidManifest.xml",
+      "sha256": "5e6457257ae8915dfcaa21bfd08000d8342ab82ad3a4db2b21338cceaf4ecd4e"
+    },
+    {
+      "path": "android/app/src/main/java/com/miniappplatform/nativehost/DeviceServices.kt",
+      "sha256": "0c5e0493b620991eda33a48c0c57775c911d131d064b032289937c8a320a8d68"
+    },
+    {
+      "path": "android/app/src/main/java/com/miniappplatform/nativehost/Domain.kt",
+      "sha256": "deaeb69102cff71db0a32ed7a98fe700421ea4d281f9f161462e859dbeb160b6"
+    },
+    {
+      "path": "android/app/src/main/java/com/miniappplatform/nativehost/LocalJournal.kt",
+      "sha256": "2667b1394f312268e6549ca3bc41093c7ccb1761a70b9c493f66fa2ad1002634"
+    },
+    {
+      "path": "android/app/src/main/java/com/miniappplatform/nativehost/MainActivity.kt",
+      "sha256": "4cdda0d8f8ffe4c8f95ba88c47103b0c0699e0cb8eeb8b65f039ceca4b3340e6"
+    },
+    {
+      "path": "android/app/src/main/java/com/miniappplatform/nativehost/Reminders.kt",
+      "sha256": "69a6f177b6f7bbd4455ae4c9c6766607e7ccecdccc4eb548207df25077aff7eb"
+    },
+    {
+      "path": "android/app/src/main/java/com/miniappplatform/nativehost/RemotePayload.kt",
+      "sha256": "c917e224e44efaf7d347aefaa339c73834887860eb017b0332b1c0a0c1490cce"
+    },
+    {
+      "path": "android/app/src/main/java/com/miniappplatform/nativehost/Repository.kt",
+      "sha256": "533c0d7e665f78e56339a164316224f9fe13afde2cb062fbc0044d3a66daa955"
+    },
+    {
+      "path": "android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+      "sha256": "ded7aabf6a56b694e486e096efd89e2f0c9067d292b634663898e352c9491f10"
+    },
+    {
+      "path": "android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png",
+      "sha256": "21304a0c9b00da6a72cfa31c7229c9528fc17b6e5eb4e68a969bce08c01a2fee"
+    },
+    {
+      "path": "android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+      "sha256": "eef20f25fb1477d8c9df15757e764811cc503fb0777f18d0f7fb2d19178b5bf6"
+    },
+    {
+      "path": "android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png",
+      "sha256": "520d05f978a15ba0ccf23006a1a5691a054a02478c70cafc5ebafae76e600f0d"
+    },
+    {
+      "path": "android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+      "sha256": "e77c5045bfdb6f4bbe955b3a793bfed3baa369ce4811ae2a9103d5480637cfff"
+    },
+    {
+      "path": "android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png",
+      "sha256": "2846e1a703e519791fe22f41bcb243b82f908d12e5ebcb43f020ddf9982780b0"
+    },
+    {
+      "path": "android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+      "sha256": "eb3a34b13632e0cb3b1c0f4273035866cbe81b1b17b7178ce29d19c78d394a5e"
+    },
+    {
+      "path": "android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png",
+      "sha256": "363a569beb72e8b007bf046454612148d4c9f782b9391352059fe83179f18e30"
+    },
+    {
+      "path": "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+      "sha256": "9ff27328b6916b7f75b99ef36153f154bb4724946e5654635cba2e257352c69f"
+    },
+    {
+      "path": "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png",
+      "sha256": "5bacd97a1b41e4413c6092cdbd83f65112a9124e823cfaa3a219c65e2761647b"
+    },
+    {
+      "path": "android/app/src/main/res/values/styles.xml",
+      "sha256": "bf4d2ba8179f803e5a27d04f8bb0d8323152696d522b3838d446ddd309610fdb"
+    },
+    {
+      "path": "android/app/src/main/res/values-night/styles.xml",
+      "sha256": "63a0c11481419bdd6d52cfb6024497310efb8928ea155745f6db981b83c1e831"
+    },
+    {
+      "path": "android/app/src/main/res/xml/data_extraction_rules.xml",
+      "sha256": "792be4fe66aeb751c21b685008a31e2c85662bb2c8af59971e93d30356853331"
+    },
+    {
+      "path": "android/app/src/noPush/java/com/miniappplatform/nativehost/PushRegistration.kt",
+      "sha256": "d0cbbb456e6ecf9311fa0d00b38d313c4adca5aa695024a654c18b7ef712208f"
+    },
+    {
+      "path": "android/app/src/test/java/com/miniappplatform/nativehost/DomainTests.kt",
+      "sha256": "3f6889013d41023791c0d5605bd174db7996c7cff1e3b7eed055b4acc2839e09"
+    },
+    {
+      "path": "android/build.gradle.kts",
+      "sha256": "8a14e759f7ddcfa54b4a045dbf059b1c575c24872378533d311d8ad9ef9b45c7"
+    },
+    {
+      "path": "android/gradle/wrapper/gradle-wrapper.jar",
+      "sha256": "7d3a4ac4de1c32b59bc6a4eb8ecb8e612ccd0cf1ae1e99f66902da64df296172"
+    },
+    {
+      "path": "android/gradle/wrapper/gradle-wrapper.properties",
+      "sha256": "a180163249c7252412ddaee1c7adcf59f6494b1183136f690fbd9a3b8aaed00e"
+    },
+    {
+      "path": "android/gradle.properties",
+      "sha256": "d377b58aac048fe79dda4174f4ab89b5d61780f51b65fdad215a35edd0d31925"
+    },
+    {
+      "path": "android/gradlew",
+      "sha256": "b187b4c52e749f5760afdd6fadc31b2a98ad35fb249bf0dff03b72650f320409"
+    },
+    {
+      "path": "android/gradlew.bat",
+      "sha256": "07a4bb3ec77dcc9f4b486423e6ec45f4d7d9523787b95681726c30dbba3079cd"
+    },
+    {
+      "path": "android/settings.gradle.kts",
+      "sha256": "b1dd2c0822f5b2e6eb04718b0be2a62bcae75bce54327ef450409b953c495687"
+    },
+    {
+      "path": "native/PORT-CONTRACT.md",
+      "sha256": "f07e81188c2957ca277e134cc8c7cd527ccccd0f4f7de7d5d5d50a60a62e60f6"
+    },
+    {
+      "path": "native/README.md",
+      "sha256": "a66c4b126155653aaf08e85cf8868b8df1c0e581728cb5cc8ecccf9c26609cd2"
+    },
+    {
+      "path": "native/VERIFICATION.md",
+      "sha256": "885194feea4d41ce03e374e5b8156cd42209deb5d04058cc264644ac74841735"
+    },
+    {
+      "path": "native/shared/platform.json",
+      "sha256": "09848015b11bfd3c905b8e0bcbd9ee0f4864beb1efda1a854f777b1612c14898"
+    },
+    {
+      "path": "native/tests/content.test.cjs",
+      "sha256": "a9afe3f46741aec3e032d2d8c8720d54246ff5f322c9672608ccbe61dff9271f"
+    },
+    {
+      "path": "native/tools/export-data.cjs",
+      "sha256": "86dac46dae2303e846da32bd999c93d0960f702b8c4f957c2edc047d342f60cf"
+    }
+  ],
+  "budget_verdict": "Unverified: raw artifact sizes do not establish device download/thinned install ratchets or native speedup.",
+  "standalone_ios_launch": "PASS after @rpath fix; simulator direct launch, process 49754"
+}

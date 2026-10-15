@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-02T09:13:19.816Z",
+  "generatedAt": "2026-10-04T00:44:20.043Z",
   "sources": {
     "capabilitiesYaml": "policy/capabilities.yaml",
     "registry": "src/bridge/registry.ts",
@@ -171,7 +171,8 @@
         "src/bridge/handlers/scanner.ts",
         "src/bridge/handlers/locationCurrent.ts",
         "src/bridge/handlers/cryptoSign.ts",
-        "src/bridge/handlers/notifySubscribe.ts"
+        "src/bridge/handlers/notifySubscribe.ts",
+        "src/bridge/handlers/aiExtractBill.ts"
       ],
       "permissions": [
         {
@@ -227,6 +228,15 @@
           "brokerUi": "false",
           "risk": "low",
           "minTier": "self_serve"
+        },
+        {
+          "kind": "capability",
+          "name": "ai.extract_bill",
+          "consent": "once",
+          "osPermission": "none",
+          "brokerUi": "host_image_picker",
+          "risk": "high",
+          "minTier": "first_party"
         }
       ]
     },
@@ -241,6 +251,7 @@
       ],
       "components": [
         "src/tracking/trackingService.ts",
+        "src/tracking/miniAppLoadTracker.ts",
         "src/tracking/trace.ts",
         "src/tracking/types.ts",
         "src/components/TrackedScrollView.tsx",
@@ -328,6 +339,34 @@
       ]
     },
     {
+      "id": "onDeviceLlm",
+      "label": "On-device LLM (pilot)",
+      "layer": "native",
+      "description": "Host-only on-device LLM mechanism — availability/extractBill/cancelBill via OnDeviceLlm TurboModule; bill pilot behind ai.extract_bill bridge capability",
+      "globs": [
+        "src/native/onDeviceLlm.ts",
+        "src/native/specs/NativeOnDeviceLlm.ts"
+      ],
+      "components": [
+        "src/native/onDeviceLlm.ts",
+        "src/native/specs/NativeOnDeviceLlm.ts",
+        "src/bridge/handlers/aiExtractBill.ts",
+        "src/utils/withTimeout.ts"
+      ],
+      "permissions": [
+        {
+          "kind": "capability",
+          "name": "ai.extract_bill",
+          "consent": "once",
+          "osPermission": "none",
+          "brokerUi": "host_image_picker",
+          "risk": "high",
+          "minTier": "first_party",
+          "via": "bridge handler ai.extract_bill"
+        }
+      ]
+    },
+    {
       "id": "storage",
       "label": "Host Storage",
       "layer": "native",
@@ -356,25 +395,6 @@
         "src/cards/cardStore.ts",
         "src/cards/dataset.ts",
         "src/components/CardCatalogBody.tsx"
-      ],
-      "permissions": []
-    },
-    {
-      "id": "splitBill",
-      "label": "Split Bill Domain",
-      "layer": "domain",
-      "description": "Chia tiền — bill items, min-cash-flow settlement, VietQR 38/A000000727 builder/parser, masked payout accounts",
-      "globs": [
-        "src/splitBill/*",
-        "src/components/SplitBillBody.tsx"
-      ],
-      "components": [
-        "src/splitBill/model.ts",
-        "src/splitBill/vietqr.ts",
-        "src/splitBill/banks.ts",
-        "src/splitBill/i18n.ts",
-        "src/splitBill/storage.ts",
-        "src/components/SplitBillBody.tsx"
       ],
       "permissions": []
     },
@@ -686,42 +706,6 @@
       "evidence": "src/miniapps/catalog.ts:card"
     },
     {
-      "from": "splitBill",
-      "to": "container",
-      "reason": "Split Bill mini-app uses container CSP + signing",
-      "evidence": "src/splitBill/model.ts"
-    },
-    {
-      "from": "splitBill",
-      "to": "tracking",
-      "reason": "Split Bill tracking events (bill_created/settled)",
-      "evidence": "src/splitBill/model.test.ts"
-    },
-    {
-      "from": "splitBill",
-      "to": "explore",
-      "reason": "Split Bill appears in catalogTenant featured",
-      "evidence": "src/miniapps/catalog.ts:split-bill"
-    },
-    {
-      "from": "splitBill",
-      "to": "storage",
-      "reason": "Bill draft persisted via storage.kv",
-      "evidence": "src/splitBill/storage.ts"
-    },
-    {
-      "from": "splitBill",
-      "to": "designSystem",
-      "reason": "SplitBillBody uses palette tokens",
-      "evidence": "src/components/SplitBillBody.tsx:palette"
-    },
-    {
-      "from": "splitBill",
-      "to": "bridge",
-      "reason": "VietQR paste/scan via net.request + scanner.scan",
-      "evidence": "src/splitBill/vietqr.ts"
-    },
-    {
       "from": "designSystem",
       "to": "haptics",
       "reason": "Tokens include motion → reduceMotion controls surfaces",
@@ -732,6 +716,12 @@
       "to": "deviceAccess",
       "reason": "Haptics via nativeShell, not WebView",
       "evidence": "src/native/nativeShell.ts:signalNavigationSelection"
+    },
+    {
+      "from": "onDeviceLlm",
+      "to": "bridge",
+      "reason": "import scan",
+      "evidence": "auto: onDeviceLlm imports bridge"
     },
     {
       "from": "cards",
@@ -756,6 +746,12 @@
       "to": "tracking",
       "reason": "import scan",
       "evidence": "auto: explore imports tracking"
+    },
+    {
+      "from": "explore",
+      "to": "bridge",
+      "reason": "import scan",
+      "evidence": "auto: explore imports bridge"
     },
     {
       "from": "notifications",
@@ -837,9 +833,15 @@
     },
     {
       "from": "navigation",
-      "to": "splitBill",
+      "to": "app",
       "reason": "import scan",
-      "evidence": "auto: navigation imports splitBill"
+      "evidence": "auto: navigation imports app"
+    },
+    {
+      "from": "navigation",
+      "to": "bridge",
+      "reason": "import scan",
+      "evidence": "auto: navigation imports bridge"
     },
     {
       "from": "navigation",
@@ -925,10 +927,12 @@
       "src/bridge/handlers/scanner.ts",
       "src/bridge/handlers/locationCurrent.ts",
       "src/bridge/handlers/cryptoSign.ts",
-      "src/bridge/handlers/notifySubscribe.ts"
+      "src/bridge/handlers/notifySubscribe.ts",
+      "src/bridge/handlers/aiExtractBill.ts"
     ],
     "tracking": [
       "src/tracking/trackingService.ts",
+      "src/tracking/miniAppLoadTracker.ts",
       "src/tracking/trace.ts",
       "src/tracking/types.ts",
       "src/components/TrackedScrollView.tsx",
@@ -947,6 +951,12 @@
       "src/native/deviceAccess.ts",
       "src/utils/withTimeout.ts"
     ],
+    "onDeviceLlm": [
+      "src/native/onDeviceLlm.ts",
+      "src/native/specs/NativeOnDeviceLlm.ts",
+      "src/bridge/handlers/aiExtractBill.ts",
+      "src/utils/withTimeout.ts"
+    ],
     "storage": [
       "src/native/hostStorage.ts",
       "src/config/tenantStorage.ts",
@@ -957,14 +967,6 @@
       "src/cards/cardStore.ts",
       "src/cards/dataset.ts",
       "src/components/CardCatalogBody.tsx"
-    ],
-    "splitBill": [
-      "src/splitBill/model.ts",
-      "src/splitBill/vietqr.ts",
-      "src/splitBill/banks.ts",
-      "src/splitBill/i18n.ts",
-      "src/splitBill/storage.ts",
-      "src/components/SplitBillBody.tsx"
     ],
     "designSystem": [
       "src/ui/foundations/tokens.ts",
@@ -1058,6 +1060,15 @@
         "brokerUi": "false",
         "risk": "low",
         "minTier": "self_serve"
+      },
+      {
+        "kind": "capability",
+        "name": "ai.extract_bill",
+        "consent": "once",
+        "osPermission": "none",
+        "brokerUi": "host_image_picker",
+        "risk": "high",
+        "minTier": "first_party"
       }
     ],
     "tracking": [],
@@ -1106,9 +1117,20 @@
         "hostOnly": true
       }
     ],
+    "onDeviceLlm": [
+      {
+        "kind": "capability",
+        "name": "ai.extract_bill",
+        "consent": "once",
+        "osPermission": "none",
+        "brokerUi": "host_image_picker",
+        "risk": "high",
+        "minTier": "first_party",
+        "via": "bridge handler ai.extract_bill"
+      }
+    ],
     "storage": [],
     "cards": [],
-    "splitBill": [],
     "designSystem": [],
     "haptics": []
   },
@@ -1118,7 +1140,8 @@
     "scanner.scan",
     "location.current",
     "crypto.sign",
-    "notify.subscribe"
+    "notify.subscribe",
+    "ai.extract_bill"
   ],
   "capabilities": [
     {
@@ -1156,6 +1179,12 @@
       "risk": "low",
       "consent": "while_using",
       "brokerUi": "false"
+    },
+    {
+      "name": "ai.extract_bill",
+      "risk": "high",
+      "consent": "once",
+      "brokerUi": "host_image_picker"
     }
   ],
   "neverExpose": [

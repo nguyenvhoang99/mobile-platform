@@ -9,6 +9,7 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.miniappplatform.deviceaccess.DeviceAccessPackage
 import com.miniappplatform.hoststorage.HostStoragePackage
 import com.miniappplatform.notifications.NotificationPackage
+import com.miniappplatform.ondevicellm.OnDeviceLlmPackage
 
 class MainApplication : Application(), ReactApplication {
 
@@ -20,6 +21,7 @@ class MainApplication : Application(), ReactApplication {
               add(DeviceAccessPackage())
               add(HostStoragePackage())
               add(NotificationPackage())
+              add(OnDeviceLlmPackage())
             },
     )
   }

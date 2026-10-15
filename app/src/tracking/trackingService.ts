@@ -95,6 +95,25 @@ const hostEvents = {
     privacyClass: 'analytics',
     allowedDataKeys: ['mini_app_id', 'entrypoint_id', 'source'],
   },
+  mini_app_load_started: {
+    version: 1,
+    priority: 'operational',
+    privacyClass: 'essential',
+    allowedDataKeys: [
+      'mini_app_id', 'mini_app_version', 'mini_app_session_id', 'load_id',
+      'source', 'runtime', 'launch_kind',
+    ],
+  },
+  mini_app_load_finished: {
+    version: 1,
+    priority: 'operational',
+    privacyClass: 'essential',
+    allowedDataKeys: [
+      'mini_app_id', 'mini_app_version', 'mini_app_session_id', 'load_id',
+      'source', 'runtime', 'launch_kind', 'outcome', 'reason', 'elapsed_ms',
+      'navigation_commit_ms', 'content_layout_ms', 'commit_to_layout_ms',
+    ],
+  },
   mini_app_closed: {
     version: 1,
     priority: 'product',

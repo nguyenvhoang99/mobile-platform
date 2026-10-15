@@ -1,0 +1,11 @@
+PASS src/home/homeModel.test.ts
+  home model
+    ✓ normalizes persisted preferences against reviewed catalogs (3 ms)
+    ✓ uses a random order when profile data is unavailable (1 ms)
+    ✓ prioritizes age-relevant categories without sex stereotypes
+
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        1.089 s
+Ran all test suites matching /src\/home\/homeModel.test.ts/i.

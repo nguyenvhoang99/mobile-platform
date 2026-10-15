@@ -27,26 +27,26 @@ const accessItems: AccessItem[] = [
   {
     kind: 'network',
     glyph: '⌁',
-    title: 'Network',
-    subtitle: 'Wi-Fi or cellular status',
+    title: 'Mạng',
+    subtitle: 'Trạng thái Wi-Fi hoặc di động',
   },
   {
     kind: 'biometric',
     glyph: '◉',
-    title: 'Sign in',
-    subtitle: 'Face ID or fingerprint',
+    title: 'Đăng nhập',
+    subtitle: 'Face ID hoặc vân tay',
   },
   {
     kind: 'weatherLocation',
     glyph: '⌖',
-    title: 'Weather',
-    subtitle: 'Approximate location only',
+    title: 'Thời tiết',
+    subtitle: 'Chỉ vị trí gần đúng',
   },
   {
     kind: 'voiceCommand',
     glyph: '⌁',
-    title: 'Voice command',
-    subtitle: 'Speech is transcribed locally',
+    title: 'Lệnh thoại',
+    subtitle: 'Giọng nói được nhận dạng trên máy',
   },
 ];
 
@@ -80,7 +80,7 @@ export function AccessSetup({
     } catch {
       const accessResult: DeviceAccessResult = {
         status: 'error',
-        message: 'The device request could not be completed.',
+        message: 'Không thể hoàn tất yêu cầu trên thiết bị.',
       };
       setResult(accessResult);
       onAccessCompleted(kind, accessResult.status);
@@ -92,11 +92,11 @@ export function AccessSetup({
   return (
     <View style={styles.section}>
       <Text style={[styles.sectionTitle, { color: palette.text }]}>
-        Device access
+        Truy cập thiết bị
       </Text>
       <Text style={[styles.sectionBody, { color: palette.mutedText }]}>
-        Requests happen only after you choose an action. Nothing is shared with
-        a mini-app from this screen.
+        Chỉ yêu cầu sau khi bạn chọn một thao tác. Màn hình này không chia sẻ
+        gì với mini-app.
       </Text>
       <View style={styles.grid}>
         {accessItems.map(item => {
@@ -146,13 +146,13 @@ export function AccessSetup({
           </Text>
           <Text style={[styles.resultText, { color: palette.text }]}>
             {result.transcript
-              ? `Heard: “${result.transcript}”`
+              ? `Đã nghe: “${result.transcript}”`
               : result.message}
           </Text>
           {result.transcript ? (
             <Text style={[styles.resultHint, { color: palette.mutedText }]}>
-              The host recorded the text only. Routing it to a mini-app requires
-              an approved command capability.
+              Host chỉ lưu văn bản. Muốn chuyển cho mini-app cần capability
+              lệnh đã được duyệt.
             </Text>
           ) : null}
         </View>

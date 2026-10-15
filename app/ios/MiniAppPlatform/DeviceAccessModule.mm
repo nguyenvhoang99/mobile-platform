@@ -1,6 +1,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <CoreLocation/CoreLocation.h>
 #import <LocalAuthentication/LocalAuthentication.h>
+#import <Network/Network.h>
 #import <React/RCTBridgeModule.h>
 #import <ReactCodegen/MiniAppPlatformSpec/MiniAppPlatformSpec.h>
 #import <Speech/Speech.h>
@@ -17,6 +18,10 @@
 @property(nonatomic, strong) SFSpeechAudioBufferRecognitionRequest *speechRequest;
 @property(nonatomic, strong) SFSpeechRecognitionTask *speechTask;
 @property(nonatomic, copy) RCTPromiseResolveBlock voiceResolve;
+@property(nonatomic, strong) NWPathMonitor *networkMonitor;
+@property(nonatomic, strong) NWPath *latestNetworkPath;
+@property(nonatomic, strong) NSMutableArray<RCTPromiseResolveBlock> *networkResolvers;
+- (NSDictionary *)networkResultForPath:(NWPath *)path;
 @end
 
 @implementation DeviceAccessModule
@@ -42,11 +47,75 @@ RCT_EXPORT_MODULE(DeviceAccess)
 - (void)getNetworkStatus:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject
 {
-  // iOS does not grant Wi-Fi or cellular access through a runtime prompt. The
-  // host still owns egress policy; this is only a connectivity affordance.
-  NSMutableDictionary *result = [[self resultWithStatus:@"available" message:@"Network access is managed by the host."] mutableCopy];
-  result[@"networkType"] = @"unknown";
-  resolve(result);
+  // Match Android's coarse connectivity result. This reports path availability
+  // only; it does not grant network access or expose local network identifiers.
+  if (self.latestNetworkPath != nil) {
+    resolve([self networkResultForPath:self.latestNetworkPath]);
+    return;
+  }
+
+  if (self.networkResolvers == nil) {
+    self.networkResolvers = [NSMutableArray new];
+  }
+  [self.networkResolvers addObject:[resolve copy]];
+
+  if (self.networkMonitor == nil) {
+    NWPathMonitor *monitor = [NWPathMonitor new];
+    self.networkMonitor = monitor;
+    __weak DeviceAccessModule *weakSelf = self;
+    monitor.pathUpdateHandler = ^(NWPath *path) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        DeviceAccessModule *strongSelf = weakSelf;
+        if (strongSelf == nil || strongSelf.networkMonitor == nil) {
+          return;
+        }
+        strongSelf.latestNetworkPath = path;
+        NSArray<RCTPromiseResolveBlock> *pending = [strongSelf.networkResolvers copy];
+        [strongSelf.networkResolvers removeAllObjects];
+        NSDictionary *result = [strongSelf networkResultForPath:path];
+        for (RCTPromiseResolveBlock pendingResolve in pending) {
+          pendingResolve(result);
+        }
+      });
+    };
+    [monitor startWithQueue:dispatch_queue_create("com.miniappplatform.network-path", DISPATCH_QUEUE_SERIAL)];
+  }
+
+  // Never leave callers waiting if the first path callback is delayed.
+  __weak DeviceAccessModule *weakSelf = self;
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    DeviceAccessModule *strongSelf = weakSelf;
+    if (strongSelf == nil || strongSelf.latestNetworkPath != nil || strongSelf.networkResolvers.count == 0) {
+      return;
+    }
+    NSArray<RCTPromiseResolveBlock> *pending = [strongSelf.networkResolvers copy];
+    [strongSelf.networkResolvers removeAllObjects];
+    NSDictionary *result = [strongSelf resultWithStatus:@"unavailable" message:@"Network status is unavailable right now."];
+    for (RCTPromiseResolveBlock pendingResolve in pending) {
+      pendingResolve(result);
+    }
+  });
+}
+
+- (NSDictionary *)networkResultForPath:(NWPath *)path
+{
+  NSString *networkType = @"unknown";
+  if ([path usesInterfaceType:NWInterfaceTypeWiFi]) {
+    networkType = @"wifi";
+  } else if ([path usesInterfaceType:NWInterfaceTypeCellular]) {
+    networkType = @"cellular";
+  }
+  BOOL available = path.status == NWPathStatusSatisfied;
+  return @{
+    @"status" : available ? @"available" : @"offline",
+    @"message" : available ? @"Network access is available." : @"No active network path was found.",
+    @"networkType" : networkType,
+  };
+}
+
+- (void)dealloc
+{
+  [self.networkMonitor cancel];
 }
 
 - (void)authenticate:(NSString *)reason

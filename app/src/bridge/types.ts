@@ -21,6 +21,7 @@ export type BridgeErrorCode =
   | 'TIMEOUT'
   | 'REVOKED'
   | 'UNCERTAIN' // cancellation that may have landed
+  | 'UNAVAILABLE' // device/model cannot perform this op (e.g. no on-device LLM) — build a fallback, do not retry blindly
   | 'INTERNAL';
 
 export type BridgeResult<T> =
@@ -38,7 +39,10 @@ export type BridgeRequest = {
 };
 
 // ── Native session — derived, not supplied ────────────────────────────────
+export type BridgeTier = 'sandbox' | 'self_serve' | 'partner_verified' | 'first_party';
+
 export type BridgeSession = {
+  tier?: BridgeTier; // Missing trusted tier fails closed to sandbox.
   appId: string;
   tenantId: string;
   userId: string; // per-(tenant, appId, user) pseudonymous — never the platform vendor ID

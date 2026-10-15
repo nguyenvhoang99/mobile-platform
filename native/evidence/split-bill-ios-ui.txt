@@ -1,0 +1,13 @@
+iOS Simulator iPhone 17 / iOS 27.0, scheme MobileNative, targeted Split Bill UI test, unsigned.
+Test Suite 'Selected tests' started at 2026-10-04 18:07:15.976.
+Test Suite 'NativeJourneyTests.xctest' started at 2026-10-04 18:07:15.978.
+Test Suite 'NativeJourneyTests' started at 2026-10-04 18:07:15.978.
+Test Case '-[NativeJourneyTests.NativeJourneyTests testSplitBillWebViewBootDraftAndReopen]' started.
+Test Case '-[NativeJourneyTests.NativeJourneyTests testSplitBillWebViewBootDraftAndReopen]' passed (31.051 seconds).
+Test Suite 'NativeJourneyTests' passed at 2026-10-04 18:07:47.034.
+	 Executed 1 test, with 0 failures (0 unexpected) in 31.051 (31.056) seconds
+Test Suite 'NativeJourneyTests.xctest' passed at 2026-10-04 18:07:47.037.
+	 Executed 1 test, with 0 failures (0 unexpected) in 31.051 (31.059) seconds
+Test Suite 'Selected tests' passed at 2026-10-04 18:07:47.037.
+	 Executed 1 test, with 0 failures (0 unexpected) in 31.051 (31.061) seconds
+** TEST SUCCEEDED **

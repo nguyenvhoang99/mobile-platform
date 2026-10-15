@@ -9,7 +9,9 @@
 - `getPermissionStatus / requestPermission / registerForRemoteNotifications`
 - `getPendingEvents: Promise<string>` JSON array of `NativeNotificationEvent {native_event_id, type: received|opened, payload, app_state, provider_message_id, occurred_at_ms}`
 - `acknowledgeEvent(nativeEventId)`
-- `scheduleReminder / presentCalendarEvent` (badminton-specific, optional)
+- `scheduleReminder / cancelReminder / presentCalendarEvent` (generic reminder/calendar, optional)
+
+Generic reminders share one host reminder lifecycle. The iOS implementation is an ActivityKit Live Activity; Android requests a Live Update when the platform can promote the ongoing notification and falls back to the standard notification presentation. See [Live Activity](live-activity.md). These reminder APIs are host module methods; adding ActivityKit support does not grant mini-apps a direct native capability.
 
 `NATIVE ↔ JS` via `NativeEventEmitter` for `pendingEvents` while foregrounded.
 
