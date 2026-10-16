@@ -1,5 +1,6 @@
 # Standalone repos (tracked separately)
 android/
+ios/
 
 # OS
 .DS_Store
